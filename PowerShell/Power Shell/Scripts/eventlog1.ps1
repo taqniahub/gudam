@@ -1,0 +1,1 @@
+get-content c:\scripts\servers.txt | c:\scripts\report-event.ps1 – report c:\script\eventlog.html
