@@ -1,0 +1,81 @@
+1. What are some Exit Criteria you include in your test plans?
+	- 100% test coverage (all tests have been executed)
+	- No open bugs with High or Medium severity
+	- <2% of low severity bugs are still open
+	- <95% of the requirements are bug-free
+	- Project timelines have ended
+	- Budget is finished
+
+2. Explain how Scrum is implemented at your current project
+	- Our sprints are 2 weeks long
+	- My scrum team consists of 8 people
+		- 1 Product Owner
+		- 1 Scrum Master
+		- 2 Testers
+		- 4 Developers
+	- At the beginning of our sprints, we have a sprint planning meeting where we plan out our sprint and determine the sprint backlog
+	- We have a daily stand up
+	- We have a defect triage meeting every afternoon to go over any open defects for fast resolution
+	- At the end of the sprint we have a review meeting where we present the work completed to the Product Owner 
+	- At the end, we have a Retro to help us improve our team dynamics
+
+3. Explain, in as much detail as possible, the bug life cycle.
+	- Tester finds a bug and verifies that it is a valid bug
+	- Tester logs it in ALM. Assigns it to the Dev Team
+	- Dev can do 1 of 3 things:
+		1. Accept the defect and begin working on the fix
+		2. Reject the defect as being invalid
+		3. Deffer the defect to be worked on later
+	- If accepted, the dev begins working on the fix and then delivers the fix to the Testing team
+	- Tester re-tests the defect and validates that the bug is fixed. If not fixed, tester sends the bug back to the dev 
+	- When fixed, tester closes the defect and passes the test case
+	
+	- Throughout the bug life cycle, Defect Triage meetings take place every day around 4:00pm to discuss any open bugs and when they will be fixed. 
+
+4. What are the steps to create a test case in ALM? 
+	3 ways:
+		1. Creating test cases directly in Test Plan
+			A. In Test Plan -> Create a New Test Case
+			B. Under the Design Steps Tab -> add the test steps
+				1. Add Parameters from the Parameters Tab if/when necessary
+				2. Incoroporate Template Tests if/when necessary for common steps
+			C. Under the Req. Coverage Tab -> Map the test case to the Requirement
+		2. Converting the requirements into test cases
+			A. In The Requirements Section -> Requirements -> Convert to Tests
+			B. Select the Conversion Method
+			C. Confirm the Path (where the test cases will be located)
+			D. Convert and verify the tests have been created in Test Plan Section
+		3. Import from Excel the test cases 
+			A. Create the test cases in Excel
+			B. Using the Excel-ALM Add-in, log into ALM via Excel
+			C. Perform the Mapping (Columns in Excel to Fields in ALM)
+			D. Click on Validate
+			E. Click on Export and verify the tests have been exported into Test Plan 
+
+
+5. In your previous Scrum Environments, how did your team handle Epics?
+	
+	- In our Scrum, we have a grooming meeting every Tuesday and Thursday afternoons
+	- Here, we discuss any questions we might have regarding the user stories that the Product Owner has broken down for us
+	- We also provide estimated LOE for various user stories so that we can better plan our sprints
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

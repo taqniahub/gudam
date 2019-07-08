@@ -1,0 +1,147 @@
+q. How many phases/stages in SDLC (Software Development Life Cycle)?
+
+- A typical SDLC has 6 phases
+
+	The 6 phases are
+
+	i) Planning
+	ii) Requirement Gathering/Analysis
+	iii) Design
+	iv) Development/Coding
+	v) QA/ Testing
+	vi) Production/Maintenance
+	
+
+q. Why do we need testing/what is testing?
+
+- To make the application bug/defect free as much as possible. 
+
+- Testing is a process done to check if it satisfies or meets the requirements.
+
+q. Can we automate everything and why?
+
+- No. 
+
+To automate, the application needs to be stable with basic functionalities to be automated. 
+
+q. What is the difference between verification and validation
+
+- Verification is a static process of analysing the document and not the end product
+
+Validation is the process to analyze the actual product.
+
+Verification is the process to ensure that the product being developed will comply to the standards.
+
+Validation is the process of validating that the developed software.
+
+q. What is STLC
+
+
+q. What is Tracibility Matrix/Requirement Tracibility Matrix (RTM)?
+
+- Traces the requirements to the test cases that are needed to verify whether the requirements are fulfilled
+
+q. What is test case?
+	
+- A test case is a process where the tester determines if the application/system under the test process works as expected requirements.	
+
+q. What is test plan?
+
+- A test plan is a formal document describing the scope of testing, the approach to be used, resource required and the time estimate of carrying out the testing process.
+
+q. What is the difference(s) between test plan and test case?
+
+- Test plan describes the process in a document
+   Test case is the process that is taken to test the applcation to see if its working expected.
+
+q. When should we stop testing?
+
+- Testing phase can be stopeed if the application/software reaches a specific thershold value with sufficient pass-percentage and no critical bug.
+
+q. What are some of the different types of testng?
+
+Testing can be broadly defined into two types.
+
+Functional testing: Black box type testing to test the functional requirements of an application. 
+
+Non-functional Testing: Non functional testing includes testing the non-functional requirements of the system like performence, security, load etc.
+
+q. What is a test script?
+
+- A test script is an automated test case written in any programming language.
+
+q. What is bug?
+
+- Bug is a fault in product/application found before production.
+
+q. What is defect?
+
+- Defect is a fault in product/application found after production.
+
+q. What is white box testing?
+
+- White box testing is the testing process where the tester has to have knowledge of coding.
+
+q. What is black box testing?
+
+- black box testing is the testing process where the tester tests the product/application without the coding knowledge.
+
+q. What is GUI?
+
+- Graphical User Interface
+
+q. What is GUI testing?
+
+- This testing is done to find any errors in GUI and that the GUI conforms the the specifications.
+
+q. What is regression testing?
+
+- Regression testing is done to verify that a code change (to fix a bug/defect) doesn't affect other parts of the application.
+
+q. What is an exit criteria?
+
+- The purpose of exit criteria is to define when a test level is completed.
+
+q. What is backend testing?
+
+- Backend testing is a type of testing that involves testing the backend of the application which comprise of testing databases and the APIs. 
+
+API = Application programming interface
+
+API allows two applications to talk to each other.
+
+q. What are some advantages of automation testing?
+
+	- Test execution using automation is fast, saves considerable amount of time and resources.
+	- Carefully written test scripts remove the chance of human error during testing.
+	- Tests execution can be scheduled for nightly run and can also be configured to provide daily test results and updates.
+
+q. What are some disadvantages of automation testing?
+
+	- Automation testing requires skilled automation testing expers to write test scripts.
+	- Automation testing can miss some error that can be very glaring and easily identifiable. 
+	- Even with minor changes in application coding, script needs be updated. 
+
+q. What is Agile methodology?
+
+- Agile methodology of a software development is a process where the bapplication is broken down into smaller build on which different teams (i.e. developer team, testing team etc.) work together providing rapid delivary along with adapting to changing needs at the same time.
+
+q. What is Scrum? 
+
+- A scrum is a process for implementing Agile methodology. In scrum, time is divided into sprints (mostly in two weeks to a month long) and on completion of sprints, a deliverable is shipped.
+
+q. What is positive testing?
+
+- Positive testing is the type of testing that is performed expecting positive result with valid input data.
+
+q. What is negative testing?
+
+- Negative testing is the type of testing that is performed expecting negative result with non-valid input data.
+
+
+
+
+
+
+ 
+ 

@@ -1,0 +1,158 @@
+Most commonly asked questions for UFT Automation Tool:
+
+q. How many types of recording there are UFT?
+
+Most commonly used recordings in UFT are:
+
+1. Default recordings: Context Sensitive Recording. It is the default type of recording which recordes behaviours of objects in an application by recoginizing its properties and values.
+
+2. Analog Recordings: Analog Recording records mouse movements.
+
+3. Low Level recording: This type of recording enables type of recording that records any type of action taken towards any application and any object.  
+
+q. What is the extension of Object Repository?
+
+Local Object Repository has extension as .mtr
+
+Shared Object Repository has extension as .tsr
+
+q. Extension for function library?
+
+	i) qfl
+	ii) txt
+	iii) vbs
+
+q. What environment(s) does UFT run on?
+
+	- UFT Can only run in Windows Environment
+
+q. How can you handle keyboard commands with UFT?
+
+	- By Creating Shell Script
+
+q. How can you close an already opened application?
+
+	- SystemUtil.CloseProcessByName
+
+q. How can you find which Operating Systems you are using with UFT?
+
+	- By Using Environment variables
+
+q. Can we Run multiple UFT tests without manual intervention?
+
+	- With Application Object Model
+
+q. In frameworks what type data sources can be accessed through UFT?
+
+	- I have used Excel, Databases, XLM, WebTable etc.
+
+q. What are the ways to associate Function Libraries?
+
+	- ExecuteFile "Complete path"
+	- File>>Settings and resources
+
+q. How can we find out about an object with UFT?
+
+	- With the help of Object Spy
+
+q. How can we handle a dynamic object with UFT?
+
+	- Regular Expression
+
+q. How can we import data from an external data source to UFT and where can we find that data?
+
+	- We can import data using UFT's built in DataTable from external source and we could view the imported data from the run result viewer.
+
+q. What is a checkpoint?
+
+	- Verfication for the test script.
+
+q. How many types of chekpoints are there?
+
+	- There are various type of checkpoints, I have used the following checkpoints 
+	Standard checkpoint
+	Text Checkpoint
+	Text Area Checkpoint
+	Bitmap Checkpoint
+
+q. Can you open two instances of UFT?
+
+	- No.
+
+q. What is GetROProperty?
+
+	- GetRuntimeObjectProperty. To get the object property value while running the script.
+
+q. How can we handle File System Methods through UFT? How can we copy, create, move files with UFT?
+
+	- File System Object (FSO)
+
+q. What is Data Driven framework?
+
+	- Data Driven Framework is used when the values are coming from internal/external data files. Data Driven Framework is used when there is chance of the values being changed or updated.
+
+q. What are the differences between Descriptive Programming and Record and Run?
+
+-Record and Run			- DP is independent. 
+uses Object Repository
+to run a test.
+
+- Record and run depends		- DP Doesn't depend on 				anything, and can run the 
+on OR, without OR the script 		script without depending on	
+becomes invalid and cannot		anything.
+Run.
+
+- Record and Run uses lot		-DP uses bare minimum 
+of resources to execute the test.		resources to execute the test.
+
+
+q. What is the difference between SUB (procedures) and Function?
+
+	- The sub doesn't return a value but a function return values.
+
+q. What is synchronization point in UFT?
+
+	- It is feature in UFT that makes the test script wait until the step is ready to be executed.
+
+q. What is debugging in UFT?
+
+	- Debugging is a process of locating and fixing the code from errors.
+
+q. What is breakpoint?
+
+	- Breakpoints instruct UFT to pause a run session at predetermined place in a test or function library and UFT pauses the run before executing the Step.
+
+q. Is VB Script a case sensitive or case insensitive.
+
+	- It is not case sensitive - 
+
+- with respect to command and variable names. Everything else like String is.
+
+q. What is Keyword driven framework approach?
+
+	- It is a type of framework that gets executed based on keywords.
+
+q. What is recovery scenario?
+
+	- While executing a test there are unexpected events that may occur, and to overcome those unexpected events we use recovery scenario.
+
+q. With descriptive programming how can we handle unexpected events?
+
+	- In DP we could handle unexpected events using If Else Statement.
+
+q. What is trigger event, recovery operation and post-recovery test run option in Recovery scenario?
+
+	- Trigger event: with trigger event we can choose the option what type of event it is.
+	- Recovery Operation: what action we would like to perform with the event. 
+	- Post-recovery test run option: After performing the recovery operation what we would like to do with the script that can be defined in post-recovery test run option.
+
+
+
+
+
+
+
+
+
+
+
