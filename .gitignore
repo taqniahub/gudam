@@ -1,0 +1,13 @@
+#ignore all files with .class, .classpath, .project extention
+*.classpath
+*.project
+*.class
+# ignore all settings files
+
+*.settings
+
+# ingnore all files in the bin and test-output folder
+bin/
+test-output/
+
+*.zip																																					
