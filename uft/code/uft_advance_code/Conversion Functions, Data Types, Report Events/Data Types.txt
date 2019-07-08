@@ -1,0 +1,33 @@
+'***********************************Data Types*******************************************************
+
+'=>VBScript has only ONE data type - it is called Variant
+
+'=> A Variant is a special kind of data type that can contain different kinds of information, depending on how it's used
+
+'=> A Variant can contain either string or numeric information
+
+'=> A Variant behaves as a number when you use it in a numeric context & as a string when you use it in a string context
+
+'	=> VBScript looks at how you're working with data; if you're working with data that looks like numbers, VBScript assumes that it's numbers and does what is most appropriate for numbers (Strings are the same way)
+
+'		=> You can always make numbers behave like strings by using quotation marks around the numbers (" ")
+
+'=> A Variant can make further distinctions about the specific nature of numeric information (it's able to analyze the type
+'		of numeric information)
+
+'	=> Example: Numeric information can represent a date or time. When used with other date or time information, the result
+'				is always expressed as a date or a time
+
+'=> There are several different types of numeric information that can be contained in a Variant
+
+
+'=> Some Important Variant SubTypes:
+
+'	=> Boolean - Contains Either TRUE or FALSE
+
+'	=> Integer - Contains integer in the range -32,768 to 32,767.
+
+'	=> String - Contains a variable-length string that can be up to approximately 2 billion characters in length.
+
+
+

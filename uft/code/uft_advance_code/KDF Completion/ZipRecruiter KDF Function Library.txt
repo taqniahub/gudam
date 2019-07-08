@@ -1,0 +1,313 @@
+'~~~~~~~~~~~~~~~~~~~~~~~Indeed.Com Function Library~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Dim MyBrowser
+
+
+
+Set MyBrowser = Browser("micclass:=Browser").Page("micclass:=Page")
+
+Function Button_Click (Prop_Name, Prop_HtmlTag, Prop_Type)
+	err.clear
+	On Error Resume Next
+	'Purpose: click on any webbutton on indeed.com
+	'I/P: Prop_Name, Prop_HtmlTag, Prop_Type
+	'O/P: N/A
+	Dim oWebButton
+	Set oWebButton = Description.Create
+	oWebButton("name").Value = Prop_Name
+	oWebButton("html tag").Value = Prop_HtmlTag
+	oWebButton("type").Value = Prop_Type
+	
+	MyBrowser.WebButton(oWebButton).Click
+	
+	If fnErrorHandling() Then
+		Reporter.ReportEvent micFail, Prop_Name & " Button Click Failed", "Click on: " & Prop_Name & " Button Failed - " & Err.Description
+		TS_Sheet.Cells(TS_Iterator, "I").Value = "Failed"
+		TS_Sheet.Cells(TS_Iterator, "J").Value = Err.Description & " -- " & Err.Number
+	Else
+		Reporter.ReportEvent micPass, Prop_Name & " Button Click Successful", "Click on: " & Prop_Name & " Button Passed"
+		TS_Sheet.Cells(TS_Iterator, "I").Value = "Passed"
+		TS_Sheet.Cells(TS_Iterator, "J").Value = "N/A"
+	
+	End If
+	
+	
+	On Error Goto 0
+	
+End Function
+
+Function Edit_Set (Prop_Name, Prop_HtmlID, Prop_HtmlTag, WE_Value)
+	err.clear
+	On Error Resume Next
+	'Purpose: Enter text into any webedit on Indeed.com
+	'I/P: Prop_Name, Prop_HtmlID, Prop_HtmlTag, WE_Value
+	'O/P: N/A
+	Dim oWebEdit
+	Set oWebEdit = Description.Create
+	oWebEdit("name").Value = Prop_Name
+	oWebEdit("html id").Value = Prop_HtmlID
+	oWebEdit("html tag").Value = Prop_HtmlTag
+	
+	MyBrowser.WebEdit(oWebEdit).Click
+	
+	MyBrowser.WebEdit(oWebEdit).Set WE_Value
+	
+	
+	If fnErrorHandling() Then
+		Reporter.ReportEvent micFail, Prop_Name & " Enter " & WE_Value & " text Failed", "Enter " & WE_Value & " on: " & Prop_Name & " field Failed - " & Err.Description
+		TS_Sheet.Cells(TS_Iterator, "I").Value = "Failed"
+		TS_Sheet.Cells(TS_Iterator, "J").Value = Err.Description & " -- " & Err.Number
+	Else
+		Reporter.ReportEvent micPass, Prop_Name & " Enter " & WE_Value & " text was Successfull", "Enter " & WE_Value & " on: " & Prop_Name & " field Passed"
+		TS_Sheet.Cells(TS_Iterator, "I").Value = "Passed"
+		TS_Sheet.Cells(TS_Iterator, "J").Value = "N/A"
+	
+	End If
+	
+	On Error Goto 0
+End Function
+
+Function Text_Check (Prop_HtmlTag, Prop_InnerText)
+	Dim oWebElement
+	Set oWebElement = Description.Create
+	oWebElement("html tag").Value = Prop_HtmlTag
+	oWebElement("innertext").Value = Prop_InnerText
+	
+	If MyBrowser.WebElement(oWebElement).Exist(5) Then
+		Text_Check = True
+	Else
+		Text_Check = False	
+	End If
+	
+	
+	If fnErrorHandling() Then
+		Reporter.ReportEvent micFail, Prop_Innertext & " Text Verification was NOT Successfull", Prop_InnerText & " was not verified - " & Err.Description
+		TS_Sheet.Cells(TS_Iterator, "J").Value = Err.Description & " -- " & Err.Number
+	Else
+		Reporter.ReportEvent micPass, Prop_Innertext & " Text Verification was Successfull", Prop_InnerText & " was verified Successfully"
+		TS_Sheet.Cells(TS_Iterator, "J").Value = "N/A"
+	
+	End If
+	
+	
+	
+End Function
+
+Function Link_Click (Prop_Name, Prop_Class, Prop_HtmlID)
+	err.clear
+	On Error Resume Next
+	'Purpose: Click on any link on indeed.com
+	'I/P: Prop_Name, Prop_Class, Prop_HtmlID
+	'O/P: N/A
+	Dim oLink
+	Set oLink = Description.Create
+	oLink("name").Value = Prop_Name
+	oLink("class").Value = Prop_Class
+	oLink("html id").Value = Prop_HtmlID
+	
+	MyBrowser.Link(oLink).Click
+	
+	If fnErrorHandling() Then
+		Reporter.ReportEvent micFail, "Link Click on " &Prop_Name & " was Uncessfull", "Click on " & Prop_Name& " Link Failed - " & Err.Description
+		TS_Sheet.Cells(TS_Iterator, "I").Value = "Failed"
+		TS_Sheet.Cells(TS_Iterator, "J").Value = Err.Description & " -- " & Err.Number
+	Else
+		Reporter.ReportEvent micPass, "Link Click on " &Prop_Name & " was Successful", "Click on " & Prop_Name& " Link Passed"
+		TS_Sheet.Cells(TS_Iterator, "I").Value = "Passed"
+		TS_Sheet.Cells(TS_Iterator, "J").Value = "N/A"
+	
+	End If
+	
+	On Error GoTo 0
+End Function
+
+Function Link_Check (Prop_Name, Prop_Class)
+	err.clear
+	On Error Resume Next
+	'Purpose: Click on any link on indeed.com
+	'I/P: Prop_Name, Prop_Class, Prop_HtmlID
+	'O/P: N/A
+	Dim oLink
+	Set oLink = Description.Create
+	oLink("name").Value = Prop_Name
+	oLink("class").Value = Prop_Class
+	oLink("html tag").Value = "A"
+	
+	If MyBrowser.Link(oLink).Exist(5)Then
+		Link_Check = True
+	Else
+		Link_Check = False
+	End If
+	
+	
+	If fnErrorHandling() Then
+		Reporter.ReportEvent micFail, Prop_Name & " Link Verification was NOT Successfull", Prop_Name & " Link was not verified - " & Err.Description
+		TS_Sheet.Cells(TS_Iterator, "J").Value = Err.Description & " -- " & Err.Number
+	Else
+		Reporter.ReportEvent micPass, Prop_Name & " Link Verification was Successfull", Prop_Name & " Link was verified Successfully"
+		TS_Sheet.Cells(TS_Iterator, "J").Value = "N/A"
+	
+	End If
+	
+	On Error Goto 0
+	
+End Function
+
+Function Browser_Close (Browser_Name)
+	err.clear
+	On Error Resume Next
+	'Purpose: Close any Browser
+	'I/P: Browser_Name
+	'O/P: N/A
+		SystemUtil.CloseProcessByName Browser_Name
+		
+		If fnErrorHandling() Then
+			Reporter.ReportEvent micFail, "Browser Close was Uncessfull", "Browser: " & Browser_Name & " was not closed - " & Err.Description
+			TS_Sheet.Cells(TS_Iterator, "I").Value = "Failed"
+			TS_Sheet.Cells(TS_Iterator, "J").Value = Err.Description & " -- " & Err.Number
+		Else
+			Reporter.ReportEvent micPass, "Browser Close was Successful", "Browser: " & Browser_Name & " was closed successfully"
+			TS_Sheet.Cells(TS_Iterator, "I").Value = "Passed"
+			TS_Sheet.Cells(TS_Iterator, "J").Value = "N/A"
+		End If
+		
+		
+	On Error Goto 0
+End Function
+
+Function Browser_Open (Browser_Name, URL)
+	err.clear
+	On Error Resume Next
+	'Purpose: Launch any browser and navigate to URL
+	'I/P: Browser_Name, URL
+	'O/P: N/A
+		SystemUtil.Run Browser_Name, URL
+		
+		If fnErrorHandling() Then
+			Reporter.ReportEvent micFail, "Browser Launch was Uncessfull", "Browser: " & Browser_Name & " was not Launched - " & Err.Description
+			TS_Sheet.Cells(TS_Iterator, "I").Value = "Failed"
+			TS_Sheet.Cells(TS_Iterator, "J").Value = Err.Description & " -- " & Err.Number
+		Else
+			Reporter.ReportEvent micPass, "Browser Launch was Successful", "Browser: " & Browser_Name & " was Launched successfully"
+			TS_Sheet.Cells(TS_Iterator, "I").Value = "Passed"
+			TS_Sheet.Cells(TS_Iterator, "J").Value = "N/A"
+		End If
+		
+	On Error Goto 0
+End Function
+
+Function List_Select (Prop_Name, Prop_HtmlID, Prop_HtmlTag, WL_Item)
+	err.clear
+	On Error Resume Next
+	'Purpose: Select an item from any weblist on Indeed.Com
+	'I/P: Prop_Name, Prop_HtmlID, Prop_HtmlTag, WL_Item
+	'O/P: N/A
+	Dim oWebList
+	Set oWebList = Description.Create
+	oWebList("name").Value = Prop_Name
+	oWebList("html id").Value = Prop_HtmlID
+	oWebList("html tag").Value = Prop_HtmlTag
+	
+	MyBrowser.WebList(oWebList).Select cStr(WL_Item)
+	
+	
+	
+	If fnErrorHandling() Then
+		Reporter.ReportEvent micFail, "List Select on " &Prop_Name & " was Uncessfull", "Select " & WL_Item & " on " & Prop_Name& " List Select Failed - " & Err.Description
+		TS_Sheet.Cells(TS_Iterator, "I").Value = "Failed"
+		TS_Sheet.Cells(TS_Iterator, "J").Value = Err.Description & " -- " & Err.Number
+	Else
+		Reporter.ReportEvent micPass, "List Select on " &Prop_Name & " was Successful", "Select "  & WL_Item & " on " & Prop_Name& " List Select Passed"
+		TS_Sheet.Cells(TS_Iterator, "I").Value = "Passed"
+		TS_Sheet.Cells(TS_Iterator, "J").Value = "N/A"
+	
+	End If
+	
+	On Error Goto 0
+End Function
+
+Function List_Check (Prop_Name, Prop_HtmlID, Prop_HtmlTag, Prop_Value)
+	err.clear
+	On Error Resume Next
+	'Purpose: Verify if a weblist exists with specified property values
+	'I/P: Prop_Name, Prop_HtmlID, Prop_HtmlTag, Prop_Value
+	'O/P: True or False
+	Dim oWebList
+	Set oWebList = Description.Create
+	oWebList("name").Value = Prop_Name
+	oWebList("html id").Value = Prop_HtmlID
+	oWebList("html tag").Value = Prop_HtmlTag
+	oWebList("value").Value = Prop_Value
+	
+	If MyBrowser.WebList(oWebList).Exist(5) Then
+		List_Check = True
+	Else
+		List_Check = False	
+	End If
+	
+	If fnErrorHandling() Then
+		Reporter.ReportEvent micFail, Prop_Name & " List Verification was NOT Successfull", Prop_Name & " was not verified - " & Err.Description
+		TS_Sheet.Cells(TS_Iterator, "J").Value = Err.Description & " -- " & Err.Number
+	Else
+		Reporter.ReportEvent micPass, Prop_Name & " List Verification was Successfull", Prop_Name & " was verified Successfully"
+		TS_Sheet.Cells(TS_Iterator, "J").Value = "N/A"
+	
+	End If
+	
+	On Error Goto 0
+End Function
+
+Function fnWait (WaitTime)
+	err.clear
+	On Error Resume Next
+	'Purpose: Wait for a specified amount of time
+	'I/P: WaitTime
+	'O/P: N/A
+	Wait WaitTime
+	
+	If fnErrorHandling() Then
+		Reporter.ReportEvent micFail, "Wait was Uncessfull", "Wait for " & WaitTime & " Was Unsuccessful - " & Err.Description
+		TS_Sheet.Cells(TS_Iterator, "I").Value = "Failed"
+		TS_Sheet.Cells(TS_Iterator, "J").Value = Err.Description & " -- " & Err.Number
+	Else
+		Reporter.ReportEvent micPass, "Wait was Successful", "Wait for " & Waittime & " Was Successful"
+		TS_Sheet.Cells(TS_Iterator, "I").Value = "Passed"
+		TS_Sheet.Cells(TS_Iterator, "J").Value = "N/A"
+	
+	End If
+	
+	On Error goto 0
+End Function
+
+Function fnErrorHandling()
+	
+	If err.number = 0 Then
+		fnErrorHandling = False
+	Else
+		fnErrorHandling = True	
+	End If
+	
+
+End Function
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

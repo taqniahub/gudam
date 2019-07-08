@@ -1,0 +1,119 @@
+Option explicit
+Dim CurrentAge, RetirementAge, WithdrawlAmount, InterestRate, Years, InflationRate, CurrentSavings, Savings_withoutInflation, Savings_withInflation, MonthlySavings_WithoutInf, MonthlySavings_WithInf
+
+Dim URL, Browsers, i
+
+Dim ExpectedMonthly_WithInflation, ExpectedMonthly_WithoutInflation
+
+CurrentAge = 26
+RetirementAge = 67
+WithdrawlAmount = 5000
+InterestRate= 3.5
+Years = 20
+InflationRate = 5.5
+CurrentSavings = 6000
+Browsers= "iexplore.exe"
+URL="www.calculators.org"
+ExpectedMonthly_WithInflation = "$12,119.27"
+ExpectedMonthly_WithoutInflation = "$781.86"
+
+For i = 1 To 3
+	
+	Print "****** Starting Iteration Number: " & i & " ********"
+	
+	'Step 0: Close IE
+	SystemUtil.CloseProcessByName Browsers
+	
+	'Step 1: Launch IE and Navigate to URL
+	SystemUtil.Run Browsers, URL
+	
+	'Step 2: Click on 'Retirement' Calculator
+	Browser("micclass:=browser").Page("micclass:=page").Image("file name:=pie-chart\.gif","name:=Image").Click
+	
+	wait 2
+	
+	'Verify that 'Retirement Calculator' header is present
+	If Browser("micclass:=Browser").Page("micclass:=Page").Image("alt:=Retirement Calculator\.", "file name:=retirement-calculator\.png", "image type:=Plain Image").Exist Then
+		Print "We're on the right page"
+	Else
+		Print "We're on the wrong page"
+	End If
+	
+	'Step 3: Enter Current Age
+	Browser("micclass:=Browser").Page("micclass:=Page").WebEdit("name:=now_age","html tag:=INPUT").Set CurrentAge
+	
+	'Step 4: Enter Retirement Age
+	Browser("micclass:=Browser").Page("micclass:=Page").WebEdit("name:=retire_age","html tag:=INPUT").Set RetirementAge
+	 
+	'Step 5: Enter the Withdrawal Amount
+	Browser("micclass:=Browser").Page("micclass:=Page").WebEdit("name:=principal","html tag:=INPUT").Set WithdrawlAmount
+	
+	'Step 6: Enter Interest Rate
+	Browser("micclass:=Browser").Page("micclass:=Page").WebEdit("name:=interest","html tag:=INPUT").Set InterestRate
+	
+	'Step 7: Enter Years
+	Browser("micclass:=Browser").Page("micclass:=Page").WebEdit("name:=payments", "html tag:=INPUT").Set Years
+	
+	'Step 8: Enter Inflation Rate
+	Browser("micclass:=Browser").Page("micclass:=Page").WebEdit("name:=inflate", "html tag:=INPUT").Set InflationRate
+	
+	'Step 9: Enter Current Savings
+	Browser("micclass:=Browser").Page("micclass:=Page").WebEdit("name:=cur_savings", "html tag:=INPUT").Set CurrentSavings
+	
+	'Step 10: Click on 'Calculate'
+	Browser("micclass:=Browser").Page("micclass:=Page").WebButton("name:=Calculate", "html tag:=INPUT").Click
+	
+	'Step 11: Capture Savings Without Inflation
+	Savings_withoutInflation = Browser("micclass:=Browser").Page("micclass:=Page").WebEdit("name:=pv", "html tag:=INPUT").GetROProperty("value")
+	
+	Print "Savings without Inflation is: " & Savings_withoutInflation
+	
+	'Step 12: Capture Monthly Savings Without Inflation
+	MonthlySavings_WithoutInf = Browser("micclass:=Browser").Page("micclass:=Page").WebEdit("name:=pv_save", "html tag:=INPUT").GetROProperty("value")
+	
+	Print "Monthly Savings Without Inflation is: " & MonthlySavings_WithoutInf
+	
+	'Step 13: Capture Savings With Inflation
+	Savings_withInflation= Browser("micclass:=Browser").Page("micclass:=Page").WebEdit("name:=pv_inflate", "html tag:=INPUT").GetROProperty("value")
+	
+	Print "Savings with Inflation is: " & Savings_withInflation
+	
+	'Step 14: Capture Monthly Savings With Inflation
+	MonthlySavings_WithInf = Browser("micclass:=Browser").Page("micclass:=Page").WebEdit("name:=pv_inflate_save", "html tag:=INPUT").GetROProperty("value")
+	
+	Print "Monthly Savings with Inflation is: "  & MonthlySavings_WithInf
+	
+	'Step 15: Verify Monthly Savings Without Inflation
+	If ExpectedMonthly_WithoutInflation = MonthlySavings_WithoutInf Then
+		Print "Monthly Savings without Inflation is Verified"
+	Else
+		Print "Monthly Savings without Inflation is NOT Verified"
+	End If
+	
+	
+	'Step 16: Verify Monthly Savings With Inflation
+	If ExpectedMonthly_WithInflation = MonthlySavings_WithInf Then
+		Print "Monthly Savings with inflation is Verified"
+	Else
+		Print "Monthly Savings with inflation is NOT Verified"
+	End If
+
+	'Provide Variable Details
+	Print "The value of CurrentAge is: " & CurrentAge
+	Print "The value RetirementAge is: " & RetirementAge
+	Print "The value of WithdrawlAmount is: " & WithdrawlAmount
+	Print "The value of InterestRate is: " & InterestRate
+	Print "The value of Years is: " & Years
+	Print "The value of InflationRate is: " & InflationRate
+	Print "The value of CurrentSavings is: " & CurrentSavings
+
+
+	'Redefine the Variables
+	CurrentAge = CurrentAge + 2
+	RetirementAge = RetirementAge + 3
+	WithdrawlAmount = WithdrawlAmount + 1500
+	InterestRate= InterestRate + 0.25
+	Years = Years + 5
+	InflationRate = InflationRate - 0.25
+	CurrentSavings = CurrentSavings + 5000
+Next

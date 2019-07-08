@@ -1,0 +1,103 @@
+Option Explicit
+'Function Library --> Collection of Functions
+'Accepted File Types for Function Libaries:
+'1. .qfl --> QuickTest Function Library
+'2. .vbs --> VBScript 
+'3. .txt --> rarely used
+
+Dim MyExcel, MySheet, RowCount
+
+'Create a Function that will Close any browser
+Function fnCloseBrowser (Browser_Name)
+	SystemUtil.CloseProcessByName Browser_Name
+End Function
+
+'Create a Function that will launch a browser and navigate to URL
+Function fnLaunchBrowser (Browser_Name, URL)
+	SystemUtil.Run Browser_Name, URL
+End Function
+
+'Create a Function that will enter the Monthly Payment
+Function fnEnterMonthlyPayment (MonthlyPayment)
+	MyBrowser.WebEdit("html id:=calc_input3", "html tag:=INPUT").Set MonthlyPayment
+End Function
+
+'Create a Function that will click on 'Go'
+Function fnClickGo
+	MyBrowser.WebElement("index:=2", "innertext:=Go", "html tag:=SPAN").Click
+End Function
+
+'Create a Function that will Enter the ZipCode
+Function fnEnterZip (ZipCode)
+	MyBrowser.WebEdit("html id:=ac_zip_code", "html tag:=INPUT").Set ZipCode
+End Function
+
+'Create a Function that will Enter the Rate
+Function fnEnterRate (Rate)
+	MyBrowser.WebEdit("html id:=ac_market_finance_rate", "html tag:=INPUT").Set Rate
+End Function
+
+
+'Instead of creating multiple functions to enter text into variaious WebEdits, Lets create 1 function to enter text into ANY webedit on Edmunds
+Function fnEnterText (Prop_HtmlID, Prop_HtmlTag, Prop_Class, WE_Value)
+	Dim oWebEdit
+	Set oWebEdit = Description.Create 'Creating a Properties Collection Object (bucket)
+	oWebEdit("html id").Value = Prop_HtmlId
+	oWebEdit("html tag").Value = Prop_HtmlTag	'--> Adding property-value pairs to the bucket
+	oWebEdit("class").Value = Prop_Class
+	
+	'Action Line
+	MyBrowser.WebEdit(oWebEdit).Set WE_Value
+	
+End Function
+
+'Create a Function that will select an item from any weblist on Edmunds
+Function fnSelectList (Prop_Name, Prop_HtmlTag, WL_Item)
+	Dim oWebList
+	Set oWebList = Description.Create
+	oWebList("name").Value = Prop_Name
+	oWebList("html tag").Value = Prop_HtmlTag
+	
+	'Action Line
+	MyBrowser.WebList(oWebList).Select WL_Item
+End Function
+
+'Create a Function that will click on any WebElement on Edmunds
+Function fnClickElement (Prop_Innertext, Prop_HtmlTag, Prop_Index)
+	Dim oWebElement
+	Set oWebElement = Description.Create
+	oWebElement("innertext").Value = Prop_InnerText
+	oWebElement("html tag").Value = Prop_HtmlTag
+	oWebElement("index").Value = Prop_Index
+	
+	'Action Line
+	MyBrowser.WebElement(oWebElement).Click
+End Function
+
+
+'Create a Function to Connect to ANY Excel workbook
+Function fnConnectExcel (FilePath, WorksheetName)
+	Set MyExcel = CreateObject ("Excel.Application")
+	MyExcel.Workbooks.Open FilePath
+	Set MySheet = MyExcel.ActiveWorkbook.Worksheets (WorksheetName)
+	MyExcel.Application.Visible = True
+	RowCount = MySheet.UsedRange.Rows.Count
+	fnConnectExcel = RowCount
+End Function
+
+'Create a Function that will capture a value from a webelement
+Function fnCaptureElement (Prop_Class, Prop_HtmlId, Prop_HtmlTag, Prop_To_Capture)
+	Dim oWebElement, Captured_Element
+	Set oWebElement = Description.Create
+	oWebElement("class").Value = Prop_Class
+	oWebElement("html id").Value = Prop_HtmlId
+	oWebElement("html tag").Value = Prop_HtmlTag
+	
+	'Action Line
+	Captured_Element = MyBrowser.WebElement(oWebElement).GetROProperty(Prop_To_Capture)
+	fnCaptureElement = Captured_Element 'Function will return the captured Value
+End Function
+
+Function fnWait (Wait_Time)
+	Wait Wait_Time
+End Function

@@ -1,0 +1,36 @@
+
+'Step 0: Close IE
+SystemUtil.CloseProcessByName "iexplore.exe"
+
+'Step 1: Launch IE and navigate to URL
+SystemUtil.Run "iexplore.exe", "www.edmunds.com/calculators"
+
+'Step 2: Enter Monthly Payment
+Browser("micclass:=Browser").Page("micclass:=Page").WebEdit("html id:=calc_input3", "html tag:=INPUT", "class:=input-dollar").Set "450"
+
+'Step 3: Click on Go
+Browser("micclass:=Browser").Page("micclass:=Page").WebElement("innertext:=Go", "html tag:=SPAN", "index:=2").Click
+
+'Step 4: Enter ZipCode
+Browser("micclass:=Browser").Page("micclass:=Page").WebEdit("html id:=ac_zip_code", "html tag:=INPUT", "class:=calc-zipcode").Set "22030"
+
+'Step 5: Click on Update ZipCode Button
+Browser("micclass:=Browser").Page("micclass:=Page").WebElement("innertext:=Update Zip Code", "html tag:=SPAN").Click 
+
+'Step 6: Select the Loan Term
+Browser("micclass:=Browser").Page("micclass:=Page").WebList("name:=ac_loan_term", "html tag:=SELECT").Select "48 months" 
+
+'Step 7: Enter Finance Rate
+Browser("micclass:=Browser").Page("micclass:=Page").WebEdit("html id:=ac_market_finance_rate", "html tag:=INPUT", "class:=input-percentage").Set "1.45"
+
+'Step 8: Enter Trade In
+Browser("micclass:=Browser").Page("micclass:=Page").WebEdit("html id:=ac_vehicle2_price", "html tag:=INPUT", "class:=input-dollar").Set "45000"
+
+'Step 9: Enter Amount Owed
+Browser("micclass:=Browser").Page("micclass:=Page").WebEdit("html id:=ac_vehicle2_value_owed", "html tag:=INPUT", "class:=input-dollar").Set "4500"
+
+'Step 10: Enter Down Payment
+Browser("micclass:=Browser").Page("micclass:=Page").WebEdit("html id:=ac_cash_down_payment", "html tag:=INPUT", "class:=input-dollar").Set "2500"
+
+'Step 11: Click on Calculate
+Browser("micclass:=Browser").Page("micclass:=Page").WebElement("innertext:=Calculate", "html tag:=SPAN").Click

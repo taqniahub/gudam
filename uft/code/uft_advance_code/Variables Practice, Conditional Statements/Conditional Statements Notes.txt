@@ -1,0 +1,34 @@
+'***************************Conditional Statements********************************************
+
+'=> Conditional Statements are used to help control the flow of your automation script
+
+'=> Types of Conditional Statements:
+
+'	=> If Statement:
+
+'		If (some condition) Then
+'		{Perform Some Action}
+'		Else --------------->	=> Else is optional
+'		{Perform Some other Action}
+'		End If
+
+'	=> Select Statement:
+
+'		=> This is to choose 1 out of the many options depending on the condition that becomes satisfied 
+'		=> The condition is evaluated once and based on the value it receives, one of the following blocks
+'			of code gets chosen for execution
+
+'		Select Case (Browser)
+'		Case "IE"
+'		SystemUtil.Run "iexplore.exe"
+'		Case "FireFox"
+'		SystemUtil.Run "Firefox.exe"
+'		Case "Chrome"
+'		SystemUtil.Run "Chrome.Exe"
+'		End Select
+
+'		=> In this example, "Browser" is a variable which must be defined before the Select statement
+'			Browser = "IE" or Browser = "FireFox" or Browser = "Chrome"
+'			=> Depending on the value that is assigned to the Browser Variable, the Select Statement will
+'			   execute the appropraite block of code
+

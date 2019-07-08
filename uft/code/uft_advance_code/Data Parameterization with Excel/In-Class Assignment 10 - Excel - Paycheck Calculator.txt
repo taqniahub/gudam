@@ -1,0 +1,29 @@
+In-Class Assignment 10 - Excel - Paycheck Calculator
+
+Create a script that does the following:
+
+1. Navigate to http://www.suburbancomputer.com/tips_calculator.php
+2. Select Pay Type as Salary
+3. Enter Pay
+4. If the Pay is more than 100, then check the 'Annual' check box
+5. Select Pay Frequency
+6. Select Marital Status
+7. Select Witholding Allowances
+8. Enter Additional Witholding
+9. Select State
+10. Select Allowances
+12. Enter Additional Witholding
+13. Click 'Calculate Paycheck'
+14. Capture 'This Check (Take Home)' Value
+15. Compare with Expected Check Value
+16. Click on 'Effective Rate' link at the top
+17. Capture the Total Federal Taxes Rate
+
+**Notes:
+Write All Captured values into Excel
+All results for comparisons must be written in Excel
+All values must be read from Excel (do not do anything with DataTable)
+You must have at least 5 sets of data
+
+
+

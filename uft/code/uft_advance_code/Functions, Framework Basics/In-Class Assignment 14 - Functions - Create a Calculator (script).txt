@@ -1,0 +1,33 @@
+'Create a Custom Function that will perform ANY mathematical operation (+, -, *, /) on ANY 2 numbers and return the result
+'
+'-- The result must be printed in the output pane
+'
+'***hint***
+'you may need to use a conditional statement
+
+
+Number1 = 50
+Number2 = 40
+Operation = "+"
+
+Print "The Result being returned is: " & fnCalculator (Number1, Number2, Operation)
+
+Function fnCalculator (Num1, Num2, Operation)
+	Dim Total 'Declaring this locally, because I only need to use 'Total' in this function
+	
+	Select Case (Operation)
+		Case "+"
+			Total = Num1 + Num2
+		Case "-"
+			Total = Num1 - Num2
+		Case "*"
+			Total = Num1 * Num2
+		Case "/"
+			Total = Num1/Num2
+		Case Else
+			msgbox "operation not identified!"					
+	End Select
+	
+	fnCalculator = Total 'The function is now returning a value because it contains a value
+	
+End Function

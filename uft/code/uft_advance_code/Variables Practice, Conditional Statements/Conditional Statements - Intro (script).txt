@@ -1,0 +1,55 @@
+Option Explicit
+
+Dim Animal
+
+Animal = "Fish"
+
+'If there is 1 condition: use 'If...Then..Else' Statement
+If Animal = "Dog" Then
+	msgbox "Bark!"
+Else
+	msgbox "Animal is not a Dog"
+End If
+
+'If there are multiple possible conditions: use 'If...Then...ElseIf' Statement
+If Animal = "Dog" Then
+	msgbox "Bark"
+ElseIf Animal = "Cat" Then	
+	msgbox "Meow"
+ElseIf Animal = "Bird" Then
+	msgbox "Tweet tweet!"
+ElseIf Animal = "Lion" Then
+	msgbox "Roar!!!"
+Else
+	msgbox "Animal Not Found!"
+End If
+
+'***********************************************************
+
+'Select Case Statement
+Select Case (Animal)
+	Case "Dog"
+		msgbox "Bark"
+	Case "Cat"
+		msgbox "Meow"
+	Case "Bird"
+		msgbox "Tweet Tweet!"
+	Case "Lion"
+		msgbox "Roar!!!"
+	Case Else
+		msgbox "Animal Not Found!"
+End Select
+
+
+
+
+If False Then
+	msgbox "The Condition is True - Condition has been replaced by a 'True'"
+Else
+	msgbox "The Condition is False - Condition has been replaced by a 'False'"
+End If
+
+
+
+
+

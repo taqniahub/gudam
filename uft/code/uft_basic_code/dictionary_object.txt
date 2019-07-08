@@ -1,0 +1,14 @@
+Dim arrTemp, i
+Dim dic
+ 
+Set dic = CreateObject("Scripting.Dictionary")
+ 
+dic.Add "arrTemp(i)>70", "Print(arrTemp(i)&"" Wear a T-Shirt!"")"
+dic.Add "arrTemp(i)>60", "Print(arrTemp(i)&"" Wear a hat!"")"
+dic.Add "arrTemp(i)>50", "Print(arrTemp(i)&"" Wear a long-sleeved shirt!"")"
+dic.Add "arrTemp(i)< =50", "Print(arrTemp(i)&"" Wear a coat!"")"
+ 
+arrTemp = Array(50, 55, 60, 65, 70, 80)
+For i = LBound(arrTemp) To UBound(arrTemp)
+	[Select Case](dic)
+Next

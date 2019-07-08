@@ -1,0 +1,122 @@
+'~~~~~~~~~~~~~~~~~~~~~~Calculator.Net Function Library~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Option Explicit
+Dim MyBrowser
+Set MyBrowser = Browser("micclass:=Browser").Page("micclass:=Page")
+
+
+'Function to Enter Text Into a WebEdit
+Function fnEnterText (Prop_Name, Prop_Class, Prop_HtmlTag, WE_Value)
+	Dim oWebEdit
+	Set oWebEdit = Description.Create
+	oWebEdit("name").Value = Prop_Name
+	oWebEdit("class").Value = Prop_Class
+	oWebEdit("html tag").Value = Prop_HtmlTag
+	
+	'Action Line
+	MyBrowser.WebEdit(oWebEdit).Set WE_Value
+	
+	'Housekeeping
+	Set oWebEdit = Nothing
+End Function
+
+
+'Function to Click on an Image Button
+Function fnClickImageButton (Prop_Alt, Prop_ImageType, Prop_HtmlTag, Prop_Index)
+	Dim oImage
+	Set oImage = Description.Create
+	oImage("alt").Value = Prop_Alt
+	oImage("image type").Value = Prop_ImageType
+	oImage("html tag").Value = Prop_HtmlTag
+	oImage("index").Value = Prop_Index
+	
+	'Action Line
+	MyBrowser.Image(oImage).Click
+	
+	'Housekeeping
+	Set oImage = Nothing
+End Function
+
+'Function to Select from a WebList
+Function fnSelectList (Prop_Name, Prop_HtmlTag, WL_Value)
+	Dim oWebList
+	Set oWebList = Description.Create
+	oWebList("name").Value = Prop_Name
+	oWebList("html tag").Value = Prop_HtmlTag
+	
+	'Action Line
+	MyBrowser.WebList(oWebList).Select cStr(WL_Value) 'Converting to string b/c weblist only accepts string values
+	
+	'Housekeeping
+	Set oWebList = Nothing
+End Function
+
+'Function to Capture a Value from a WebTable
+Function fnCaptureTable(Prop_ColNamesAsRegEx, Prop_HtmlTag, Table_RowNum, Table_ColNum)
+	Dim oWebTable, Captured_TableValue
+	Set oWebTable = Description.Create
+	oWebTable("column names").Value = Prop_ColNamesAsRegEx
+	oWebTable("html tag").Value = Prop_HtmlTag
+	
+	'Action Line
+	Captured_TableValue = MyBrowser.WebTable(oWebTable).GetCellData(Table_RowNum, Table_ColNum)
+	fnCaptureTable = Captured_TableValue 'Function Returns the value that was captured
+
+	'Housekeeping
+	Set oWebTable = Nothing
+End Function
+
+'Function to Compare 2 Values
+Function fnCompare2Values(Value1, Value2)
+	' This function will return a True or False, we will decide what to to with the True/False when we call the function
+	If Value1 = Value2 Then
+		fnCompare2Values = True
+	Else
+		fnCompare2Values = False	
+	End If
+End Function
+'Scenario 1:
+' If fnCompare2Values(10, 10) Then
+'   Perform some actions
+' else
+'   Exit Test
+' End if
+
+'Scenario 2:
+' If fnCompare2Values($1,000, $1,000)  Then
+'   Print "Passed"
+' Else
+'   Print "Failed"
+'End If
+
+'Create a Function to Close Browsers
+Function fnCloseBrowsers (Browser_Name)
+	SystemUtil.CloseProcessByName Browser_Name
+End Function
+
+'Create a Function to Launch Browsers & Navigate to URL
+Function fnLaunchApp (Browser_Name, URL)
+	SystemUtil.Run Browser_Name, URL
+End Function
+
+Function fnWait (WaitTime)
+	Wait WaitTime
+End Function
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

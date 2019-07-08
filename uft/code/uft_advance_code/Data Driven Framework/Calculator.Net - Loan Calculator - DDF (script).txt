@@ -1,0 +1,80 @@
+Option Explicit
+Dim MyExcel, MySheet, RowCount, i
+Dim LoanAmount, LoanTerm_Years, LoanTerm_Months, Rate, Compound, PayBack, ExpectedTotalInterest
+Dim Captured_TotalInterest
+
+'Associate Function Library
+ExecuteFile "C:\Users\VAADMIN\Desktop\Dextop Items\2018\Summer 2018\UFT\Weekend\Day 15 - DDF\Function Libraries\Calculator.Net - Function Library.vbs"
+
+'Connect to Excel
+Set MyExcel = CreateObject("Excel.Application")
+
+MyExcel.Workbooks.Open "C:\Users\VAADMIN\Desktop\Dextop Items\2018\Summer 2018\UFT\Weekend\Day 15 - DDF\Excel Test Data\Calculator.Net Test Data.xlsx"
+
+'created a reference for the worksheet
+Set MySheet = MyExcel.ActiveWorkbook.Worksheets ("AmortizedLoan_Data")
+
+RowCount = MySheet.UsedRange.Rows.Count
+
+For i = 2 To RowCount
+	'Reading Test Data From Excel
+	LoanAmount = MySheet.Cells(i, "A").Value
+	LoanTerm_Years = MySheet.Cells(i, "B").Value
+	LoanTerm_Months = MySheet.Cells(i, "C").Value
+	Rate = MySheet.Cells(i, "D").Value
+	Compound = MySheet.Cells(i, "E").Value
+	PayBack  = MySheet.Cells(i, "F").Value
+	ExpectedTotalInterest = MySheet.Cells(i, "G").Value
+	
+	'Step 0: Close Browsers
+	fnCloseBrowsers "iexplore.exe"
+	
+	'Step 1: Launch Browser and Go to URL
+	fnLaunchApp "iexplore.exe", "https://www.calculator.net/loan-calculator.html"
+	
+	fnWait 5
+	
+	'Step 2: Enter Loan Amount
+	fnEnterText "cloanamount", "inhalf indollar", "INPUT", LoanAmount
+	
+	'Step 3: Enter Loan Term Years
+	fnEnterText "cloanterm", "inhalf inuiyear", "INPUT", LoanTerm_Years
+	
+	'Step 4: Enter Loan Term Months
+	fnEnterText "cloantermmonth", "inhalf inuipound", "INPUT", LoanTerm_Months
+	
+	'Step 5: Enter Rate
+	fnEnterText "cinterestrate", "inhalf inpct", "INPUT", Rate
+	
+	'Step 6: Select Compound
+	fnSelectList "ccompound", "SELECT", Compound
+	
+	'Step 7: Select Pay Back
+	fnSelectList "cpayback", "SELECT", PayBack
+	
+	'Step 8: Click on Calculate
+	fnClickImageButton "Calculate", "Image Button", "INPUT", 0
+	
+	fnWait 5
+	
+	'Step 9: Capture Total Interest
+	Captured_TotalInterest = fnCaptureTable("Payment.*", "TABLE", 3, 2)
+	'--> Write to Excel
+	MySheet.Cells(i, "H").Value = Captured_TotalInterest
+	
+	'Step 10: Compare Captured Interest with Expected Interest	
+	If fnCompare2Values(cCur(ExpectedTotalInterest), cCur(Captured_TotalInterest)) Then
+		MySheet.Cells(i, "I").Value = "Passed"
+	Else
+		MySheet.Cells(i, "I").Value = "Failed"
+	End If
+	
+Next
+
+'Quit and Save Excel
+MyExcel.ActiveWorkbook.SaveAs "C:\Users\VAADMIN\Desktop\Dextop Items\2018\Summer 2018\UFT\Weekend\Day 15 - DDF\Excel Test Data\Calculator.Net - Loan Calculator Results.xlsx"
+
+MyExcel.Application.Quit
+
+Set MyExcel = Nothing
+Set MySheet = Nothing

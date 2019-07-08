@@ -1,0 +1,108 @@
+'*************************Automation Object Model (AOM)***************************
+
+'=> UFT Automation Object Model Overview 
+'	=> You can use the UFT automation object model to write scripts that automate your UFT operations. 
+'	=> The UFT automation object model provides objects, methods, and properties that enable you to CONTROL UFT from ANOTHER application. 
+
+' => Using the objects, methods, and properties exposed by the UFT automation object model, you can write scripts that configure UFT options and run tests or components INSTEAD OF performing these operations manually using the UFT interface. 
+
+' => What is the use of AOM in terms of UFT?
+'	=> Performing the same tasks multiple times or on multiple tests or components
+'	=> For quickly configuring UFT according to your needs for a particular environment or application
+
+'=> What is Automation? 
+' 	=> "Automation" is a technology created by Microsoft that makes it possible to acess objects in 1 application from another application
+' 	=> These objects can be created and manipulated using VBScript (VBScript is a scripting language created by Microsoft)
+' 	=> "Automation" enables you to control the functionality of an application programmatically
+ 
+
+' => What is an Object Model? 
+'	=> An "object model" is a structural representation of software objects (classes) that includes the various methods and properites that can be used of a system or application 
+'	=> An "object model" defines a set of classes and interfaces, together with their properties, methods and events, and their relationships
+
+' => What is the UFT Automation Object Model?
+'	=> A set of objects, methods, and properties that enable you to control essentially all of the configuration and run functionality provided through the UFT interface. 
+'	=> Most dialog boxes in UFT have a corresponding automation object
+'	=> Most options in dialog boxes can be set and/or retrieved using the corresponding object property
+'	=> Most menu commands and other operations have corresponding automation methods
+'		-> Since almost everything in UFT has an associated object modle, we can use VBScript to control most of UFT
+
+'=> What does all this actually mean??
+'	=> You can use the objects, methods, and properties exposed by the UFT automation object model, along with standard programming elements such as loops and conditional statements to design your script. 
+'	=> Automation scripts are especially useful for performing the same tasks multiple times or on multiple tests or components, or for quickly configuring UFT according to your needs for a particular environment or application. 
+
+'=> Example: 
+
+'	=> You can create and run an automation script from Microsoft Visual Basic that does the following: 
+
+'		-> Loads the required add-ins for a test or component
+'		-> Starts UFT in visible mode
+'		-> Opens the test or component
+'		-> Configures settings that correspond to those in the:
+'		-> Options dialog box
+'		-> Test Settings or Business Component Settings dialog box
+'		-> Record and Run Settings dialog box (tests only)
+'		-> Runs the test or component
+'		-> Saves the test or component
+'		-> You can then add a simple loop to your script so that your single script can perform the operations described above for multiple tests or components. 
+
+'	=> You can also create an initialization script that opens UFT with specific configuration settings
+'		-> You can then instruct all of your testers to open UFT using this automation script to ensure that all of your testers are always working with the same configuration. 
+
+
+'=> Exclusive Documentation (additional notes) on UFT's AOM can be found be following the path below:
+'		-> "Start" -> "All Programs" -> "HP Software" -> "HP Unified Functional Testing" -> "Documentation" -> "Unified Functional Testing Automation Reference"
+'	=> ****IF YOU FOLLOWED MY INSTRUCTIONS FOR INSTALLING UFT ON YOUR MACHINE:
+'		-> You can find this documentation under the following path:
+'			-> C:\UFT\help\AutomationObjectModel.chm
+
+
+'=> SAMPLE AOM SCRIPT:
+'	=> This script does the following:
+'		-> Connects to UFT
+'		-> Connects to Excel 
+'			-> Use different variables to reference the excel application and excel sheet from those used in the test scripts. This will allow multiple excel applications to be open
+'		-> Launches the Excel workbook (the path is provided through an input box)
+'		-> Makes Excel Visible
+'		-> Launches UFT
+'		-> Makes UFT Visible
+'		-> Counts the number of tests that need to be executed
+'		-> Within a loop, opens each test, runs the test, writes to excel that the test was completed successfully
+ 
+Option Explicit
+
+Dim UFTapp, FilePath, TestCount, myexcel, mysheets, rows, i, TestFile
+
+Set UFTapp = CreateObject ("QuickTest.Application")
+
+Set myexcel = Createobject ("Excel.Application")
+
+FilePath = InputBox ("Enter the filepath for the excel workbook containing the test file paths")
+
+myexcel.Workbooks.Open FilePath
+
+Set mysheets = myexcel.ActiveWorkbook.Worksheets("TestFiles")
+
+Rows = mysheets.usedrange.rows.count
+
+myexcel.application.visible = true
+
+UFTapp.Launch
+UFTapp.Visible = True
+
+
+TestCount = Rows
+
+For i = 2 To TestCount
+
+	TestFile = mysheets.cells(i,"A")
+
+	UFTapp.open TestFile, false, false
+
+	UFTapp.Test.Run
+
+	mysheets.cells(i,"B") = "Test Completed Successfully"
+Next
+
+
+

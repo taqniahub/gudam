@@ -1,0 +1,22 @@
+lbound ubound and Split function:
+
+
+ 
+'Declaring the variable
+Dim var,sp_var,i
+
+
+'Defining the variable value
+var="blah 1234 nayum 28 kayum 30"  ' 0 to 5
+
+'Spliting the value and assigning it to sp_var variable
+sp_var=split(var, " ")
+
+
+print lbound(sp_var) '= 0
+print ubound(sp_var) '= 5
+
+' loop from 0 to 5   
+  For i=lbound(sp_var) to ubound(sp_var)
+        msgbox  sp_var(i) 
+    Next

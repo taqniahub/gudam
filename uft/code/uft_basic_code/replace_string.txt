@@ -1,0 +1,14 @@
+Replace(string,find,replacewith[,start[,count[,compare]]]) 
+
+
+Replace(var,"is","##",5)
+
+Replace(var,"is","##") 
+
+
+''s' is replaced by ## for the next 2 occurences.
+document.write("Line 5: " & Replace(var,"s","##",1,2) & "<br />") Thi## i## VBScript Programming
+
+Replace(var,"r","##",1,-1,1) Line 6: This is VBSc##ipt P##og##amming
+
+Replace(var,"t","##",1,-1,0) Line 7: This is VBScrip## Programming

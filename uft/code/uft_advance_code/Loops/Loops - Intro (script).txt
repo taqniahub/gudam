@@ -1,0 +1,36 @@
+''	Synatx 1:
+'
+'		x = 6
+''
+'		Do While x < 5
+'			Print x
+'			x = x+1
+'		Loop
+''		
+'
+''	Syntax 2:
+'
+'		x = 6
+'
+'		Do 
+'		Print x
+'		x = x+1
+'		Loop Until x < 5
+
+
+'For Loop:
+
+'Positive Step:
+'For i = 2 To 12 Step 2
+'	Print "This is iteration Number: " & i
+'Next
+
+'Negative Step:
+'For i = 12 To 2 Step -2
+'	Print "This is Iteration Number: " & i
+'Next
+
+'How I normally use the For Loop:
+For i = 1 To 5 'Value of i will increase by 1 if the step clause is not included
+	Print "This is Iteration Nubmer: " & i
+Next

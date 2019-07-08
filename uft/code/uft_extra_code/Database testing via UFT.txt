@@ -1,0 +1,113 @@
+'***********Database Testing Through UFT*********************
+
+'=> Working with databases in UFT is a very good feature available, but it's usually a huge task to connect to the databases
+'=> We're able to send SQL queries through our automation scripts in UFT and thereby automate our backend database testing
+
+'=> It's a huge task due to improper details (provider, server names, usernames/passwords, etc.)
+
+'=> 5 steps for Successful Connection:
+'	1. Create ADODB connection object
+'	2. Create RecordSet Object
+'	3. Connect to Database using provider and server
+'	4. Write the SQL Query
+'	5. Execute the query
+
+'=> Connecting to the Database:
+'	-> Using VBScript ADO connection objects we connect to a database
+'	-> The ADO objects we have are:
+'		1. ADODB.Connection: To connect to the database
+'		2. ADODB.RecordSet: To get data from a database
+'		3. ADODB.Command: To execute SQL Queries
+'		4. ADODB.Fields: To get a particular column data from a record set 
+
+'Sample Script - Retrieving value from database: SQL SERVER DATABASE
+
+	Dim objConnection, objRecordSet, SQLQuery, Value
+
+'	Step 1: Create ADODB connection object
+		Set objConnection = CreateObject ("ADODB.Connection")
+
+'	Step 2: Create RecordSet Object 
+		Set objRecordSet = CreateObject("ADODB.RecordSet")
+		
+'	Step 3: Connect to Database using Provider and Server
+		objConnection.open "Provider=sqloledb;Server=SDWA-16-PC;User Id=SDWA-160; Password=; Database=sample;Trusted_Connection=Yes"
+
+'	Step 4: Write the SQL Query
+		SQLQuery = "Select * from emp Where empID = 123"
+	
+'	Step 5: Execute the Query
+		objRecordSet.Open SQLQuery, objConnection
+		
+'	Step 6: Display output
+		Value = objRecordSet.Fields.Items(0)
+		msgbox Value
+		
+'	Step 7: Close Database connection 
+		objRecordSet.Close
+		objConnection.Close
+		Set objConnection = Nothing
+		Set objRecordSet = Nothing
+
+
+'Sample Script - Retrieving value from database: ORACLE DATABASE using an OLE Database Provider (OLE = Object Linking & Embedding)
+'https://msdn.microsoft.com/en-us/library/windows/desktop/ms722784(v=vs.85).aspx (for more information on OLE-DB)
+
+	Dim objConnection, objRecordSet, SQLQuery
+	
+'	Step 1: Create ADODB Connection Object
+	Set objConnection = CreateObject("ADODB.Connection")
+	
+'	Step 2: Connect to Database using Provider and Server
+	objConnection.Open "Provider=MSDAORA;server=TDORASERVER;user id=system;password=manager"
+	
+'	Step 3: Create RecordSet Object
+	set objRecordSet=CreateObject("ADODB.recordset")
+	
+'	Step 4: Write the SQL Query
+	SQLQuery = "SELECT * FROM bob_ora_db.USEMYRECORD WHERE US_USERNAME='admin'"
+	
+'	Step 5: Execute the Query
+	objRecordSet.Open SQLQuery, objConnection
+	
+'	Step 6: Display the output
+	For Each r In objRecordSet.Fields
+		Msgbox r.name
+	Next
+
+'	Step 7: Close Database Connection
+	objRecordSet.Close
+	objConnection.Close
+	Set objConnection = Nothing
+	Set objRecordSet = Nothing
+	
+	
+'Sample Script - Retrieving value from database: ORACLE DATABASE using MS ODBC for Oracle
+
+	Dim objConnection, objRecordSet, SQLQuery
+	
+	Set objConnection = CreateObject("ADODB.Connection")
+	
+	objConnection.Open "Driver={Microsoft ODBC for Oracle};" & "Server=TDORASERVER;" & "Uid=system;" & "Pwd=manager"
+	
+	set objRecordSet=CreateObject("ADODB.recordset")
+	
+	SQLQuery = "SELECT * FROM bob_ora_db.USEMYRECORD WHERE US_USERNAME='admin'"
+	
+	'Execute Query
+	objRecordSet.Open SQLQuery, objConnection
+	
+	'Retreiving data from each recordset that was captured via the query
+	For Each r In objRecordSet.Fields 'objRecordSet.Fields returns the count
+	   msgbox r.name
+	Next
+
+
+		
+
+		
+		
+		
+		
+		
+		

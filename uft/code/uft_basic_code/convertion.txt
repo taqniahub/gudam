@@ -1,0 +1,18 @@
+Use the CInt function to convert a string to Integer data subtype representation.
+
+Use the CDbl function to convert a string to Double data subtype representation.
+
+Use the CSng function to convert a string to Single data subtype representation.
+
+Use the CLng function to convert a string to Long data subtype representation.
+
+Use the CByte function to convert a string to Byte data subtype representation.
+
+
+pi = "3.14"
+
+Print CInt( pi )  ' Prints 3
+Print Clng( pi )  ' Prints 3
+Print CDbl( pi )  ' Prints 3.14
+Print CSng( pi )  ' Prints 3.14
+Print CByte( pi ) ' Prints 3

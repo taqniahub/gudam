@@ -1,0 +1,37 @@
+Option Explicit
+
+Dim InitialAmt, MonthlyDeposit, Compound_Term, Compound_Rate, Years, Captured_Balance, Expected_Balance, Captured_Results
+Dim Browsers, URL
+
+'Assigning Values to Variables
+Browsers = "iexplore.exe"
+URL = "https://www.bankrate.com/calculators/savings/simple-savings-calculator.aspx"
+InitialAmt = 5000
+MonthlyDeposit = 150
+Compound_Term = "Semiannually"
+
+
+'Navigate to: https://www.bankrate.com/calculators/savings/simple-savings-calculator.aspx
+SystemUtil.Run Browsers, URL
+
+'1. Enter Initial Amount
+Browser("micclass:=Browser").Page("micclass:=Page").WebEdit("html id:=initialAmount", "html tag:=INPUT", "type:=text").Set InitialAmt
+
+'2. Enter Monthly Deposit
+Browser("micclass:=Browser").Page("micclass:=Page").WebEdit("html id:=monthlyDeposit", "html tag:=INPUT", "type:=text").Set MonthlyDeposit
+
+'3. Select Compound Term
+	'Part 1: Click on the WebElement Object - Parent
+	Browser("micclass:=Browser").Page("micclass:=Page").WebElement("html id:=compoundedIntervals", "html tag:=P").Click
+	wait 1
+	
+	'Part 2: Click on the Term - Child
+	Browser("micclass:=Browser").Page("micclass:=Page").WebElement("class:=dropdown__input-label", "innertext:="&Compound_Term, "html tag:=SPAN").Click 
+
+
+'4. Enter Compound Rate
+'5. Enter Number of Years
+'6. Click on Calcualte
+'7. Capture the Final Savings Balance
+'8. Click on 'Show Yearly Balance Chart'
+'9. Capture the text listed under 'Your Results'

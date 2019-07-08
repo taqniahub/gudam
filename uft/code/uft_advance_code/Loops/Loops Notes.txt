@@ -1,0 +1,94 @@
+'**************************************Looping Statements****************************
+
+'=>There are 4 kinds of loop statements
+
+'Each cycle is called an Iteration
+
+'=> #1 Do...loop
+
+'	=> This is used when a statement or block of statements need to be executed while or until a said condition is true
+
+'	Synatx 1:
+
+'		x = 0
+
+'		Do While x < 5
+'		Print x
+'		x = x+1
+'		Loop
+
+'	Syntax 2:
+
+'		x = 0 
+
+'		Do 
+'		Print x
+'		x = x+1
+'		Loop Until x = 5
+
+
+'	=>Whats the Difference?
+'		=>Syntax 1: The statements within the Do While loop don't get executed unless, the condition becomes true or holds true.	
+
+'		=>Syntax 2: The statements within the loop get executed at least once and then the check is performed on the condition.
+
+
+'=> #2 While...Wend
+
+'	=> Syntax:
+
+'		x = 0
+
+'		While x <=5
+'		Print x
+'		x = x+1
+'		Wend
+
+'	=> Will perform the actions described while the condition is true
+
+'	=> I don't normally use this, It's pretty basic, but doesn't allow for much flexibility 
+
+
+'=> #3 For...Next
+
+'=> This is the statement that you would use when you want a statement or set of statements to run a certian number of times while a certain counter gets incremented or decremented (increases or decreases)
+
+'=> Syntax:
+'			For i = start To end [step] <= this step is optional - means to increment or decrement the counter by that number (default is 1)
+'				Perform
+'				Some
+'				Actions
+'			Next 
+
+'	=>Example: Positive Step
+'				Dim k, i, total 
+'				For i = 2 To 12 Step 2
+'					total = total + k
+'					Print Total
+'				Next
+
+'	=>Example: Negative Step
+'				Dim k, i, total 
+'				For i = 12 To 2 Step -2
+'					total = total + k
+'					Print Total
+'				Next
+
+'	=>Example: How I Usually Use For Loops
+'				Dim k 
+'				For i = 1 To 12
+'					total = total + k
+'					Print Total
+'				Next
+
+
+
+
+
+
+
+
+
+
+
+

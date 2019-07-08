@@ -1,0 +1,142 @@
+Option Explicit
+
+Dim MyExcel, MySheet, RowCount, i, URLSheet, URLCount, j, PageName, Calculator_Name
+Dim Price, LoanTerm, Rate, DownPayment, Trade_In, State, SalesTax, OtherFees, Expected_MonthlyPayment, Expected_TotalInterest, Actual_MonthlyPayment, TestStatus, URL, Captured_Interest
+Dim TestStatus_MonthlyPayment, TestStatus_Interest
+
+'Associate Function Library
+ExecuteFile "C:\Users\VAADMIN\Desktop\Dextop Items\2018\Summer 2018\UFT\Weekend\Day 15 - DDF\Function Libraries\Calculator.Net - Function Library.vbs"
+	
+
+'Kill Excel
+SystemUtil.CloseProcessByName "excel.exe"
+
+'Connect to Excel
+Set MyExcel = CreateObject ("Excel.Application")
+
+MyExcel.Workbooks.Open "C:\Users\VAADMIN\Desktop\Dextop Items\2018\Summer 2018\UFT\Weekend\Day 15 - DDF\Excel Test Data\Calculator.Net Test Data.xlsx"
+
+'Reference for the Worksheet
+Set MySheet = MyExcel.ActiveWorkbook.Worksheets("AutoLoan_Data")
+Set URLSheet = MyExcel.ActiveWorkbook.Worksheets("URLs")
+Calculator_Name = MySheet.Cells(2, "N").Value
+
+RowCount= MySheet.UsedRange.Rows.Count
+URLCount = URLSheet.UsedRange.Rows.Count
+	
+	'Figuring out what URL to use
+	For j = 2 To URLCount
+		PageName = URLSheet.Cells(j, "A").Value 'Reading the name of the calculator from excel
+	
+	'uCase --> Makes everything UPPER CASE
+	'lCase --> Makes everyting lower case
+	
+		If lCase(PageName) = lCase(Calculator_Name) Then
+			URL = URLSheet.Cells(j, "B") 'read the corresponding URL
+			Set URLSheet = Nothing 'killing it here, because I'm done with it
+			Exit For 'Exit the loop
+		End If
+	Next
+	
+For i = 2 To RowCount
+	
+	'Read the Test Data
+	Price = MySheet.Cells(i, "A").Value
+	LoanTerm = MySheet.Cells(i, "B").Value
+	Rate = MySheet.Cells(i, "C").Value
+	DownPayment = MySheet.Cells(i, "D").Value
+	Trade_In = MySheet.Cells(i, "E").Value
+	State = MySheet.Cells(i, "F").Value
+	SalesTax = MySheet.Cells(i, "G").Value
+	OtherFees  = MySheet.Cells(i, "H").Value
+	Expected_MonthlyPayment = MySheet.Cells(i, "I").Value
+	Expected_TotalInterest = MySheet.Cells(i, "J").Value
+	
+	'Step 0: Close IE
+	fnCloseBrowsers "iexplore.exe"
+	
+	'Step 1: Launch IE and Navigate to URL
+	fnLaunchApp "iexplore.exe", URL
+	
+	fnWait 5
+	
+	'Step 2: Enter Auto Price
+	fnEnterText "cloanamount", "inhalf indollar", "INPUT", "cloanamount", Price
+
+	'Step 3: Enter Loan Term
+	fnEnterText "cloanterm", "inhalf inuipound", "INPUT", "cloanterm", LoanTerm
+	
+	'Step 4: Enter Rate
+	fnEnterText "cinterestrate", "inhalf inpct", "INPUT", "cinterestrate", Rate
+	
+	'Step 5: Enter DownPayment
+	fnEnterText "cdownpayment", "inhalf", "INPUT", "cdownpayment", DownPayment
+	
+	'Step 6: Enter Trade-In
+	fnEnterText "ctradeinvalue", "inhalf indollar", "INPUT", "ctradeinvalue", Trade_In
+	
+	'Step 7: Select State
+	fnSelectList "cstate", "SELECT", "", State
+	
+	'Step 8: Enter Sales Tax
+	fnEnterText "csaletax", "inhalf inpct", "INPUT", "csaletax", SalesTax
+	
+	'Step 9: Enter Other Fees
+	fnEnterText "ctitlereg", "inhalf indollar", "INPUT", "ctitlereg", OtherFees
+	
+	'Step 10: Click on 'Include All Fees in Loan'
+	fnClickElement "cbmark", "SPAN", ""
+	
+	fnWait 5	
+	
+	'Step 11: Click on Calculate
+	fnClickImageButton "Calculate", "Image Button", "INPUT", 0
+	
+	fnWait 5
+	
+	'Step 12: Capture Monthly Payment
+	Actual_MonthlyPayment = fnCaptureElement ("h2result", "H2", "Monthly Pay:.*", "innertext")
+		'When we capture this value, we capture 'Monthly Payment: $xxxxx' But i want just the Dollar Amount
+		Dim Array_payment
+		Array_Payment = Split(Actual_MonthlyPayment, "$")
+		Actual_MonthlyPayment = Array_Payment(1) 'redefined the value for this variable
+		
+		'Write to Excel
+		MySheet.Cells(i, "K").Value = Actual_MonthlyPayment
+
+	'Step 13: Compare Captured Monthly Payment with Expected Monthly Payment
+	If fnCompare2Values(cCur(Actual_MonthlyPayment), cCur(Expected_MonthlyPayment)) Then
+		TestStatus_MonthlyPayment = True
+	Else
+		TestStatus_MonthlyPayment = False
+	End If
+	
+	'Step 14: Capture Total Loan Interest
+	Captured_Interest = fnCaptureTable("Total Loan Amount.*", "TABLE", "", 5, 2)
+		'Write to excel
+		MySheet.Cells(i, "L").Value = Captured_Interest
+	
+	'Step 15: Compare Captured Interest with Expected Interest
+	If fnCompare2Values(cCur(Captured_Interest), cCur(Expected_TotalInterest)) Then
+		TestStatus_Interest = True
+	Else
+		TestStatus_Interest = False
+	End If
+	
+	'Step 16: If no Failures in comparisons, Write Pass in Test status, else write Fail
+	If TestStatus_Interest = True AND TestStatus_MonthlyPayment = True Then
+		MySheet.Cells(i, "M").Value = "Test Passed"
+		Reporter.ReportEvent micPass, "Test Status", "Test Passed"
+	Else
+		MySheet.Cells(i, "M").Value = "Test Failed"
+		Reporter.ReportEvent micFail, "Test Status", "Test Failed"
+	End If
+Next
+
+'Save and Quit Excel
+MyExcel.ActiveWorkbook.SaveAs "C:\Users\VAADMIN\Desktop\Dextop Items\2018\Summer 2018\UFT\Weekend\Day 15 - DDF\Excel Test Data\Calculator.Net - Auto Loan Calc Results.xlsx"
+
+MyExcel.Application.Quit 
+
+Set MyExcel = Nothing
+Set MySheet = Nothing

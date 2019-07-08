@@ -1,0 +1,121 @@
+Option Explicit
+
+'Associate Function Library
+ExecuteFile "C:\Users\VAADMIN\Desktop\Dextop Items\2018\Summer 2018\UFT\Weekend\Day 16 - KDF\Function Libraries\Indeed.Com - KDF Function Library.vbs"
+
+Dim MyExcel, TC_Sheet, TS_Sheet, TC_RowCount, TS_RowCount
+Dim TSID, TCID, TC_Iterator, TS_Iterator
+Dim Keyword, IP1, IP2, IP3, IP4
+
+'Connect to Excel
+Set MyExcel = CreateObject("Excel.Application")
+MyExcel.Workbooks.Open "C:\Users\VAADMIN\Desktop\Dextop Items\2018\Summer 2018\UFT\Weekend\Day 16 - KDF\Indeed Keywords, TCs, TSs.xlsx"
+
+'Creating a reference for the TestCases sheet and the TestSteps Sheet
+Set TC_Sheet = MyExcel.ActiveWorkbook.Worksheets ("TestCases") 'Now TC_Sheet will reference TestCases
+Set TS_Sheet = MyExcel.ActiveWorkbook.Worksheets ("TestSteps") 'Now TS_Sheet will reference TestSteps
+
+'Count the number of rows in the TC_Sheet and TS_Sheet
+TC_RowCount = TC_Sheet.UsedRange.Rows.Count 'Counting the rows in the TestCases Sheet
+TS_RowCount = TS_Sheet.UsedRange.Rows.Count 'Counting the rows in the TestSteps Sheet
+
+
+'	Go to each row in the TC Sheet 
+	For TC_Iterator = 2 To TC_RowCount
+		'and see if the execute flag is 'Y'
+		If TC_Sheet.Cells(TC_Iterator, "D").Value = "Y" Then
+			'If 'Y' :
+			'Read the TCID from the TestCases Sheet
+			TCID = TC_Sheet.Cells(TC_Iterator, "A").Value
+						
+			'then go to each row in the TS Sheet 
+			For TS_Iterator = 2 To TS_RowCount
+				
+				'read the TSID from the TestSteps Sheet
+				TSID = TS_Sheet.Cells(TS_Iterator, "A").Value
+				
+				'and see if the TCID matches with TSID
+				If TCID = TSID Then
+					
+					'If the TCID matches with TSID, execute the CORRESPONDING Test Steps (or keywords)
+					'Read the Keywords and IP1, IP2, IP3, & IP4
+					Keyword = TS_Sheet.Cells(TS_Iterator, "D").Value
+					IP1 = TS_Sheet.Cells(TS_Iterator, "E").Value
+					IP2 = TS_Sheet.Cells(TS_Iterator, "F").Value
+					IP3 = TS_Sheet.Cells(TS_Iterator, "G").Value
+					IP4 = TS_Sheet.Cells(TS_Iterator, "H").Value
+					
+					'Based on the Keyword, execute the corresponding Functions
+					Select Case (Keyword)
+						Case "Button_Click"
+							Button_Click IP1, IP2, IP3
+					'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+						Case "Edit_Set"
+							Edit_Set IP1, IP2, IP3, IP4
+					'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+						Case "Text_Check"
+							If Text_Check(IP1 ,IP2) Then
+								Reporter.ReportEvent micPass, "Text Verified - " & IP2, IP2 & " - Was Verified"
+								TS_Sheet.Cells(TS_Iterator, "I").Value = "Passed"
+							Else
+								Reporter.ReportEvent micFail, "Text Not Verified - " & IP2, IP2 & " - Was NOT Verified"
+								TS_Sheet.Cells(TS_Iterator, "I").Value = "Failed"
+							End If
+					'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+						Case "Link_Click"
+							Link_Click IP1, IP2, IP3
+					'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+						Case "Link_Check"
+							If Link_Check(IP1, IP2) Then
+								Reporter.ReportEvent micPass, "Link Verified - " & IP1, IP1 & " - Link was Verified"
+								TS_Sheet.Cells(TS_Iterator, "I").Value = "Passed"
+							Else
+								Reporter.ReportEvent micFail, "Link Not Verified - " & IP1, IP1 & " - Link was NOT Verified"
+								TS_Sheet.Cells(TS_Iterator, "I").Value = "Failed"
+							End If
+					'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+						Case "Browser_Open"
+							Browser_Open IP1, IP2
+					'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+						Case "Browser_Close"
+							Browser_Close IP1
+					'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+						Case "List_Select"
+							List_Select IP1, IP2, IP3, IP4
+					'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+						Case "List_Check"
+							If List_Check(IP1, IP2, IP3, IP4) Then
+								Reporter.ReportEvent micPass, "List Verified - " & IP1, IP1 & " - List was Verified"
+								TS_Sheet.Cells(TS_Iterator, "I").Value = "Passed"
+							Else
+								Reporter.ReportEvent micFail, "List Not Verified - " & IP1, IP1 & " - List was NOT Verified"
+								TS_Sheet.Cells(TS_Iterator, "I").Value = "Failed"
+							End If
+					'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+						Case "fnWait"
+							fnWait IP1
+					'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+						Case Else
+							Reporter.ReportEvent micFail, "KEYWORD NOT IDENTIFIED - ENDING TEST EXECUTION FOR: " & TCID, "Keyword: " & Keyword & " WAS NOT IDENTIFIED. ENDING TEST EXECUTION"
+							Exit For
+					End Select
+					
+					
+				End If
+				
+			Next
+			
+			
+			
+			
+			
+		End If
+		
+		
+	Next
+
+
+		'
+
+
+'	Each keyword function will return a PASS or FAIL and driver script will return Test Result

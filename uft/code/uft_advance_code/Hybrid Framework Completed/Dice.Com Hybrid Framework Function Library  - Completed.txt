@@ -1,0 +1,527 @@
+'~~~~~~~~~~~~~~~~~~~~~~~~~~~~Dice.Com KDF Function Library~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Dim MyBrowser
+Set MyBrowser = Browser("micclass:=Browser", "CreationTime:=0", "title:=.*").Page("micclass:=Page", "CreationTime:=0", "title:=.*")
+
+
+Function Button_Click (Prop_Name, Prop_HtmlID, Prop_HTmlTag)
+	err.clear 'clearing out the error object
+	On Error Resume Next 'turning on error handling
+	'Purpose: Click on any WebButton on Dice.Com
+	'I/P: Prop_Name, Prop_HtmlID, Prop_HTmlTag
+	'O/P: N/A
+		Dim oWebButton
+		Set oWebButton = Description.Create
+		oWebButton("name").Value = Prop_Name
+		oWebButton("html id").Value = Prop_HtmlID
+		oWebButton("html tag").Value = Prop_HTmlTag
+		
+		'Action Line
+		MyBrowser.WebButton(oWebButton).Click
+		
+		'Good Housekeeping
+		Set oWebButton = Nothing
+		
+		
+		If fnErrorHandling() Then
+			DataTable.Value("Result", "DT_TestSteps") = "Failed"
+			DataTable.Value("Error", "DT_TestSteps") = Err.Number & " -- " & Err.Description
+			Reporter.ReportEvent micFail, "Step Number: " & DataTable.Value("Step_No.", "DT_TestSteps") & " - Failed", Err.Description
+			'Step Number: 1 - Failed; xyz error message
+		Else
+			DataTable.Value("Result", "DT_TestSteps") = "Passed"
+			DataTable.Value("Error", "DT_TestSteps") = "N/A"
+			Reporter.ReportEvent micPass, "Step Number: " & DataTable.Value("Step_No.", "DT_TestSteps") & " - Passed", DataTable.Value("Step_Description", "DT_TestSteps") & " - Passed"
+			'Step: Step Number: 1 - Passed; Open IE and go to URL - Passed
+		End If
+		
+	On Error Goto 0
+		
+		
+		
+		
+End Function
+
+Function Edit_Set (Prop_Name, Prop_HtmlID, Prop_HtmlTag, WE_Value)
+	err.clear
+	On Error Resume Next
+	'Purpose: Enter text into any webedit object on Dice.Com
+	'I/P: Prop_Name, Prop_HtmlID, Prop_HtmlTag, WE_Value
+	'O/P: N/A
+		Dim oWebEdit
+		Set oWebEdit = Description.Create
+		oWebEdit("name").Value = Prop_Name
+		oWebEdit("html id").Value = Prop_HtmlID
+		oWebEdit("html tag").Value = Prop_HTmlTag
+		
+		'Action Line
+		MyBrowser.WebEdit(oWebEdit).Set WE_Value
+		
+		'Good Housekeeping
+		Set oWebEdit = Nothing
+		
+		If fnErrorHandling() Then
+			DataTable.Value("Result", "DT_TestSteps") = "Failed"
+			DataTable.Value("Error", "DT_TestSteps") = Err.Number & " -- " & Err.Description
+			Reporter.ReportEvent micFail, "Step Number: " & DataTable.Value("Step_No.", "DT_TestSteps") & " - Failed", Err.Description
+			'Step Number: 1 - Failed; xyz error message
+		Else
+			DataTable.Value("Result", "DT_TestSteps") = "Passed"
+			DataTable.Value("Error", "DT_TestSteps") = "N/A"
+			Reporter.ReportEvent micPass, "Step Number: " & DataTable.Value("Step_No.", "DT_TestSteps") & " - Passed", DataTable.Value("Step_Description", "DT_TestSteps") & " - Passed"
+			'Step: Step Number: 1 - Passed; Open IE and go to URL - Passed
+		End If
+		
+	On Error Goto 0
+End Function
+
+Function Text_Verify (Prop_HtmlTag, Prop_Class, Prop_InnerText)
+	'Purpose: To Verify if text exists on the page in the form of an element
+	'I/P: Prop_HtmlTag, Prop_Class, Prop_InnerText
+	'O/P: True or False
+		Dim oWebElement
+		Set oWebElement = Description.Create
+		oWebElement("html tag").Value = Prop_HtmlTag
+		oWebElement("class").Value = Prop_Class
+		oWebElement("innertext").Value = Prop_InnerText
+		
+		'Action Line
+		If MyBrowser.WebElement(oWebElement).Exist(5) Then
+			Text_Verify = True
+			Else
+			Text_Verify = False	
+		End If
+		
+		'Good Housekeeping
+		Set oWebElement = Nothing
+		
+End Function
+
+Function Link_Click (Prop_Name, Prop_HtmlID, Prop_Class)
+	err.clear
+	On Error Resume Next
+	'Purpose: Click on any link object on Dice.Com
+	'I/P: Prop_Name, Prop_HtmlID, Prop_Class
+	'O/P: N/A
+		Dim oLink
+		Set oLink = Description.Create
+		oLink("name").Value = Prop_Name
+		oLink("html id").Value = Prop_HtmlID
+		oLink("class").Value = Prop_Class
+		
+		'Action Line
+		MyBrowser.Link(oLink).Click
+		
+		
+		'Good Housekeeping
+		Set oLink = Nothing
+		
+		If fnErrorHandling() Then
+			DataTable.Value("Result", "DT_TestSteps") = "Failed"
+			DataTable.Value("Error", "DT_TestSteps") = Err.Number & " -- " & Err.Description
+			Reporter.ReportEvent micFail, "Step Number: " & DataTable.Value("Step_No.", "DT_TestSteps") & " - Failed", Err.Description
+			'Step Number: 1 - Failed; xyz error message
+		Else
+			DataTable.Value("Result", "DT_TestSteps") = "Passed"
+			DataTable.Value("Error", "DT_TestSteps") = "N/A"
+			Reporter.ReportEvent micPass, "Step Number: " & DataTable.Value("Step_No.", "DT_TestSteps") & " - Passed", DataTable.Value("Step_Description", "DT_TestSteps") & " - Passed"
+			'Step: Step Number: 1 - Passed; Open IE and go to URL - Passed
+		End If
+		
+	On Error Goto 0
+
+End Function
+
+Function Browser_Close (Browser_Name)
+	err.clear
+	On Error Resume Next
+	'Purpose: Close any Browser
+	'I/P: Browser_Name
+	'O/P: N/A
+		SystemUtil.CloseProcessByName Browser_Name
+		
+	If fnErrorHandling() Then
+			DataTable.Value("Result", "DT_TestSteps") = "Failed"
+			DataTable.Value("Error", "DT_TestSteps") = Err.Number & " -- " & Err.Description
+			Reporter.ReportEvent micFail, "Step Number: " & DataTable.Value("Step_No.", "DT_TestSteps") & " - Failed", Err.Description
+			'Step Number: 1 - Failed; xyz error message
+		Else
+			DataTable.Value("Result", "DT_TestSteps") = "Passed"
+			DataTable.Value("Error", "DT_TestSteps") = "N/A"
+			Reporter.ReportEvent micPass, "Step Number: " & DataTable.Value("Step_No.", "DT_TestSteps") & " - Passed", DataTable.Value("Step_Description", "DT_TestSteps") & " - Passed"
+			'Step: Step Number: 1 - Passed; Open IE and go to URL - Passed
+		End If
+	
+	On Error Goto 0
+	
+End Function
+
+Function Browser_Open (Browser_Name, URL)
+	err.clear
+	On Error Resume Next
+	'Purpose: Launch any browser and navigate to URL
+	'I/P: Browser_Name, URL
+	'O/P: N/A
+		SystemUtil.Run Browser_Name, URL
+	
+	If fnErrorHandling() Then
+			DataTable.Value("Result", "DT_TestSteps") = "Failed"
+			DataTable.Value("Error", "DT_TestSteps") = Err.Number & " -- " & Err.Description
+			Reporter.ReportEvent micFail, "Step Number: " & DataTable.Value("Step_No.", "DT_TestSteps") & " - Failed - EXITING TEST EXECUTION", Err.Description
+			'Step Number: 1 - Failed; xyz error message
+			'ExitTest
+		Else
+			DataTable.Value("Result", "DT_TestSteps") = "Passed"
+			DataTable.Value("Error", "DT_TestSteps") = "N/A"
+			Reporter.ReportEvent micPass, "Step Number: " & DataTable.Value("Step_No.", "DT_TestSteps") & " - Passed", DataTable.Value("Step_Description", "DT_TestSteps") & " - Passed"
+			'Step: Step Number: 1 - Passed; Open IE and go to URL - Passed
+		End If
+		
+	On Error Goto 0
+End Function
+
+Function fnWait (WaitTime)
+	err.clear
+	On Error Resume Next
+	Wait WaitTime
+	
+	If fnErrorHandling() Then
+			DataTable.Value("Result", "DT_TestSteps") = "Failed"
+			DataTable.Value("Error", "DT_TestSteps") = Err.Number & " -- " & Err.Description
+			Reporter.ReportEvent micFail, "Step Number: " & DataTable.Value("Step_No.", "DT_TestSteps") & " - Failed", Err.Description
+			'Step Number: 1 - Failed; xyz error message
+		Else
+			DataTable.Value("Result", "DT_TestSteps") = "Passed"
+			DataTable.Value("Error", "DT_TestSteps") = "N/A"
+			Reporter.ReportEvent micPass, "Step Number: " & DataTable.Value("Step_No.", "DT_TestSteps") & " - Passed", DataTable.Value("Step_Description", "DT_TestSteps") & " - Passed"
+			'Step: Step Number: 1 - Passed; Open IE and go to URL - Passed
+		End If
+	
+	On Error Goto 0
+End Function
+
+
+Function fnErrorHandling()
+	
+	If Err.Number <> 0 Then
+		fnErrorHandling = True
+	Else
+		fnErrorHandling = False	
+	End If
+
+
+End Function
+
+Function fnGetTestData()
+	Environment.Value("URL") = DataTable.Value("URL", "DT_TestData")
+	Environment.Value("Browser") = DataTable.Value("Browser", "DT_TestData")
+	Environment.Value("City") = DataTable.Value("City", "DT_TestData")
+	Environment.Value("ZipCode") = DataTable.Value("Zip", "DT_TestData")
+	Environment.Value("JobTitle") = DataTable.Value("Job_Title", "DT_TestData")
+	Environment.Value("SearchResults_City") = DataTable.Value("SearchResults_City", "DT_TestData")
+	Environment.Value("SearchResults_Zip") = DataTable.Value("SearchResults_Zip", "DT_TestData")
+	Environment.Value("SearchButton_Name") = DataTable.Value("SearchButton_Name", "DT_TestData")
+	Environment.Value("JobTitle_Name") = DataTable.Value("JobTitle_Name", "DT_TestData")
+	Environment.Value("JobLocation_Name") = DataTable.Value("JobLocation_Name", "DT_TestData")
+	Environment.Value("JobTitle_ID") = DataTable.Value("JobTitle_ID", "DT_TestData")
+	Environment.Value("JobLocation_ID") = DataTable.Value("JobLocation_ID", "DT_TestData")
+	Environment.Value("SearchButton_ID") = DataTable.Value("SearchButton_ID", "DT_TestData")
+	Environment.Value("SearchButton_Tag") = DataTable.Value("SearchButton_Tag", "DT_TestData")
+	Environment.Value("JobTitle_Tag") = DataTable.Value("JobTitle_Tag", "DT_TestData")
+	Environment.Value("JobLocation_Tag") = DataTable.Value("JobLocation_Tag", "DT_TestData")
+	Environment.Value("SearchResults_Tag") = DataTable.Value("SearchResults_Tag", "DT_TestData")
+	Environment.Value("SearchResults_Class") = DataTable.Value("SearchResults_Class", "DT_TestData")
+	Environment.Value("JobLink_Name") = DataTable.Value("JobLink_Name", "DT_TestData")
+	Environment.Value("JobLink_ID") = DataTable.Value("JobLink_ID", "DT_TestData")
+	Environment.Value("JobLink_Class") = DataTable.Value("JobLink_Class", "DT_TestData")
+	Environment.Value("JobTitleResult_Tag") = DataTable.Value("JobTitleResult_Tag", "DT_TestData")
+	Environment.Value("JobTitleResult_Class") = DataTable.Value("JobTitleResult_Class", "DT_TestData")
+	Environment.Value("JobTitleResult_Text") = DataTable.Value("JobTitleResult_Text", "DT_TestData")
+End Function
+
+Function fnGetInputs()
+	
+	'Read the IPs from the Test Steps Sheet
+	IP1 = DataTable.Value("IP1", "DT_TestSteps")
+	IP2 = DataTable.Value("IP2", "DT_TestSteps")
+	IP3 = DataTable.Value("IP3", "DT_TestSteps")
+	IP4 = DataTable.Value("IP4", "DT_TestSteps")
+		 			
+	Select Case (IP1)
+		Case "vBrowser_Name"
+			IP1 = Environment.Value("Browser")
+		Case "vURL"
+			IP1 = Environment.Value("URL")
+		Case "vJob_Title"
+			IP1 = Environment.Value("JobTitle")
+		Case "vJob_City"
+			IP1 = Environment.Value("City")
+		Case "vZip_Code"
+			IP1 = Environment.Value("ZipCode")
+		Case "vSearchResults_City"
+			IP1 = Environment.Value("SearchResults_City")
+		Case "vSearchResults_Zip"
+			IP1 = Environment.Value("SearchResults_Zip")
+		Case "vSearchButton_Name"
+			IP1 = Environment.Value("SearchButton_Name")
+		Case "vJobTitle_Name"
+			IP1 = Environment.Value("JobTitle_Name")
+		Case "vJobLocation_Name"
+			IP1 = Environment.Value("JobLocation_Name")
+		Case "vJobTitle_ID"
+			IP1 = Environment.Value("JobTitle_ID")
+		Case "vJobLocation_ID"
+			IP1 = Environment.Value("JobLocation_ID")
+		Case "vSearchButton_ID"
+			IP1 = Environment.Value("SearchButton_ID")
+		Case "vSearchButton_Tag"
+			IP1 = Environment.Value("SearchButton_Tag")
+		Case "vJobTitle_Tag"
+			IP1 = Environment.Value("JobTitle_Tag")
+		Case "vJobLocation_Tag"
+			IP1 = Environment.Value("JobLocation_Tag")
+		Case "vSearchResults_Tag"
+			IP1 = Environment.Value("SearchResults_Tag")
+		Case "vSearchResults_Class"
+			IP1 = Environment.Value("SearchResults_Class")
+		Case "vJobLink_Name"
+			IP1 = Environment.Value("JobLink_Name")
+		Case "vJobLink_ID"
+			IP1 = Environment.Value("JobLink_ID")
+		Case "vJobLink_Class"
+			IP1 = Environment.Value("JobLink_Class")
+		Case "vJobTitleResult_Tag"
+			IP1 = Environment.Value("JobTitleResult_Tag")
+		Case "vJobTitleResult_Class"
+			IP1 = Environment.Value("JobTitleResult_Class")
+		Case "vJobTitleResult_Text"
+			IP1 = Environment.Value("JobTitleResult_Text")
+	End Select
+	
+	Select Case (IP2)
+		Case "vBrowser_Name"
+			IP2 = Environment.Value("Browser")
+		Case "vURL"
+			IP2 = Environment.Value("URL")
+		Case "vJob_Title"
+			IP2 = Environment.Value("JobTitle")
+		Case "vJob_City"
+			IP2 = Environment.Value("City")
+		Case "vZip_Code"
+			IP2 = Environment.Value("ZipCode")
+		Case "vSearchResults_City"
+			IP2 = Environment.Value("SearchResults_City")
+		Case "vSearchResults_Zip"
+			IP2 = Environment.Value("SearchResults_Zip")
+		Case "vSearchButton_Name"
+			IP2 = Environment.Value("SearchButton_Name")
+		Case "vJobTitle_Name"
+			IP2 = Environment.Value("JobTitle_Name")
+		Case "vJobLocation_Name"
+			IP2 = Environment.Value("JobLocation_Name")
+		Case "vJobTitle_ID"
+			IP2 = Environment.Value("JobTitle_ID")
+		Case "vJobLocation_ID"
+			IP2 = Environment.Value("JobLocation_ID")
+		Case "vSearchButton_ID"
+			IP2 = Environment.Value("SearchButton_ID")
+		Case "vSearchButton_Tag"
+			IP2 = Environment.Value("SearchButton_Tag")
+		Case "vJobTitle_Tag"
+			IP2 = Environment.Value("JobTitle_Tag")
+		Case "vJobLocation_Tag"
+			IP2 = Environment.Value("JobLocation_Tag")
+		Case "vSearchResults_Tag"
+			IP2 = Environment.Value("SearchResults_Tag")
+		Case "vSearchResults_Class"
+			IP2 = Environment.Value("SearchResults_Class")
+		Case "vJobLink_Name"
+			IP2 = Environment.Value("JobLink_Name")
+		Case "vJobLink_ID"
+			IP2 = Environment.Value("JobLink_ID")
+		Case "vJobLink_Class"
+			IP2 = Environment.Value("JobLink_Class")
+		Case "vJobTitleResult_Tag"
+			IP2 = Environment.Value("JobTitleResult_Tag")
+		Case "vJobTitleResult_Class"
+			IP2 = Environment.Value("JobTitleResult_Class")
+		Case "vJobTitleResult_Text"
+			IP2 = Environment.Value("JobTitleResult_Text")
+	End Select
+	
+	Select Case (IP3)
+		Case "vBrowser_Name"
+			IP3 = Environment.Value("Browser")
+		Case "vURL"
+			IP3 = Environment.Value("URL")
+		Case "vJob_Title"
+			IP3 = Environment.Value("JobTitle")
+		Case "vJob_City"
+			IP3 = Environment.Value("City")
+		Case "vZip_Code"
+			IP3 = Environment.Value("ZipCode")
+		Case "vSearchResults_City"
+			IP3 = Environment.Value("SearchResults_City")
+		Case "vSearchResults_Zip"
+			IP3 = Environment.Value("SearchResults_Zip")
+		Case "vSearchButton_Name"
+			IP3 = Environment.Value("SearchButton_Name")
+		Case "vJobTitle_Name"
+			IP3 = Environment.Value("JobTitle_Name")
+		Case "vJobLocation_Name"
+			IP3 = Environment.Value("JobLocation_Name")
+		Case "vJobTitle_ID"
+			IP3 = Environment.Value("JobTitle_ID")
+		Case "vJobLocation_ID"
+			IP3 = Environment.Value("JobLocation_ID")
+		Case "vSearchButton_ID"
+			IP3 = Environment.Value("SearchButton_ID")
+		Case "vSearchButton_Tag"
+			IP3 = Environment.Value("SearchButton_Tag")
+		Case "vJobTitle_Tag"
+			IP3 = Environment.Value("JobTitle_Tag")
+		Case "vJobLocation_Tag"
+			IP3 = Environment.Value("JobLocation_Tag")
+		Case "vSearchResults_Tag"
+			IP3 = Environment.Value("SearchResults_Tag")
+		Case "vSearchResults_Class"
+			IP3 = Environment.Value("SearchResults_Class")
+		Case "vJobLink_Name"
+			IP3 = Environment.Value("JobLink_Name")
+		Case "vJobLink_ID"
+			IP3 = Environment.Value("JobLink_ID")
+		Case "vJobLink_Class"
+			IP3 = Environment.Value("JobLink_Class")
+		Case "vJobTitleResult_Tag"
+			IP3 = Environment.Value("JobTitleResult_Tag")
+		Case "vJobTitleResult_Class"
+			IP3 = Environment.Value("JobTitleResult_Class")
+		Case "vJobTitleResult_Text"
+			IP3 = Environment.Value("JobTitleResult_Text")
+	End Select
+	
+	Select Case (IP4)
+		Case "vBrowser_Name"
+			IP4 = Environment.Value("Browser")
+		Case "vURL"
+			IP4 = Environment.Value("URL")
+		Case "vJob_Title"
+			IP4 = Environment.Value("JobTitle")
+		Case "vJob_City"
+			IP4 = Environment.Value("City")
+		Case "vZip_Code"
+			IP4 = Environment.Value("ZipCode")
+		Case "vSearchResults_City"
+			IP4 = Environment.Value("SearchResults_City")
+		Case "vSearchResults_Zip"
+			IP4 = Environment.Value("SearchResults_Zip")
+		Case "vSearchButton_Name"
+			IP4 = Environment.Value("SearchButton_Name")
+		Case "vJobTitle_Name"
+			IP4 = Environment.Value("JobTitle_Name")
+		Case "vJobLocation_Name"
+			IP4 = Environment.Value("JobLocation_Name")
+		Case "vJobTitle_ID"
+			IP4 = Environment.Value("JobTitle_ID")
+		Case "vJobLocation_ID"
+			IP4 = Environment.Value("JobLocation_ID")
+		Case "vSearchButton_ID"
+			IP4 = Environment.Value("SearchButton_ID")
+		Case "vSearchButton_Tag"
+			IP4 = Environment.Value("SearchButton_Tag")
+		Case "vJobTitle_Tag"
+			IP4 = Environment.Value("JobTitle_Tag")
+		Case "vJobLocation_Tag"
+			IP4 = Environment.Value("JobLocation_Tag")
+		Case "vSearchResults_Tag"
+			IP4 = Environment.Value("SearchResults_Tag")
+		Case "vSearchResults_Class"
+			IP4 = Environment.Value("SearchResults_Class")
+		Case "vJobLink_Name"
+			IP4 = Environment.Value("JobLink_Name")
+		Case "vJobLink_ID"
+			IP4 = Environment.Value("JobLink_ID")
+		Case "vJobLink_Class"
+			IP4 = Environment.Value("JobLink_Class")
+		Case "vJobTitleResult_Tag"
+			IP4 = Environment.Value("JobTitleResult_Tag")
+		Case "vJobTitleResult_Class"
+			IP4 = Environment.Value("JobTitleResult_Class")
+		Case "vJobTitleResult_Text"
+			IP4 = Environment.Value("JobTitleResult_Text")
+	End Select
+	
+	
+	
+	'Now we have 1 value for IP1, IP2, IP3, & IP4 which are coming from the TestData Sheet
+	'We will now store these values into Environment Variables
+	
+	'Creating 4 new Environment Variables and assigning values to them
+	Environment.Value("IP1") = IP1
+	Environment.Value("IP2") = IP2
+	Environment.Value("IP3") = IP3
+	Environment.Value("IP4") = IP4
+End Function
+
+Function fnExecuteKeywords()
+	
+	'Get Inputs for the functions
+	fnGetInputs
+	
+	'Read the value of Keyword
+	Environment.Value("Keyword") = DataTable.Value("Keyword", "DT_TestSteps")
+	
+	
+	'Execute the Corresponding Keywords (functions)
+		Select Case (Environment.Value("Keyword"))
+			Case "Browser_Open"
+				Browser_Open Environment.Value("IP1"), Environment.Value("IP2")
+			Case "fnWait"
+				fnWait Environment.Value("IP1")
+			Case "Edit_Set"
+				Edit_Set Environment.Value("IP1"), Environment.Value("IP2"), Environment.Value("IP3"), Environment.Value("IP4")
+			Case "Button_Click"
+				Button_Click Environment.Value("IP1"), Environment.Value("IP2"), Environment.Value("IP3")
+			Case "Browser_Close"
+				Browser_Close Environment.Value("IP1")
+			Case "Text_Verify"
+				If Text_Verify (Environment.Value("IP1"), Environment.Value("IP2"), Environment.Value("IP3")) Then
+					DataTable.Value("Result", "DT_TestSteps") = "Text Verified"
+				Else
+					DataTable.Value("Result", "DT_TestSteps") = "Text Not Verified"
+				End If
+			Case "Link_Click"
+				Link_Click Environment.Value("IP1"), Environment.Value("IP2"), Environment.Value("IP3")	 					
+			Case Else
+				Reporter.ReportEvent micFail, "KEYWORD NOT FOUND", "ENDING TEST DUE TO INVALID OR MISSING KEYWORD - " & Keyword
+				'Exit For 'Exiting the Test Steps sheet loop to move on to the next test case
+		End Select
+
+
+
+End Function
+
+Function fnTestDuration (End_Time, Start_Time)
+			
+			If End_Time - Start_Time >= 60 Then
+				fnTestDuration = Round((End_Time - Start_Time)/60, 2) & " Minutes"
+			Else
+				fnTestDuration = Round(End_Time - Start_Time, 2) & " Seconds"
+			End If
+End Function
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

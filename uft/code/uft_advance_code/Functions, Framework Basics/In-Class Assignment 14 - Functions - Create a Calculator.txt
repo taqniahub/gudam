@@ -1,0 +1,11 @@
+In-Class Assignment 14 - Functions - Create a Calculator
+
+
+-- Create a Custom Function that will perform ANY mathematical operation (+, -, *, /) on ANY 2 numbers and return the result
+
+-- The result must be printed in the output pane
+
+***hint***
+you may need to use a conditional statement
+
+

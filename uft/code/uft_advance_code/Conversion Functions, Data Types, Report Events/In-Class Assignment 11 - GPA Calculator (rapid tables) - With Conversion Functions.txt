@@ -1,0 +1,15 @@
+In-Class Assignment 11 - GPA Calculator (Rapid Tables)
+
+Navigate to: https://www.rapidtables.com/calc/grade/gpa-calculator.html
+
+1. Enter all values (at least 5 classes) along with Grade and Credit/Hours
+2. Click on Calculate
+3. Capture the GPA
+4. Compare the Captured GPA with an Expected GPA 
+5. Capture Total Credit/Hours
+6. Calculate the Expected Total Credit Hours (must be calculated using VBScript)
+7. Compare the Captured Credit Hours with Expected Credit Hours
+
+***All Test Data must come from Excel
+***All Captured Results must be written to Excel
+***Use Conversion Functions as needed

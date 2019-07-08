@@ -1,0 +1,80 @@
+'*************************************Regular Expressions*******************************
+
+'=> A regular expression is a string that describes or matches a set of strings
+
+'=> It is often called a pattern as it describes sets of strings
+
+'=> Regular Expressions (RegExs) are not limited to VB Script, they are used across many programming and scripting languages
+
+'=> RegExs are known to be very powerful for sifting through a huge amount of data or for pattern recognition
+
+'=> Here's an example:
+'	-> When working on a particular applications let’s say one of the property values called HTML ID is dynamic (the property value changes during the test run)
+'	-> This means that when we use object spy to find out the property value for ID is 'REUFT101'
+'	-> But when the test runs the 1st time, the property value for ID is 'REUFT120'
+'	-> The 2nd time the test runs, the property value for ID is 'REUFT105'
+'	-> What's the pattern here??
+'	-> The 1st part of the property value is staying the same (REUFT) only the number at the end is changing
+'	-> Look closer at the 3 property values for ID: REUFT101, REUFT120, REUFT105
+'		--> The property value always has REUFT1...only the last 2 digits are changing
+'	-> Can we write a single string that can match ALL these dynamic values? 
+'		--> YES! By using Regular Expressions
+'	-> You can write REUFT1\d\d
+'		--> The 1st 6 characters (REUFT1) are fixed (static) so there is no need to REGULARIZE them
+'		--> The last 2 characters are changing (dynamic) so we need to make sure that our RegEx is able to recognize any single digit between 0 & 9
+'		--> The Regular Expression to match a DIGIT is '\d'
+'		--> Since we need to match 2 digits we use \d TWO TIMES --> REUFT1\d\d
+
+'	-> How do we include RegExs with our descriptive programming???
+'		--> Browser("micclass:=Browser").Page("micclass:=Page").WebEdit("html id:=REUFT1\d\d").Set "This is how you use RegExs"	
+
+'=> Commonly used RegEx Characters:	
+'	-> Backward Slash Character (\)
+'		--> A backward slash (\) instructs UFT to treat the next character as a literal character, IF it is otherwise a RegEx character
+'		--> What does this mean? --> Example: href = www.hp.com -> The '.' character is also a RegEx character but when the URL is a property value then we need to use the backslash (\)
+'				--> Browser("micclass:=Browser").Page("micclass:=Page").Link("href:=www\.hp\.com").Click
+'				--> We DO NOT use the backslash when telling UFT to navigate to a URL --> Systemutil.Run "iexplore.exe", "www.hp.com"
+'				--> The backslash is only necessary when working with PROPERTY VALUES THAT HAVE REGEX CHARACTERS
+'		--> The backslash '\' can also tell UFT to recognize certain ordinary characters (NOT REGEX) as special charactrs (recognize them as a regex)
+'				--> example: \d
+'	-> EXPRESSIONS AND THEIR EXPLANATIONS:
+'		--> MATCH ANY SINGLE CHARACTER '.'
+'			--> Example: "lear." will match "learn", "lear1", or "lear%", etc.
+'		--> MATCH THE PRECEDING CHARACTER ZERO OR MORE TIMES (*)
+'			--> Example: "zo*" matches either "zo" OR "zoo"
+'		--> MATCH ANY STRING WITH TEXT SPECIFIED JUST BEFORE THE PATTERN (JUST BEFORE THE REGEX) '.*'
+'			--> This is 1 of the most frequently used Regular Expressions patterns
+'			--> We must understand this properly! 
+'				--> Example: "learn.*" will match ANY STRING starting with "learn"
+'					--> Let's say we encounter a string "lets learn UFT"
+'					--> But the string changes, sometimes it also says "lets learn Selenium", sometimes is says "lets learn VBscript", sometimes it says "lets learn Java"
+'					--> We can use REGEX here like this:
+'						--> "lets learn.*" -> this will find the string regardless of the UFT, Selenium, VBScript, Java, etc after the "lets learn" part
+'		--> MATCH THE BEGINNING OF A LINE '^'
+'			--> Example: “^learnuft” will match any line that starts with “learnuft” hence it will match learnuft, learnuft.com but not www.learnuft.com
+'		--> MATCH THE END OF A LINE '$'
+'			--> Example: “learnuft$” will match any line that ends with “learnuft” hence it will match learnuft, www.learnuft but not www.learnuft.com
+'		--> MATCH THE PRECEDING CHARACTER ONE OR MORE TIMES '+'
+'			--> Example: “zo+” matches “zoo” but not “z”
+'		--> MATCH THE PRECEDING CHARACTER ZERO OR ONE TIME '?'
+'			--> Example: “a?ve?” matches the “ve” in “never”
+'		--> This is just a small sample of regex characters
+'			--> Go the link below for a complete list:
+'				https://msdn.microsoft.com/en-us/library/1400241x(v=vs.84).aspx
+
+'=> We can evaluate regex strings within UFT --> TOOLS -> REGULAR EXPRESSION EVALUATOR 
+
+'=> Common examples of Regular Expressions:
+'	--> Example 1: Regular expression to match all valid email addresses
+'			^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$
+'	--> Example 2: Regular expression to match a date in MM/DD/YYYY format
+'			^([1-9]|1[0-2])/([1-9]|[1-2][0-9]|3[0-1])/[0-9][0-9][0-9][0-9]$
+'	--> Example 3: Regular expression to match your production, test or demo instances
+'			Say you run a site, example.com which is configured for prod.example.com, test.example.com and demo.example.com. You need to make the first variable part as a regular expression. Here is how the regular expression would look like (given that the string example.com does not change)
+				-->(prod|test|demo)\.example\.com
+
+
+
+
+
+

@@ -1,0 +1,76 @@
+
+
+Dim Int1, Str1
+
+Int1 = 5
+
+Str1 = "5"
+
+'In order to get the Conditional Statement to be 'true', we need to get the 2 variables' variant subtypes to be the same. 
+
+'Option 1: Convert Int1 from an integer to a String --> cStr: Convert to String
+	
+	'Method 1: Redefine the Variable
+	'Int1 = cStr(Int1) '--> Redefining Int1 to have a variant subtype of string
+	
+	'Method 2: Convert in-line
+'	If cStr(Int1) = Str1 Then
+'		msgbox "they're the same"
+'	Else
+'		msgbox "they're different"
+'	End If
+
+
+'Option 2: Convert Str1 from a String to an Integer --> cInt: Convert to Integer
+
+	'Method 1: Redefining the Variable 
+	Str1 = cInt(Str1) 'Redefine the variable subtype from a string to an integer
+	
+	'Method 2: Covnert in-line
+'	If Int1 = cInt(Str1) Then
+'		msgbox "they're the same"
+'	Else
+'		msgbox "they're different"
+'	End If
+
+'Option 3: Convert both Str1 and Int1 to a different but common variant subtype (convert both to Currency, Long, or Byte)
+	'Convert to Currency: cCur
+	'Convert to Long: cLng
+	'Convert to Byte: cByte
+	
+	'Method 1: Redefining the variables
+'	Int1 = cCur(Int1) 'Convert to Currency
+'	Str1 = cCur(Str1) 'Convert to Currency
+'	Int1 = cLng(Int1) 'Convert to Long
+'	Str1 = cLng(Str1) 'Convert to Long
+'	Int1 = cByte(Int1) 'Convert to Byte
+'	Str1 = cByte(Str1) 'Convert to Byte
+
+
+	'Method 2: Covnert in-line
+'	If cCur(Int1) = cCur(Str1) Then
+'		msgbox "they're the same"
+'	Else
+'		msgbox "they're different"
+'	End If
+
+
+If Int1 = Str1 Then
+	msgbox "they're the same"
+Else
+	msgbox "they're different"
+End If
+'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Dim x, y
+
+x = 50000
+y = "50000"
+
+y = cInt(y) '--> Will result in error message 'Overflow' because the value of 'y' is outside the range of an integer
+
+If x = y Then
+	msgbox "they're the same"
+Else
+	msgbox "they're different"
+End If

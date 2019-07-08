@@ -1,0 +1,84 @@
+'Option Explicit
+'''Function -> a set of actions that will execute when called upon and can return a value
+''
+'''Define the Functions
+''Function fnAdd_Return (Num1, Num2)
+''	Total = Num1 + Num2
+''	fnAdd_Return = Total 'Function will now contain the value of Total
+''	'A function can only return a value, if it contains a value
+''End Function
+''
+''Function fnAdd_NoReturn (Num1, Num2)
+''	Total = Num1 + Num2
+''	msgbox Total
+''End Function
+''
+'''Call the functions
+'''msgbox fnAdd_Return (51, 10) 'When function returns a value, you must use '()' around the arguments
+''
+'''fnAdd_NoReturn 31, 20 'When function DOESN'T return a value, you do not use '()' around the arguments
+''
+'''Sub Procedures -> a set of actions that will execute when called upon and will not return a value
+''
+'''Calling the subs
+''Call spAdd (3, 7) 'If you're calling a sub using the 'Call' keyword, you must use the '()' around the arguments
+''
+'''Defining the Subs
+''Sub spAdd (Num1, Num2)
+''	Total = Num1 + Num2
+''	'spAdd = Total --> This is not allowed, because the Sub Procedure cannot contain a value -> therefore it cannot return a value
+''	msgbox Total
+''End Sub
+'
+'
+''Variable Scope:
+''Global Scope --> Variable is declared outside of any functions
+'
+'	'Dim FirstName, LastName
+'	'
+'	'Function fnFirstName (FirstName)
+'	'	msgbox "My First Name is: " & FirstName
+'	'End Function
+'	'
+'	'Function fnLastName (LastName)
+'	'	msgbox "My Last Name is: " & LastName
+'	'End Function
+'	'
+'	'Function fnFullName (FirstName, LastName)
+'	'	msgbox "My Full Name is: " & FirstName & " " & LastName
+'	'End Function
+'	'
+'	'FirstName = "Jay"
+'	'LastName = "Mathur"
+'	'
+'	''Call the Functions
+'	'fnFirstName FirstName
+'	'
+'	'fnLastName LastName
+'	'
+'	'fnFullName FirstName, LastName
+'
+''Local Scope --> Variable is declared inside the function and can be used ONLY inside that function
+'
+'Function fnAdd (Num1, Num2)
+'	Dim Total
+'	Total = Num1 + Num2
+'End Function
+'
+'fnAdd 5, 8
+'
+'msgbox Total 'Will result in a 'Variable Undefined' error message because we have Option Explicit at the top and 'Total' has not been declared at the script level (globally) it has been declared at the function level (locally)
+
+
+Function Add2Numbers (Num1, Num2)
+	Dim Total
+	Total = Num1 + Num2
+	Add2Numbers = Total
+End Function
+'
+'Dim Number1, Number2
+'Number1 = InputBox ("Enter a Number", "Number1 Value", "Enter a Number Here") 'will take input as a string
+'Number2 = InputBox ("Enter a Number", "Number2 Value", "Enter a Number Here")
+'
+'Print Add2Numbers (cint(Number1), cint(Number2)) & " is the result"
+

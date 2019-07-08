@@ -1,0 +1,43 @@
+'Rowcount = DataTable.GetRowCount 'Returns the number of rows being used
+'
+'msgbox "Number of Rows of Data being used in the Data Table: " & RowCount
+'
+'
+'ColumnCount = DataTable.GetSheet("Global").GetParameterCount 'Return the number of columns in the 'Global' sheet
+'
+'msgbox "Number of Columns of Data being used in the Data Table: " & ColumnCount
+
+
+
+For i = 1 To 4
+	
+	DataTable.SetCurrentRow(i)
+	
+	Principal = DataTable.Value("Principal", "Global") 'Reading from the DataTable --> Getting the value from the 'Principal' column on the Global Sheet
+	Rate = DataTable.Value("Rate", "Global")
+	vTime = DataTable.Value("Time", "Global")
+	
+	Print Principal & " - is the principal"
+	Print Rate & " - is the rate"
+	Print vTime & " - is the Time"
+
+	DataTable.Value("WrittenValues", "Global") = "Jay - " & i 'Writing to the DataTable --> Writing the value to the 'WrittenValues' column on the Global Sheet
+	
+Next
+
+
+'Import Data From Excel
+'Step 1: Add A sheet to the Runtime data table
+DataTable.AddSheet("Edmunds_Data")
+
+'Step 2: Import or ImportSheet
+'DataTable.Import "C:\Users\VAADMIN\Desktop\Dextop Items\2018\Summer 2018\UFT\Weekend\Day 9 - Practice - Conditional and Loop Statements\DataTableIntro_ExportSheet.xlsx" 'Import all the sheets from the source file into the data table
+
+DataTable.ImportSheet "C:\Users\VAADMIN\Desktop\Dextop Items\2018\Summer 2018\UFT\Weekend\Day 9 - Practice - Conditional and Loop Statements\Edmunds Test Data - DataTable.xlsx", "Test_Data", "Edmunds_Data" 'Will import the specified sheet from the source file, into the specified destination sheet in the DataTable
+
+'Export the Data (Save the data)
+'Option 1: Export
+'DataTable.Export "C:\Users\VAADMIN\Desktop\Dextop Items\2018\Summer 2018\UFT\Weekend\Day 9 - Practice - Conditional and Loop Statements\DataTableIntor.xlsx" 'Will export all data from all sheets into the specified file path
+
+'Option 2: ExportSheet
+DataTable.ExportSheet "C:\Users\VAADMIN\Desktop\Dextop Items\2018\Summer 2018\UFT\Weekend\Day 9 - Practice - Conditional and Loop Statements\DataTableIntro_ExportSheet.xlsx", "Global" 'Will export all data from the specified source sheet

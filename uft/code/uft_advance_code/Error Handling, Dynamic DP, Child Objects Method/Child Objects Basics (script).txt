@@ -1,0 +1,63 @@
+'Dim oDesc, MyBrowser
+'Set MyBrowser = Browser("micclass:=Browser").Page("micclass:=Page")
+'
+'
+'Set oDesc = Description.Create 'Creating a Properties Collection Object (Description Object or Bucket)
+'oDesc("micclass").value = "Link" 'The only property-value pair i am adding is 'micclass and link'
+''I am saying i want to work with all of objects on the page that have a micclass value of 'link' (work with all the links)
+'
+'
+SystemUtil.Run "iexplore.exe", "www.ebay.com"
+
+wait 7
+
+'Find all the Links
+Dim obj
+Set obj = MyBrowser.ChildObjects(oDesc) 'now obj references ALL of the objects refered to by oDesc (just like mybrowser refers to the browser and page objects)
+'now obj will refere to all of the links on the page
+
+msgbox obj.count 'will return the number of links that are present on the page
+
+
+
+Dim i, Link_Name, Arr1()
+'obj.Count value has the number of links in the page
+For i = 0 to obj.Count - 1
+  'get the name of all the links in the page
+  Link_Name = obj(i).GetROProperty("name") 
+  'Print Link_Name
+  Redim Preserve Arr1(i) 'Redefining the size of the array to be of size i
+  Arr1(i) = Link_Name
+Next
+
+'Now i want to read from the array
+For j = 0 To uBound(Arr1)
+	Print "Name is: " & Arr1(j) & " - Index Value is: " & j
+	'MyBrowser.Link("index:="&Index(j)).highlight
+Next
+
+
+Dim MyBrowser, oDesc
+Set MyBrowser = Browser("micclass:=Browser").Page("micclass:=Page")
+
+
+
+Set oDesc = Description.Create 'Creating the Description Object (Properties Collection Object, Bucket)
+oDesc("micclass").Value = "WebElement"
+oDesc("innertext").Value = "Go"				'--> I am adding the property-value pairs to the Bucket
+oDesc("html tag").Value = "SPAN"
+
+SystemUtil.Run "iexplore.exe", "www.edmunds.com/calculators"
+
+wait 5
+
+Dim obj
+Set obj = MyBrowser.ChildObjects(oDesc) 'ChildObjects method will return the collection of objects identified by oDesc and obj will now refere to ALL of those objects
+
+'Count the number of objects identified by the childobjects method (refered to by obj)
+msgbox obj.count
+
+
+'Click on the object that has an index value of 2
+obj(2).highlight
+obj(2).Click

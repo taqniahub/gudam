@@ -1,0 +1,114 @@
+''=> Create an Excel File:
+''	-> THE 1ST STEP WHEN WORKING WITH EXCEL:
+''		CREATE A REFERENCE WITHIN UFT TO THE EXCEL APPLICATION (CREATE THE CONNECTION BETWEEN UFT AND EXCEL)
+'	Dim MyExcel
+'	
+'	Set MyExcel = CreateObject("Excel.Application")
+'
+''	-> To Add a New Workbook to Excel:
+'		MyExcel.Workbooks.Add
+'
+''	-> Save the Excel File as Excel Intro.xlsx (or ExcelIntro.xls)
+'		MyExcel.ActiveWorkbook.SaveAs "C:\Users\VAADMIN\Desktop\Dextop Items\2018\Summer 2018\UFT\Weekend\Day 10 - Data Parameterization with Excel\Excel Test Data\Excel Intro.xlsx"
+'
+''	-> Close Excel Application
+'		MyExcel.Application.Quit
+'
+''	-> Release the Memory allocated for MyExcel on the computer's cache
+'		Set MyExcel = Nothing
+
+'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+'=> Write data to an Excel File that already exists 
+''	-> THE 1ST STEP WHEN WORKING WITH EXCEL IS TO CREATE THAT CONNECTION USING THE CREATEOBJECT METHOD
+'		
+'		Dim MyXL
+'		
+'		Set MyXL = CreateObject ("Excel.Application")
+'
+' MyXL.Workbooks.Open "C:\Users\VAADMIN\Desktop\Dextop Items\2018\Summer 2018\UFT\Weekend\Day 10 - Data Parameterization with Excel\Excel Test Data\Excel Intro.xlsx"
+''		Within the Excel Application (which is being referenced by MyXL) there are many workbooks
+''		We are specifying exactly which workbook to open by putting the file path of the excel workbook we want to open
+'
+'	 MyXL.Application.Visible = TRUE
+''		This is an OPTIONAL Step
+''		If we say "True" we (the tester) will be able to see the Excel Application and the workbook that is opened
+''		if we say "False" we (the tester) will not be able to see the Excel Application or the workbook (but it WILL be open and running)
+'	Dim MySheet
+'	
+'	 Set MySheet = MyXL.ActiveWorkbook.Worksheets ("Sheet1")
+''		Now the specific workbook we wanted to work with is open (it is now ACTIVE)
+''		Within the ACTIVE WORKBOOK there are many WORKSHEETS
+''		We are specifying exactly which worksheet we want to work with by putting the Sheet Name of the sheet we want UFT to reference
+''		Now 'MySheet' will reference Sheet1 in the Excel Intro.xlsx Workbook
+'
+''	-> Enter Values in Sheet1
+''		Syntax for writing data to excel is:
+''			ExcelSheetReference.Cells(row,col).Value = data
+'				MySheet.Cells(1,1).Value = "First Name"
+'				MySheet.Cells(1,"B").Value = "Last Name"
+'				MySheet.Cells(1,3).Value = "Age"
+'				MySheet.Cells(2,"A").Value = "Jay"
+'				MySheet.Cells(2,2).Value = "Mathur"
+'				MySheet.Cells(2,"C").Value = 27
+'				MySheet.Cells(3,1).Value = "John"
+'				MySheet.Cells(3,"B").Value = "Doe"
+'				MySheet.Cells(3,3).Value = 20
+'
+''	-> Save the Workbook
+'		MyXL.ActiveWorkbook.Save
+'
+''	-> Close Excel Application
+'		MyXL.Application.Quit
+'
+''	-> Release the Memory allocated for MyXL & MySheet on the computer's cache
+'		Set MyXL = Nothing
+'		Set MySheet = Nothing
+
+
+'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+'=> Read data from an Excel file that already exists
+
+'	-> THE 1ST STEP WHEN WORKING WIHT EXCEL IS TO CREATE THAT CONNECTION USING THE CREATEOBJECT METHOD
+		Dim Exl
+		
+		Set Exl = CreateObject ("Excel.Application")
+
+	 Exl.Workbooks.Open "C:\Users\VAADMIN\Desktop\Dextop Items\2018\Summer 2018\UFT\Weekend\Day 10 - Data Parameterization with Excel\Excel Test Data\Excel Intro.xlsx"
+'		Within the Excel Application (which is being referenced by MyXL) there are many workbooks
+'		We are specifying exactly which workbook to open by putting the file path of the excel workbook we want to open
+
+	 Exl.Application.Visible = TRUE
+'		This is an OPTIONAL Step
+'		If we say "True" we (the tester) will be able to see the Excel Application and the workbook that is opened
+'		if we say "False" we (the tester) will not be able to see the Excel Application or the workbook (but it WILL be open and running)
+	
+	Dim Worksheet1
+	
+	Set Worksheet1 = Exl.ActiveWorkbook.Worksheets ("TestData")
+'		Now the specific workbook we wanted to work with is open (it is now ACTIVE)
+'		Within the ACTIVE WORKBOOK there are many WORKSHEETS
+'		We are specifying exactly which worksheet we want to work with by putting the Sheet Name of the sheet we want UFT to reference
+'		Now 'Worksheet1' will reference TestData in the Excel Intro.xlsx Workbook
+
+'	-> Read Data from the sheet named TestData and present it in the output pane
+		Header1 = Worksheet1.cells(1,"A").Value
+		Header2 = Worksheet1.Cells(1,"B").Value
+		Header3 = Worksheet1.Cells(1,3).Value
+		FirstName1 = Worksheet1.Cells(2,1).Value
+		LastName1 = Worksheet1.Cells(2,2).Value
+		Age1 = Worksheet1.Cells(2,3).Value
+		FirstName2 = Worksheet1.Cells(3,"A").Value
+		LastName2 = Worksheet1.Cells(3,"B").Value
+		Age2 = Worksheet1.Cells(3,"C").Value
+		
+		Print Header1
+		Print Header2 
+		Print Header3
+		Print FirstName1
+		Print LastName1
+		Print Age1
+		Print FirstName2
+		Print LastName2
+		Print Age2

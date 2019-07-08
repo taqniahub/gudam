@@ -1,0 +1,157 @@
+Option Explicit
+
+Dim TC_RowCount, TS_RowCount, TD_RowCount, TCID, TSID, TDID, TC_Iterator, TS_Iterator, TD_Iterator
+Dim Keyword, IP1, IP2, IP3, IP4
+Dim Date_Time, i
+
+'For i = 1 To 5
+'	msgbox Timer & " - iteration: " & i
+'Next
+'"Timer" is an in-built function in VBScript which returns the number of seconds that have elapsed since 00:00:01 of the current day
+
+
+
+
+
+'Replace --> Will replace 1 value with another
+Date_Time = Now 
+'msgbox Date_Time & " - Before replacement"
+Date_Time = Replace(Date_Time, "/", "-") '--> 9-23-2018 11:12:34AM
+'msgbox Date_Time & " - After replacing the / with the -"
+Date_Time = Replace(Date_Time, ":", "_")
+'msgbox Date_Time & " - After replacing the / with the - AND replacing the : with the _"
+
+'Associate Function Library
+LoadFunctionLibrary "C:\Users\VAADMIN\Desktop\Dextop Items\2018\Summer 2018\UFT\Weekend\Day 20 - Hybrid Framework & Environment Variables\Function Libraries\Dice.Com - Hybrid Framework Function Library.qfl"
+
+'Add Sheets to the Run-Time Data Table in UFT
+DataTable.AddSheet "DT_TestCases" 'Adding a Sheet for the Test Cases called DT_TestCases
+DataTable.AddSheet "DT_TestSteps" 'Adding a Sheet for the Test Steps called DT_TestSteps
+DataTable.AddSheet "DT_TestData" 'Adding a sheet for the Test Data called DT_TestData
+
+'Import from Excel the Test Cases, Test Steps, and Test Data sheets
+DataTable.ImportSheet "C:\Users\VAADMIN\Desktop\Dextop Items\2018\Summer 2018\UFT\Weekend\Day 20 - Hybrid Framework & Environment Variables\Dice Keywords, TCs, TSs.xlsx", "TestCases", "DT_TestCases" 'Importing the TestCases sheet into DT_TestCases
+
+DataTable.ImportSheet "C:\Users\VAADMIN\Desktop\Dextop Items\2018\Summer 2018\UFT\Weekend\Day 20 - Hybrid Framework & Environment Variables\Dice Keywords, TCs, TSs.xlsx", "TestSteps", "DT_TestSteps" 'Importing the TestSteps sheet into DT_TestSteps
+
+DataTable.ImportSheet "C:\Users\VAADMIN\Desktop\Dextop Items\2018\Summer 2018\UFT\Weekend\Day 20 - Hybrid Framework & Environment Variables\Dice Keywords, TCs, TSs.xlsx", "TestData", "DT_TestData" 'Importing the TestData Sheet into DT_TestData
+
+'Read Test Cases and Test Steps Sheet
+'Count the # of Rows in the DT_TestCases & DT_TestSteps Sheets
+TC_RowCount = DataTable.GetSheet("DT_TestCases").GetRowCount 'Counting the rows in DT_TestCases
+TS_RowCount = DataTable.GetSheet("DT_TestSteps").GetRowCount 'Counting the rows in DT_TestSteps
+TD_RowCount = DataTable.GetSheet("DT_TestData").GetRowCount 'Counting the rows in  DT_TestData
+
+For TD_Iterator = 1 To TD_RowCount
+	DataTable.GetSheet("DT_TestData").SetCurrentRow(TD_Iterator) 'Sets the focus of UFT on the specific row
+	
+	'If Execute = Y, then read the test data and the TDID
+	If DataTable.Value("Execute", "DT_TestData") = "Y" Then
+		TDID = DataTable.Value("TDID", "DT_TestData")
+			
+			'get the test data
+			fnGetTestData
+			
+		'Go to each row in the TC Sheet
+		For TC_Iterator = 1 To TC_RowCount
+			 
+			 DataTable.GetSheet("DT_TestCases").SetCurrentRow (TC_Iterator) 'Sets the focus of UFT on the specific row
+			 
+			 'and see if the execute flag is 'Y'
+			 If DataTable.Value("Execute", "DT_TestCases") = "Y" Then
+			 	Environment.Value("Start_Time") = Timer 'Begin the Timer
+			 	TCID = DataTable.Value("TCID", "DT_TestCases") 'Reading the TCID if Execute = Y
+			 	
+			 	'If 'Y' then go to each row in the TS Sheet 
+			 	For TS_Iterator = 1 To TS_RowCount
+			 		
+			 		DataTable.GetSheet("DT_TestSteps").SetCurrentRow (TS_Iterator) 'Sets the focus of UFT on the specific row
+			 		
+			 		TSID = DataTable.Value("TSID", "DT_TestSteps") 'Reading the TSID from DT_TestSteps
+			 		
+			 		'and see if the TCID & TSID match
+			 		If TCID = TSID Then
+			 		'If the TCID & TSID match, execute the CORRESPONDING Test Steps (or keywords)
+			 			
+			 			'Execute the Keywords
+			 			fnExecuteKeywords
+			 			
+			 		End If 'Ends the TCID = TSID Conditional Statement 		
+			 		
+			 	Next 'Continuing the TS_Iterator loop (Test Steps Sheet Loop)
+			 		 	
+			 	Reporter.ReportEvent micDone, "Test Execution Completed - " & TCID, "Ending Execution of Test Case: " & TCID
+			 End If 'Ends the Execute = Y Conditional Statement for the TestCases sheet
+			
+			Environment.Value("End_Time") = Timer 'Stopping the Timer
+						
+			'Writing the test Duration in the TestCases Sheet
+			DataTable.Value("TestDuration", "DT_TestCases") = fnTestDuration (Environment.Value("End_Time"), Environment.Value("Start_Time"))
+		
+		
+'			msgbox Test_Duration & " seconds"
+			'Test_Duration = Round(Test_Duration, 2) 'Rounding the number to 2 decimal places
+'			msgbox Test_Duration & " Seconds After Rounding"
+'			Test_Duration = Test_Duration / 60 'to get minutes
+''			msgbox Test_Duration & " minutes"
+'			Test_Duration = Round(Test_Duration, 2) 'Rounding the number (minutes now) to 2 decimal places
+''			msgbox Test_Duration & " Minutes After Rounding"
+			
+			
+		Next 'Continues the TC_Iterator loop (Test Cases Sheet Loop)
+		
+		'Save the Test Results
+		DataTable.ExportSheet "C:\Users\VAADMIN\Desktop\Dextop Items\2018\Summer 2018\UFT\Weekend\Day 20 - Hybrid Framework & Environment Variables\Test Results\"&TDID& " - " &Date_Time&" - Results.xlsx", "DT_TestCases"
+	
+		DataTable.ExportSheet "C:\Users\VAADMIN\Desktop\Dextop Items\2018\Summer 2018\UFT\Weekend\Day 20 - Hybrid Framework & Environment Variables\Test Results\"&TDID& " - " &Date_Time&" - Results.xlsx", "DT_TestSteps"
+	
+	End If 'Ends the Execute = Y Conditional Statement for the TestData sheet
+	
+Next 'Continues the TD_Iterator Loop (Test Data Sheet loop)
+
+
+
+
+
+
+
+
+'Date
+'msgbox Date '--> Will return 9/23/2018
+'
+''Time
+'msgbox Time '--> Will Return 11:12:34AM
+'
+'Now
+'msgbox Now '--> Will return 9/23/2018 11:12:34AM
+
+
+
+
+
+
+
+
+
+'Nested Loops
+
+'Loop1 --> 3 iterations
+	
+	'Loop2 --> 10 iterations
+	
+	'NextLoop2
+
+'NextLoop1
+
+
+
+
+
+
+
+
+
+
+
+
+'Each keyword function will return a PASS or FAIL and driver script will return Test Result

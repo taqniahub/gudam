@@ -1,0 +1,186 @@
+Option Explicit 'Forces you to declare all variables
+'Prevents VBScript from allocating space for undeclared (undefined) variables
+
+'Declaring Variables
+Dim MonthlyPayment, ZipCode, LoanTerm, Rate, Trade_In, AmtOwed, DownPayment
+Dim Expected_MaxPrice, Actual_MaxPrice
+Dim i
+Dim MyExcel, MySheet, RowCount
+
+'Step 1: Connect UFT with Excel
+Set MyExcel = CreateObject("Excel.Application") 'Setting 'MyExcel' to reference the Excel Application Object
+
+'Step 2: Open the Workbook
+MyExcel.Workbooks.Open "C:\Users\VAADMIN\Desktop\Dextop Items\2018\Summer 2018\UFT\Weekend\Day 11 - Conversion Functions, Data Types\Excel Test Data\Edmunds Test Data.xlsx"
+
+'Step 3: Create a reference for the worksheet you want to work with
+Set MySheet = MyExcel.ActiveWorkbook.Worksheets ("Test_Data") 
+' --> Now 'MySheet' will reference the 'Test_Data' worksheet in Excel
+
+'OPTION STEP: Make Excel Visible
+'MyExcel.Application.Visible = True
+
+'Count the number of rows being used to determine the number of iterations for the loop
+RowCount = MySheet.UsedRange.Rows.Count
+'msgbox RowCount
+
+	
+For i = 2 to RowCount
+	
+	'Step 4: Read from Excel
+	MonthlyPayment = MySheet.Cells(i, "A")
+	ZipCode = MySheet.Cells(i, "B")
+	LoanTerm = MySheet.Cells(i, "D")
+	Rate = MySheet.Cells(i, "C")
+	Trade_In = MySheet.Cells(i, "E")
+	AmtOwed = MySheet.Cells(i, "F")
+	DownPayment = MySheet.Cells(i, "G")
+	Expected_MaxPrice = MySheet.Cells(i, "H")
+	
+	'Step 0: Close IE
+	SystemUtil.CloseProcessByName "iexplore.exe"
+	
+	'Step 1: Launch IE and navigate to URL
+	SystemUtil.Run "iexplore.exe", "www.edmunds.com/calculators"
+	
+	wait 5
+	
+		'Reporter.ReportEvent -> Helps to customize the Run Results Report
+			'4 Event Statuses: 
+				'1. micDone
+				'2. micFail
+				'3. micPass
+				'4. micWarning
+			'Syntax: Reporter.ReportEvent <EventStatus>, <Step Name>, <Any Details regarding the status>
+	
+	'VP1: Verify that the 'Auto Calculators' header exists on the page
+	'Logic: If the header exists then msgbox "Pass - auto calc header exists", otherwise, msgbox "Failed - auto calc header doesn't exist"
+	If Browser("micclass:=Browser", "CreationTime:=0", "title:=.*").Page("micclass:=Page").WebElement("innertext:=Auto Calculators ", "html tag:=H2").Exist Then
+		MySheet.Cells(i, "I").Value = "Pass" 'Writing to Excel
+		Reporter.ReportEvent micPass, "Verification Point 1", "Auto Calculator Header Exists"		
+	Else
+		MySheet.Cells(i, "I").Value = "Failed"	
+		Reporter.ReportEvent micFail, "Verification Point 1", "Auto Calculator Header Doesn't Exist"
+	End If
+	
+	
+	'Step 2: Enter Monthly Payment
+	Browser("micclass:=Browser", "CreationTime:=0", "title:=.*").Page("micclass:=Page").WebEdit("html id:=calc_input3", "html tag:=INPUT", "class:=input-dollar").Set MonthlyPayment
+	
+	
+	'Step 3: Click on Go
+	Browser("micclass:=Browser", "CreationTime:=0", "title:=.*").Page("micclass:=Page").WebElement("innertext:=Go", "html tag:=SPAN", "index:=2").Click
+	
+	
+	'VP2: Verify that the Monthly Payment Value has been captured accurately on the 2nd page
+	'Logic: If the Monthly Payment Webedit exists with 'MonthlyPayment' value inside, then msgbox "Pass - MonthlyPayment value is correct". Otherwise, msgbox "Failed - MonthlyPayment value is incorrect"
+	If Browser("micclass:=Browser", "CreationTime:=0", "title:=.*").Page("micclass:=Page").WebEdit("html id:=ac_monthly_payment", "html tag:=INPUT", "value:="&MonthlyPayment).Exist(5) Then
+		MySheet.Cells(i, "J").Value = "Pass"
+		Reporter.ReportEvent micPass, "Page 2 Monthly Payment Verification", "Page 2 Monthly Payment - Verified"		
+	Else
+		MySheet.Cells(i, "J").Value = "Failed"
+		Reporter.ReportEvent micFail, "Page 2 Monthly Payment Verification", "Page 2 Monthly Payment - Not Verified"	
+	End If
+	
+
+	
+		
+	'Step 4: Enter ZipCode
+	Browser("micclass:=Browser", "CreationTime:=0", "title:=.*").Page("micclass:=Page").WebEdit("html id:=ac_zip_code", "html tag:=INPUT", "class:=calc-zipcode").Set ZipCode
+	
+	'Step 5: Click on Update ZipCode Button
+	Browser("micclass:=Browser", "CreationTime:=0", "title:=.*").Page("micclass:=Page").WebElement("innertext:=Update Zip Code", "html tag:=SPAN").Click 
+	
+	'Step 6: Select the Loan Term
+	Browser("micclass:=Browser", "CreationTime:=0", "title:=.*").Page("micclass:=Page").WebList("name:=ac_loan_term", "html tag:=SELECT").Select LoanTerm
+	
+	'Step 7: Enter Finance Rate
+	Browser("micclass:=Browser", "CreationTime:=0", "title:=.*").Page("micclass:=Page").WebEdit("html id:=ac_market_finance_rate", "html tag:=INPUT", "class:=input-percentage").Set Rate
+	
+	'Step 8: Enter Trade In
+	Browser("micclass:=Browser", "CreationTime:=0", "title:=.*").Page("micclass:=Page").WebEdit("html id:=ac_vehicle2_price", "html tag:=INPUT", "class:=input-dollar").Set Trade_In
+	
+	'Step 9: Enter Amount Owed
+	Browser("micclass:=Browser", "CreationTime:=0", "title:=.*").Page("micclass:=Page").WebEdit("html id:=ac_vehicle2_value_owed", "html tag:=INPUT", "class:=input-dollar").Set AmtOwed
+	
+	'Step 10: Enter Down Payment
+	Browser("micclass:=Browser", "CreationTime:=0", "title:=.*").Page("micclass:=Page").WebEdit("html id:=ac_cash_down_payment", "html tag:=INPUT", "class:=input-dollar").Set DownPayment
+	
+	'Step 11: Click on Calculate
+	Browser("micclass:=Browser", "CreationTime:=0", "title:=.*").Page("micclass:=Page").WebElement("innertext:=Calculate", "html tag:=SPAN").Click
+	
+	wait 5
+	
+	'GetROProperty --> Captures a specified property value from an object in the AUT that has been identified
+	'--> Get RunTime Object Property Value
+	'--> Captures property values as Strings always
+	
+	'Step 12: Capture the Max Price
+	Actual_MaxPrice = Browser("micclass:=Browser", "CreationTime:=0", "title:=.*").Page("micclass:=Page").WebElement("class:=calc-results-total", "html id:=ac_max_tmv_result", "html tag:=SPAN").GetROProperty("innertext")
+	
+	MySheet.Cells(i, "L").Value = Actual_MaxPrice
+	
+	'Convert the variant subtypes to allow the verification to pass
+	
+	'Option 1: Convert Actual_MaxPrice from String to Currency
+		'Method 1: Variable Redefinition
+		'Actual_MaxPrice = cCur(Actual_MaxPrice)
+		
+		'Method 2: In-line conversion
+'		If cCur(Actual_MaxPrice) = Expected_MaxPrice Then
+'			MySheet.Cells(i, "K").Value = "Test Passed"
+'		Else
+'			MySheet.Cells(i, "K").Value = "Test Failed"
+'		End If
+		
+	
+	'Option 2: Convert Expected_MaxPrice from Currency to String
+		'Method 1: Redefine the variable
+		'Expected_MaxPrice = cStr(Expected_MaxPrice) '--> DOES NOT WORK because of the '$' and the ',' in 'Actual_MaxPrice'
+		
+	
+	'Option 3: Convert both Expected and Actual to a differnt but common variant subtype
+		'Method 1: Convert both to Long -> Redefine the Variable
+'		Expected_MaxPrice = cLng(Expected_MaxPrice)
+'		Actual_MaxPrice = cLng(Actual_MaxPrice)
+		
+		
+		'Method 2: Convert both to Long --> in-line conversion
+		If cLng(Actual_MaxPrice) = cLng(Expected_MaxPrice) Then
+			MySheet.Cells(i, "K").Value = "Test Passed"
+			Reporter.ReportEvent micPass, "Max Price Verification", "Max Price Verified"
+		Else
+			MySheet.Cells(i, "K").Value = "Test Failed"
+			Reporter.ReportEvent micFail, "Max Price Verification", "Max Price Not Verified - Actual Max Price: " & Actual_MaxPrice & " -- Expected Max Price: " & Expected_MaxPrice
+		End If
+	
+		
+	'Step 13: Verify the Max Price
+'	If Actual_MaxPrice = Expected_MaxPrice Then
+'		MySheet.Cells(i, "K").Value = "Test Passed"
+'	Else
+'		MySheet.Cells(i, "K").Value = "Test Failed"
+'	End If
+
+
+	
+Next
+
+'Save Excel
+MyExcel.ActiveWorkbook.SaveAs "C:\Users\VAADMIN\Desktop\Dextop Items\2018\Summer 2018\UFT\Weekend\Day 11 - Conversion Functions, Data Types\Excel Test Data\Edmunds Test Results - with Conversions and Reporter Events.xlsx"
+
+'Quit Excel
+MyExcel.Application.Quit
+
+'Clear the Memory --> must be done at the very end, when you're done using the object reference
+Set MyExcel = Nothing
+Set MySheet = Nothing
+
+
+
+
+
+''Reading Vs Writing from/to Excel
+'MySheet.Cells(i, "B").Value = Value1 'Writing to Excel
+'
+'Value1 = MySheet.Cells(i, "B").Value 'Reading from Excel

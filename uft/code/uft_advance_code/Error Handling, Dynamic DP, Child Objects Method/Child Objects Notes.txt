@@ -1,0 +1,168 @@
+'*************************Child Objects***************************
+
+'=> What are Child Objects:
+'	-> The objects contained within another objects
+'	-> Examples of child objects: Links, WebButtons, WebEdits, WebTables, Images, WebElements, WebCheckBoxes, Radio Buttons, etc.
+'	-> The ChildObject Method is used for many reasons when we need to work with all the child objects of a particular class 
+
+'=> We can use the ChildObjects Method to help us capture the various properties of all the objects of a class 
+'=> We can use the ChildObjects Method to help us determine the index value of each object of a particular class
+
+
+'EXAMPLES:
+
+'=> Below is an example that finds all the WebEdits of a Particular set of properties found on the page
+'=> Then We write the index value and html id value for each WebEdit object found in a Reserved Global Dictionary Object 
+'=> Then we print the Key and Value pairs from the Global Dictionary
+
+
+Dim oDesc, MyBrowser
+Set MyBrowser = Browser("micclass:=Browser").Page("micclass:=Page")
+
+'Create a Properties Collection Object called oDesc using the Description.Create method
+Set oDesc = Description.Create
+oDesc("micclass").value = "WebEdit"
+oDesc("html tag").Value = "INPUT"
+oDesc("name").Value = "calc_default_value"
+
+SystemUtil.Run "iexplore.exe", "www.edmunds.com/calculators"
+
+'Find all the WebEdits
+Dim obj
+Set obj = MyBrowser.ChildObjects(oDesc)
+
+'Count all of the objects that match the description referenced by 'oDesc' 
+msgbox obj.count
+
+'Removing all previous items from the Reserved Global Dictionary Object
+GlobalDictionary.RemoveAll
+
+Dim i, x
+'obj.Count value has the number of links in the page
+For i = 0 to obj.Count - 1				
+  'get the name of all the links in the page
+  x = obj(i).GetROProperty("html id") 
+  'Printing the captured html id values
+  Print x
+  'Adding the items to the Reserved Global Dictionary Object (i = key & x = value - this creates the key-value pair)
+  GlobalDictionary.Add i, x
+Next
+
+Keys = GlobalDictionary.Keys
+Items = GlobalDictionary.Items 
+
+For j = 0 To GlobalDictionary.Count-1
+	Print Keys(j) & " :" & Items(j)
+Next
+
+MyBrowser.WebEdit("index:=2", "name:=calc_default_value").highlight
+wait 5
+MyBrowser.WebEdit("index:=2", "name:=calc_default_value").highlight
+
+
+'===================================
+'=> ANOTHER EXAMPLE:
+
+'=> This example goes to Amazon.Com and captures the innertext property value for all of the links found on the home page
+'=> We then write the Index (key) and Innertext (value) for each link found in a Reserved Global Dictionary Object
+'=> We Then Print the Innertext and Index values for each link from the Dictionary Object
+'=> We then highlight all of the links found on the home page by only using the Index Value
+
+Dim oDesc, MyBrowser
+Set MyBrowser = Browser("micclass:=Browser").Page("micclass:=Page")
+Set oDesc = Description.Create
+oDesc("micclass").value = "Link"
+
+
+SystemUtil.Run "iexplore.exe", "www.amazon.com"
+
+'Find all the Links
+Dim obj
+Set obj = MyBrowser.ChildObjects(oDesc)
+
+'counting all of the Objects that meet the description referenced by 'oDesc'
+msgbox obj.count
+
+'Removing all previous entries made to the Reserved Global Dictionary Object
+GlobalDictionary.RemoveAll
+
+Dim i, x
+'obj.Count value has the number of links in the page
+For i = 0 to obj.Count - 1				
+  'get the name of all the links in the page
+  x = obj(i).GetROProperty("innertext") 
+  'Print x
+  GlobalDictionary.Add i, x
+Next
+
+Index_Value = GlobalDictionary.Keys
+Items = GlobalDictionary.Items 
+
+For j = 0 To GlobalDictionary.Count-1
+	Print "Innertext is: " & Items(j) & " - Index Value is: " & Index_Value(j)
+	MyBrowser.Link("index:="&Index_Value(j)).highlight
+Next
+
+
+'=========================================================
+'=> ANOTHER EXAMPLE:
+
+
+'=> In this example, we are going to Ebay.com and capturing the innertext of all the links on the home page
+'=> We are Storing the captured innertext properties for all the objects of class 'link' in to an Array named 'Arr1'
+'=> We are using the Redim statement with the Array because we were unsure of how many links there are on the page when we wrote the script. This is why we declared the Array Arr1 as a dynamic Array
+'=> We are using the Preserve statement with the Array because we want to make sure that once an item is added to the array, the addition of the next item will not remove the other items in the array. The Preserve statement preserves the array
+'=> We are then reading from Arr1 and printing the Innertext. 
+'=> Since the only reference to each item in an Array is the index itself, we are confined to use the variable 'j' as the index value (hopefully there is no mistake in our iteration incremenation!)
+'=> To compare the difference between Arrays and Dictionary Objects, We are then Printing the values stored in the Reserved Global Dictionary from the previous scripts (using Amazon.Com)
+
+
+
+Dim oDesc, MyBrowser
+Set MyBrowser = Browser("micclass:=Browser").Page("micclass:=Page")
+Set oDesc = Description.Create
+oDesc("micclass").value = "Link"
+
+SystemUtil.Run "iexplore.exe", "www.ebay.com"
+
+'Find all the Links
+Dim obj
+Set obj = MyBrowser.ChildObjects(oDesc)
+
+msgbox obj.count
+
+
+
+Dim i, x, Arr1()
+'obj.Count value has the number of links in the page
+For i = 0 to obj.Count - 1				
+  'get the name of all the links in the page
+  x = obj(i).GetROProperty("innertext") 
+  'Print x
+  Redim Preserve Arr1(obj.count-1)
+  Arr1(i) = x
+Next
+
+
+For j = 0 To obj.count-1
+	Print "Innertext is: " & Arr1(j) & " - Index Value is: " & j
+	'MyBrowser.Link("index:="&Index(j)).highlight
+Next
+
+Print "===================Items from Reserved Global Dictionary Object==========================="
+
+'Doing this to show that Items stored in a Reserved Global Dictionary Object can be used across many Tests because once added, the key-value pairs remain even after the end of the test execution
+Keys = GlobalDictionary.Keys
+Items = GlobalDictionary.Items
+
+For x = 0 To GlobalDictionary.Count-1
+	Print Keys(x) & ": " & Items(x)	
+Next
+
+
+
+
+
+
+
+

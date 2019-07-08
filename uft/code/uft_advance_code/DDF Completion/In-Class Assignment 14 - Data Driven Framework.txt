@@ -1,0 +1,21 @@
+In-Class Assignment 14 - Data Driven Framework
+
+Use the DDF we created in class to automate at least 2 Calculators found on:
+--> https://www.calculator.net/financial-calculator.html
+
+**** Work with any calculator EXCEPT the following:
+	1. Loan Calculator
+	2. ROI Calculator
+	3. Budget Calculator
+	4. Currency Calculator
+	5. 401k Calculator
+
+
+- Download the Function Library from  the Class Notes Section
+- Download the Excel Workbook from the Class Notes Section
+- Create the test data for the 1st calculator you are testing
+- Create the script for the 1st calculator you are testing
+- Run the script to make sure it works properly
+- Create the test data for the 2nd calculator you are testing
+- Create the script for the 2nd calculator you are testing
+- Run the script to make sure it works properly 

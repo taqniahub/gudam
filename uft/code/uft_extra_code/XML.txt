@@ -1,0 +1,137 @@
+'*************EXTENSIBLE MARKUP LANGUAGE (XML)*******************
+
+'XML stands for Extensible Markup LANGUAGE
+
+'Three Important Characteristics of XML:
+'	1. XML is Extensible - Allows you to create your own self-descriptive tags (language) that suits your application
+'	2. XML CARRIES data, it does not present it - XML allows you to store the data regardless of how it will be presented
+'	3. XML is a public standard - XML was developed by an organization called the World Wide Web Consortium (W3C) and is available as an open standard
+
+'Various Uses of XML:
+'	=> XML can work behind the scenes to simplify the creation of HTML documents for large websites
+'	=> XML can be used to exchange the information between organizations and systems
+'	=> XML can be used for offloading and reloading of databases
+'	=> XML can be used to store and arrange the data, which can customize your data handling needs ***
+'	=> XML can easily be merged with style sheets to create almost any desired output
+'	=> Virtually, any type of data can be expressed as an XML document
+
+'XML is a MARKUP language which defines a set of rules for encoding documents in a format that both humans and machines can read
+
+'WHAT IS A MARKUP LANGUAGE?
+'	=> "Markup" is information added to a document that enhances its meaning in certain ways - it identifies the parts and how they relate to each other
+'	=> A Markup Language is a set of symbols (tags) that can be placed in the text of a doucment to demarcate and lable the parts of that document
+'			Demarcate = to set the boundries/limits
+'		=> Example:
+'			<Variable>
+'			<Name>URL</Name>
+'			<Value>"www.edmunds.com/calculators"</Value>
+'			</Variable>
+
+'		=> Tags --> <Variable>, </Variable>, <Name>, </Name>, <Value>, </Value>
+'		=> <Variable> & </Variable> Demarcate the start and end of the XML code fragment
+
+'XML IS NOT A PROGRAMMING LANGUAGE
+'	=> XML does not qualify as a programming language because it doesn't perform any actions such as computations
+'	=> XML code is usually stored in a simple text file and is processed by software that can interpret XML 
+
+'SYNTAX:
+
+'ELEMENTS AND TAGS:
+'	=> An XML file is structured by several XML elements called "nodes" or "tags"
+'	=> Element names are enclosed in < > to demarcate the start of the tag and </ > to demarcate the end of the tag
+'	=> Nested Elements:
+'		=> 1 XML Element can contain many other elements within it as its children 
+'		=> Children elements cannot overlap
+'			=> Example of INCORRECT Nested Tags:
+'				<Variables>
+'				<Name>URL
+'				<Value>"www.edmunds.com/calculators"
+'				<Name>MaxMonthly
+'				<Value>450
+'				</Variables>
+'					=> This is incorrect because the <Name> Tag for URL must be closed before a new <Name> tag can be defined.
+'					=> Same rule applies for the <Value> Tag
+
+'			=> Example of CORRECT Nested Tags:
+'				<Variables>
+'				<Name>URL
+'				</Name>
+'				<Value>"www.edmunds.com/calculators"
+'				</Value>
+'				<Name>MaxMonthly</Name>
+'				<Value>450</Value>
+'				</Variables>
+
+'		=> XML is a CASE-SENSITIVE language - The names of XML-elements are case sensitive
+'			=> This means that <Variables>...</variables> will not be correct
+'			=> <Variables>...</Variables> will be correct
+
+'XML DOCUMENTS:
+'	=> An XML Document is a basic unit of XML information composed of elements and other markup in an orderly package
+'	=> An XML Document contains a wide variety of data
+
+'Document Elements Section:
+'	=> Document Elements are the building blocks of XML 
+'	=> Document Elements divide the document into a hierarchy of sections, each having its own purpose
+'	=> The Elements can be containers with a combination of text and other elements
+
+'XML TAGS:
+'	=> Every Element must have a Start (< >) and End Tag (</ >)
+'	=> The text that appears between a Start and End Tag is called CONTENT
+'	=> Empty Tags: An element which has no Content is called an Empty Tag
+'	=> Empty Tags can be represented in 2 different ways:
+'		1. A Start Tag immediately folowed by an End Tag
+'			--> <Variable></Variable>
+'		2. A complete Empty Element Tag
+'			--> <Variable />
+'		=> These Empty Element tags may be used for any element that has no content
+'	=> XML Tag Rules:
+'		=> Rule 1: XML Tags are case sensitive
+'		=> Rule 2: XML Tags must be enclosed in an appropriate order
+'			--> An XML Tag opened inside another XML Tag must be closed first before the outter Tag is closed
+'			--> Example:
+'			<Outer_Tag>
+'				<Inner_Tag>
+'					This tag is closed before the outter_tag
+'				</Inner_Tag>
+'			</Outer_Tag>
+
+'XML ELEMENTS:
+'	=> Elements can behave as containers to hold text, elements, attributes, & media objects
+'	=> Each XML document contains XML Elements whose scope is delimited by Start and End Tags or (in the case of empty elements)
+'		by an Empty-Element Tag
+'	=> Syntax:
+'		<Element_Name ATTRIBUTE1 ATTRIBUTE2>
+'			Some Textual content
+'		</Element_Name>
+'			--> Element_Name: Name of the Element; the case must match for both Start and End Tags
+'			--> ATTRIBUTE1, ATTRIBUTE2: Attributes of the element seperated by white spaces
+'				--> An Attribute defines a property of the element 
+'	=> Example of an XML Document using various XML Elements:
+'		<contact-info>
+'			<address category="residence"> --> Category is The ATTRIBUTE, "residense" is the value of the ATTRIBUTE
+'				<name>Jay Mathur</name>
+'				<company>PeopleNTech</company>
+'				<phone>(703)123-4567</phone>
+'			</address>
+'		</contact-info>
+'	=>XML ELEMENT RULES:
+'		=> Element Name can contain any alphanumeric characters. Only punctuation allowed in Element Names are the hyphen (-), the under-score (_), and the period. 
+'		=> Names are case sensitive - address, Address, & ADDRESS are all different names
+'		=> Start and End Tags of an element must be identical
+'		=> An Element, which is a container, can contain text or elements
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

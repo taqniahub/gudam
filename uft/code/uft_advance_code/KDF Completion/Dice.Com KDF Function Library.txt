@@ -1,0 +1,234 @@
+'~~~~~~~~~~~~~~~~~~~~~~~~~~~~Dice.Com KDF Function Library~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Dim MyBrowser
+Set MyBrowser = Browser("micclass:=Browser").Page("micclass:=Page")
+
+
+Function Button_Click (Prop_Name, Prop_HtmlID, Prop_HTmlTag)
+	err.clear 'clearing out the error object
+	On Error Resume Next 'turning on error handling
+	'Purpose: Click on any WebButton on Dice.Com
+	'I/P: Prop_Name, Prop_HtmlID, Prop_HTmlTag
+	'O/P: N/A
+		Dim oWebButton
+		Set oWebButton = Description.Create
+		oWebButton("name").Value = Prop_Name
+		oWebButton("html id").Value = Prop_HtmlID
+		oWebButton("html tag").Value = Prop_HTmlTag
+		
+		'Action Line
+		MyBrowser.WebButton(oWebButton).Click
+		
+		'Good Housekeeping
+		Set oWebButton = Nothing
+		
+		
+		If fnErrorHandling() Then
+			DataTable.Value("Result", "DT_TestSteps") = "Failed"
+			DataTable.Value("Error", "DT_TestSteps") = Err.Number & " -- " & Err.Description
+			Reporter.ReportEvent micFail, "Step Number: " & DataTable.Value("Step_No.", "DT_TestSteps") & " - Failed", Err.Description
+			'Step Number: 1 - Failed; xyz error message
+		Else
+			DataTable.Value("Result", "DT_TestSteps") = "Passed"
+			DataTable.Value("Error", "DT_TestSteps") = "N/A"
+			Reporter.ReportEvent micPass, "Step Number: " & DataTable.Value("Step_No.", "DT_TestSteps") & " - Passed", DataTable.Value("Step_Description", "DT_TestSteps") & " - Passed"
+			'Step: Step Number: 1 - Passed; Open IE and go to URL - Passed
+		End If
+		
+	On Error Goto 0
+		
+		
+		
+		
+End Function
+
+Function Edit_Set (Prop_Name, Prop_HtmlID, Prop_HtmlTag, WE_Value)
+	err.clear
+	On Error Resume Next
+	'Purpose: Enter text into any webedit object on Dice.Com
+	'I/P: Prop_Name, Prop_HtmlID, Prop_HtmlTag, WE_Value
+	'O/P: N/A
+		Dim oWebEdit
+		Set oWebEdit = Description.Create
+		oWebEdit("name").Value = Prop_Name
+		oWebEdit("html id").Value = Prop_HtmlID
+		oWebEdit("html tag").Value = Prop_HTmlTag
+		
+		'Action Line
+		MyBrowser.WebEdit(oWebEdit).Set WE_Value
+		
+		'Good Housekeeping
+		Set oWebEdit = Nothing
+		
+		If fnErrorHandling() Then
+			DataTable.Value("Result", "DT_TestSteps") = "Failed"
+			DataTable.Value("Error", "DT_TestSteps") = Err.Number & " -- " & Err.Description
+			Reporter.ReportEvent micFail, "Step Number: " & DataTable.Value("Step_No.", "DT_TestSteps") & " - Failed", Err.Description
+			'Step Number: 1 - Failed; xyz error message
+		Else
+			DataTable.Value("Result", "DT_TestSteps") = "Passed"
+			DataTable.Value("Error", "DT_TestSteps") = "N/A"
+			Reporter.ReportEvent micPass, "Step Number: " & DataTable.Value("Step_No.", "DT_TestSteps") & " - Passed", DataTable.Value("Step_Description", "DT_TestSteps") & " - Passed"
+			'Step: Step Number: 1 - Passed; Open IE and go to URL - Passed
+		End If
+		
+	On Error Goto 0
+End Function
+
+Function Text_Verify (Prop_HtmlTag, Prop_Class, Prop_InnerText)
+	'Purpose: To Verify if text exists on the page in the form of an element
+	'I/P: Prop_HtmlTag, Prop_Class, Prop_InnerText
+	'O/P: True or False
+		Dim oWebElement
+		Set oWebElement = Description.Create
+		oWebElement("html tag").Value = Prop_HtmlTag
+		oWebElement("class").Value = Prop_Class
+		oWebElement("innertext").Value = Prop_InnerText
+		
+		'Action Line
+		If MyBrowser.WebElement(oWebElement).Exist(5) Then
+			Text_Verify = True
+			Else
+			Text_Verify = False	
+		End If
+		
+		'Good Housekeeping
+		Set oWebElement = Nothing
+		
+End Function
+
+Function Link_Click (Prop_Name, Prop_HtmlID, Prop_Class)
+	err.clear
+	On Error Resume Next
+	'Purpose: Click on any link object on Dice.Com
+	'I/P: Prop_Name, Prop_HtmlID, Prop_Class
+	'O/P: N/A
+		Dim oLink
+		Set oLink = Description.Create
+		oLink("name").Value = Prop_Name
+		oLink("html id").Value = Prop_HtmlID
+		oLink("class").Value = Prop_Class
+		
+		'Action Line
+		MyBrowser.Link(oLink).Click
+		
+		
+		'Good Housekeeping
+		Set oLink = Nothing
+		
+		If fnErrorHandling() Then
+			DataTable.Value("Result", "DT_TestSteps") = "Failed"
+			DataTable.Value("Error", "DT_TestSteps") = Err.Number & " -- " & Err.Description
+			Reporter.ReportEvent micFail, "Step Number: " & DataTable.Value("Step_No.", "DT_TestSteps") & " - Failed", Err.Description
+			'Step Number: 1 - Failed; xyz error message
+		Else
+			DataTable.Value("Result", "DT_TestSteps") = "Passed"
+			DataTable.Value("Error", "DT_TestSteps") = "N/A"
+			Reporter.ReportEvent micPass, "Step Number: " & DataTable.Value("Step_No.", "DT_TestSteps") & " - Passed", DataTable.Value("Step_Description", "DT_TestSteps") & " - Passed"
+			'Step: Step Number: 1 - Passed; Open IE and go to URL - Passed
+		End If
+		
+	On Error Goto 0
+
+End Function
+
+Function Browser_Close (Browser_Name)
+	err.clear
+	On Error Resume Next
+	'Purpose: Close any Browser
+	'I/P: Browser_Name
+	'O/P: N/A
+		SystemUtil.CloseProcessByName Browser_Name
+		
+	If fnErrorHandling() Then
+			DataTable.Value("Result", "DT_TestSteps") = "Failed"
+			DataTable.Value("Error", "DT_TestSteps") = Err.Number & " -- " & Err.Description
+			Reporter.ReportEvent micFail, "Step Number: " & DataTable.Value("Step_No.", "DT_TestSteps") & " - Failed", Err.Description
+			'Step Number: 1 - Failed; xyz error message
+		Else
+			DataTable.Value("Result", "DT_TestSteps") = "Passed"
+			DataTable.Value("Error", "DT_TestSteps") = "N/A"
+			Reporter.ReportEvent micPass, "Step Number: " & DataTable.Value("Step_No.", "DT_TestSteps") & " - Passed", DataTable.Value("Step_Description", "DT_TestSteps") & " - Passed"
+			'Step: Step Number: 1 - Passed; Open IE and go to URL - Passed
+		End If
+	
+	On Error Goto 0
+	
+End Function
+
+Function Browser_Open (Browser_Name, URL)
+	err.clear
+	On Error Resume Next
+	'Purpose: Launch any browser and navigate to URL
+	'I/P: Browser_Name, URL
+	'O/P: N/A
+		SystemUtil.Run Browser_Name, URL
+	
+	If fnErrorHandling() Then
+			DataTable.Value("Result", "DT_TestSteps") = "Failed"
+			DataTable.Value("Error", "DT_TestSteps") = Err.Number & " -- " & Err.Description
+			Reporter.ReportEvent micFail, "Step Number: " & DataTable.Value("Step_No.", "DT_TestSteps") & " - Failed - EXITING TEST EXECUTION", Err.Description
+			'Step Number: 1 - Failed; xyz error message
+			ExitTest
+		Else
+			DataTable.Value("Result", "DT_TestSteps") = "Passed"
+			DataTable.Value("Error", "DT_TestSteps") = "N/A"
+			Reporter.ReportEvent micPass, "Step Number: " & DataTable.Value("Step_No.", "DT_TestSteps") & " - Passed", DataTable.Value("Step_Description", "DT_TestSteps") & " - Passed"
+			'Step: Step Number: 1 - Passed; Open IE and go to URL - Passed
+		End If
+		
+	On Error Goto 0
+End Function
+
+Function fnWait (WaitTime)
+	err.clear
+	On Error Resume Next
+	Wait WaitTime
+	
+	If fnErrorHandling() Then
+			DataTable.Value("Result", "DT_TestSteps") = "Failed"
+			DataTable.Value("Error", "DT_TestSteps") = Err.Number & " -- " & Err.Description
+			Reporter.ReportEvent micFail, "Step Number: " & DataTable.Value("Step_No.", "DT_TestSteps") & " - Failed", Err.Description
+			'Step Number: 1 - Failed; xyz error message
+		Else
+			DataTable.Value("Result", "DT_TestSteps") = "Passed"
+			DataTable.Value("Error", "DT_TestSteps") = "N/A"
+			Reporter.ReportEvent micPass, "Step Number: " & DataTable.Value("Step_No.", "DT_TestSteps") & " - Passed", DataTable.Value("Step_Description", "DT_TestSteps") & " - Passed"
+			'Step: Step Number: 1 - Passed; Open IE and go to URL - Passed
+		End If
+	
+	On Error Goto 0
+End Function
+
+
+Function fnErrorHandling()
+	
+	If Err.Number <> 0 Then
+		fnErrorHandling = True
+	Else
+		fnErrorHandling = False	
+	End If
+
+
+End Function
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

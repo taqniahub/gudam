@@ -1,0 +1,73 @@
+'**********************Descriptive Programming***********************
+'When and Where to use DP:
+' - Dynamic Object Properties
+'	=> Object Properties in the AUT are changing and so require special handling to identify the object
+
+' - Large Object Repository
+'	=> A large OR will reduce performance of UFT while recognizing an object - we want to BYPASS the Object Repository
+
+' - Application is not ready (still in development phase)
+'	=> To use DP, we only require 2 things:
+'		=> Object Properties 
+'		=> Object Property Values
+'			=> Where do we get these from if the application isn't available?
+'				- From the developers - in the design documents
+
+' - OR is in Read-Only or Shared Mode
+'	=> Can't use the drag/drop method to create scripts
+'	=> It's possible to make changes to the shared OR, but those changes might affect other scripts that use the same shared OR
+
+' - Several identical objects that require the same action
+'	=> On the Same Page:
+'		=> Example: You have 15 text boxes on a page whose "name" property is "txt_1", "txt_2", "txt_3", etc. 
+'			=> Adding all 15 text boxes to the OR will NOT be the most efficient way of creating your script (it's not wrong, just not very efficient)
+'			=> Since the only way to uniquely identify each text box is by using the "index" property, it's better to use DP instead of using the OR
+
+
+'How to Use DP:
+'	1. Giving a Description in the form of a string argument (in-line DP OR static DP)
+'		=> Browser("micclass:=Browser").Page("micclass:=Page").WebEdit("html tag:=INPUT", "title:=username").Set UserName
+'		=> The Object Repository DOES NOT provide description properties for Browser and Page Object Classes
+'		=> Micclass: "Class Name" Property as seen in Object Spy 
+'			=> Stands for - Mercury Interactive Constant Class
+'			=> To use the "Class Name" property and it's value using DP you must use "micclass" (not "Class Name")
+'		=> Difference between Class Name and Class Properties:
+'			=> Class Name: The basic essense of that object. If "Class Name" is changed, the object itself would change
+'			=> Class: A selector used for styling purposes in HTML.
+'
+'	2. By Creating a Properties Collection Object for the Description (aka Dynamic Descriptive Programming; creating Description Objects)
+'		=> Does the same thing as string arguments
+'		=> Only difference is that it "collects" all the properties of a particular object in an instance of that object
+'		=> Once this is done, we can easily reference the object by using the instance, instead of writing the string argument repetitively 
+'			=> Example: 
+'				Dim oWebButton
+'				Set oWebButton = Description.Create
+'				oWebButton("html tag").Value = "Submit"
+'				oWebButton("name").Value = "Log in"
+'				Browser("micclass:=Browser").Page("micclass:=Page").WebButton(oWebButton).Click
+
+'**Things to Note About Descriptive Programming**
+'	1. When using DP from a specific point within a test where previously you have used the OR, you must continue to use DP from that point onwards to complete the object hierarchy.
+'		What is allowed: Browser("micclass:=Browser").Page("micclass:=Page").WebButton(oWebButton).Click
+'		What is not allowed Browser("micclass:=Browser").Page("micclass:=Page").WebTable("html tag:=TABLE", "name:=Table1").WebElement("Date - March 27").Click
+'			=> Here, you are using DP to describe the Browser, page, and WebTable, but using the OR to identify the WebElement - This will not work
+
+'	2. UFT evaluates all property values in DP as regular expressions. Therefore, if you want to enter a value that contains a 
+'		  special regular expression character (such as *, ?, or +) use the \(backslash) character to instruct UFT to treat the 
+'		  special characters as literal characters
+'		=> Example:
+'			Browser("micclass:=Browser").Page("micclass:=Page").WebEdit("type:=text", "name:=(username)", "html tag:=INPUT").Set "testuser1"
+'				=> The name property value is "(username)" and so the parentheses must be taken as literal characters. That's why we use a 
+'					\(backslash) before each occurance of the special character. 
+
+'	3. There is a myth that DP can be used when UFT is unable to identify objects using normal means.
+'		=> Descriptive Programming provides a way to BYPASS the Object Repository and also provides a bit of flexibility to identify objects. 
+'		=> However, if even after applying the appropriate add-ins you are not able to identify an object, don't assume that DP can help you out!
+
+
+
+
+
+
+
+

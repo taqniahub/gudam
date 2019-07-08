@@ -1,0 +1,10 @@
+Data Driven Framework is implemented when:
+	-> Application is Stable (not changing)
+	-> High Demand for Increasing Test Coverage
+	-> We want to throw multiple sets of test data against the application
+
+Keyword Driven Framework is implemented when:
+	-> Application is Unstable (changing)
+	-> High Demand for Regression Testing
+	-> We want to focus our regression testing to make it more efficient
+		--> Instead of Regression Testing EVERYTHING

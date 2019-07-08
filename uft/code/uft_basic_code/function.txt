@@ -1,0 +1,112 @@
+####################################
+'Ways to Return values from Function
+'####################################
+ 
+'a. Single return value
+ 
+Function Temp()
+    Dim x
+    X=5
+     
+    Temp= x
+End Function
+    
+'b.Multiple values return:
+Concatenate variables
+Function Temp()
+    Dim x,y
+    X=5
+    Y=6
+     
+    Temp= x & "~"y
+End Function
+ 
+'c. Save Variables in array
+Function Temp()
+    Dim x,y, aResult(1)
+    x=5
+    y=6
+    aResult (0) = x
+    aResult(1) = y
+    Temp=aResult
+End Function
+ 
+'d. Return Object
+Set ret = Temp()
+X = ret.Item(1)
+Y= ret.item(2)
+ 
+Function Temp()
+    Dim oDict,x,y
+    X=5
+    Y=8
+    Set oDict = CreateObject("Scripting.Dictionary")
+    oDict.Add 1,x
+    oDict.Add 2,y
+Set Temp= oDict
+End Function
+ 
+'e. Return Multiple values of different Types:
+ 
+ret = Temp()
+ret_1 = ret(0)
+ret_2= ret(1)
+ret_3 = ret(2)
+Set ret_4 = ret(3)
+msgbox ret_1 
+msgbox ret_2
+msgbox ret_3
+msgbox  ret_4.FileExists("C:\QueryRandD.txt") 
+ 
+'Output: 
+'5, 8, "AutomationFraternity", 
+'True or False dependening on the file availability.
+Function Temp()
+    Dim fso,x,y,str
+    Dim aResult(3)
+    X=5
+    Y=8
+    Str = "AutomationFraternity"
+     
+    'Object can be of any type of Object:
+    ' Fso, Dictionary, XML, or QTP 'hierarchy object
+    'Set oBrowser = Browser("title:=.*").Page("name:=.*)
+    Set fso = CreateObject("Scripting.FileSystemObject")
+    aResult(0) = x
+    aResult(1) = y
+    aResult(2) = str
+    Set aResult(3) = fso
+     
+    Temp= aResult 
+End Function
+
+
+Dim ret,iterator
+Function Temp()
+Dim var_list,sp_var
+var_list = "Hi nayum, How are you?"
+sp_var = split(var_list, " ")
+Temp = sp_var
+End Function
+ 
+ret = Temp()
+
+For iterator = 0 To 4 Step 1
+	print(ret(iterator))
+Next
+
+
+Dim ret,i
+Function Temp()
+Dim var_list,sp_var
+var_list = "Hi nayum, How are you?"
+sp_var = split(var_list, " ")
+Temp = sp_var
+End Function
+ 
+ret = Temp()
+
+For i = lbound(ret) To ubound(ret)
+	print(ret(i))
+Next
+

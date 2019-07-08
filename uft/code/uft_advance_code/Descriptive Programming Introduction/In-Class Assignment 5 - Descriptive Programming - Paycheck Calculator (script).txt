@@ -1,0 +1,41 @@
+
+'0. Close IE
+SystemUtil.CloseProcessByName "iexplore.exe"
+
+'1. Navigate to https://www.calculator.net/take-home-pay-calculator.html
+SystemUtil.Run "iexplore.exe", "https://www.calculator.net/take-home-pay-calculator.html"
+
+wait 5
+
+'2. Enter Your Annual Income
+Browser("micclass:=Browser").Page("micclass:=Page").WebEdit("name:=cannualincome", "class:=innormal indollar", "html tag:=INPUT").Set "120000"
+
+wait 1
+
+'3. Select Pay Frequency
+Browser("micclass:=Browser").Page("micclass:=Page").WebList("name:=cpayfrequency", "html tag:=SELECT", "select type:=ComboBox Select").Select "Weekly"
+
+wait 1
+
+'4. Select File Status
+Browser("micclass:=Browser").Page("micclass:=Page").WebList("html id:=cfilestatus", "html tag:=SELECT", "select type:=ComboBox Select").Select "Filing Jointly or Qualified Widow"
+
+wait 1
+
+'5. Enter Number of Federal Allowances
+Browser("micclass:=Browser").Page("micclass:=Page").WebEdit("name:=callowance", "html tag:=INPUT", "class:=innormal").Set "3"
+
+wait 1
+
+'6. Enter State Tax Rate
+Browser("micclass:=Browser").Page("micclass:=Page").WebEdit("name:=cstatetax", "html tag:=INPUT", "class:=innormal").Set "4.5"
+
+wait 1
+
+'7. Enter City Tax Rate
+Browser("micclass:=Browser").Page("micclass:=Page").WebEdit("name:=ccitytax", "html tag:=INPUT", "class:=innormal").Set "3.5"
+
+wait 1
+
+'8. Click on Calculate
+Browser("micclass:=Browser").Page("micclass:=Page").Image("alt:=Calculate", "image type:=Image Button", "file name:=calculate\.svg").Click

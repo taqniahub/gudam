@@ -1,0 +1,49 @@
+
+'1. Navigate to https://us.thesalarycalculator.co.uk/hourly.php
+SystemUtil.Run "iexplore.exe", "https://us.thesalarycalculator.co.uk/hourly.php"
+
+Wait 10
+
+'2. Enter in Hourly Wage
+Browser("micclass:=Browser").Page("micclass:=Page").WebNumber("name:=wage", "html tag:=INPUT", "type:=number").Set "80"
+
+'3. Enter Weekly Hours
+Browser("micclass:=Browser").Page("micclass:=Page").WebNumber("name:=hours", "html tag:=INPUT", "type:=number").Set "35"
+
+'4. Enter Monthly Overtime (@1.5 field)
+Browser("micclass:=Browser").Page("micclass:=Page").WebNumber("name:=otime1", "html tag:=INPUT", "type:=number").Set "20"
+
+'5. Enter Weeks Unpaid leave
+Browser("micclass:=Browser").Page("micclass:=Page").WebNumber("name:=unpaidleave","html tag:=INPUT","kind:=singleline").Set "2"
+
+'6. Select filing status
+Browser("micclass:=Browser").Page("micclass:=Page").WebList("name:=status", "html tag:=SELECT", "select type:=ComboBox Select").Select "Married Joint"
+
+'7. Select # of Dependents
+Browser ("micclass:=browser").page("micclass:=page").weblist("html tag:=SELECT","name:=dependents","select type:=ComboBox Select").Select "2"
+
+'8. Enter Other Monthly Deductions
+Browser ("micclass:=Browser").Page ("micclass:=Page").Webnumber ("name:=voluntary", "html tag:=INPUT", "kind:=singleline").Set "500"
+
+'9. Select Tax Year
+Browser("micclass:=Browser").Page("micclass:=Page").WebList("name:=chosenTaxYear", "html tag:=SELECT", "select type:=ComboBox Select").Select "2017"
+
+
+'10. Check only the following:
+'	A. Yearly
+'	B. Monthly
+'	C. Weekly
+'	D. Daily
+
+	'Uncheck '2-weekly'
+	'Browser("micclass:=Browser").Page("micclass:=Page").WebCheckBox("html id:=2weekly", "name:=timeperiods\[\]", "type:=checkbox").Click
+	
+	'*******OR*******
+	Browser("micclass:=Browser").Page("micclass:=Page").WebCheckBox("html id:=2weekly", "name:=timeperiods\[\]", "type:=checkbox").Set "OFF"
+	
+	'Check Daily
+	Browser("micclass:=Browser").Page("micclass:=Page").WebCheckBox("html id:=daily", "name:=timeperiods\[\]", "type:=checkbox").Set "ON"
+	
+
+'11. Click on 'Go' button
+Browser("micclass:=Browser").Page("micclass:=Page").WebButton("name:=Go!", "type:=submit", "html tag:=INPUT").Click

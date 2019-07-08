@@ -1,0 +1,147 @@
+Option Explicit
+
+Dim Class1, Grade1, Hours1,	Class2,	Grade2,	Hours2,	Class3,	Grade3,	Hours3,	Class4,	Grade4,	Hours4,	Class5, Grade5,	Hours5,	Expected_GPA, Captured_GPA
+Dim MyExcel, MySheet, RowCount, i, MyBrowser, Captured_Total_Hours, Expected_Total_Hours
+
+'Creating a reference called 'MyBrowser' that will refer to the Browser and Page object
+Set MyBrowser = Browser("micclass:=Browser").Page("micclass:=Page")
+
+
+'Connect to Excel
+Set MyExcel = CreateObject ("Excel.Application")
+
+'Open the Workbook
+MyExcel.Workbooks.Open "C:\Users\VAADMIN\Desktop\Dextop Items\2018\Summer 2018\UFT\Weekend\Day 11 - Conversion Functions, Data Types\Excel Test Data\GPA Calculator Test Data.xlsx"
+
+'Creating a reference for the worksheet in excel and calling 'MySheet'
+Set MySheet = MyExcel.ActiveWorkbook.Worksheets ("GPA_TestData")
+
+'Make Excel Visible (OPTIONAL)
+'MyExcel.Application.Visible = True
+
+'Count the number of rows because we need to determine the number of iterations
+RowCount = MySheet.UsedRange.Rows.Count
+
+For i = 2 To RowCount
+	
+	'Read the values from Excel
+	Class1 = MySheet.Cells(i, "A").Value
+	Grade1 = MySheet.Cells(i, "B").Value
+	Hours1 = MySheet.Cells(i, "C").Value
+	Class2 = MySheet.Cells(i, "D").Value
+	Grade2 = MySheet.Cells(i, "E").Value
+	Hours2 = MySheet.Cells(i, "F").Value
+	Class3 = MySheet.Cells(i, "G").Value
+	Grade3 = MySheet.Cells(i, "H").Value
+	Hours3 = MySheet.Cells(i, "I").Value
+	Class4 = MySheet.Cells(i, "J").Value
+	Grade4 = MySheet.Cells(i, "K").Value
+	Hours4 = MySheet.Cells(i, "L").Value
+	Class5 = MySheet.Cells(i, "M").Value
+	Grade5 = MySheet.Cells(i, "N").Value
+	Hours5 = MySheet.Cells(i, "O").Value
+	Expected_GPA = MySheet.Cells(i, "P").Value
+	
+	'Close IE
+	SystemUtil.CloseProcessByName "iexplore.exe"
+
+	'Navigate to: https://www.rapidtables.com/calc/grade/gpa-calculator.html
+	SystemUtil.Run "iexplore.exe", "https://www.rapidtables.com/calc/grade/gpa-calculator.html"
+	
+	wait 5
+	
+	'1. Enter all values (at least 5 classes) along with Grade and Credit/Hours
+		
+		'Enter Class 1 Data
+		MyBrowser.WebEdit("placeholder:=class 1", "name:=class\[\]", "html tag:=INPUT").Set Class1
+		
+		MyBrowser.WebList("name:=grade\[\]", "index:=0").Select Grade1
+		
+		MyBrowser.WebNumber("name:=hours\[\]", "index:=0").Set Hours1
+		
+		'Enter Class 2 Data
+		MyBrowser.WebEdit("placeholder:=class 2", "name:=class\[\]", "html tag:=INPUT").Set Class2
+		
+		MyBrowser.WebList("name:=grade\[\]", "index:=1").Select Grade2
+		
+		MyBrowser.WebNumber("name:=hours\[\]", "index:=1").Set Hours2
+		
+		'Enter Class 3 Data
+		MyBrowser.WebEdit("placeholder:=class 3", "name:=class\[\]", "html tag:=INPUT").Set Class3
+		
+		MyBrowser.WebList("name:=grade\[\]", "index:=2").Select Grade3
+		
+		MyBrowser.WebNumber("name:=hours\[\]", "index:=2").Set Hours3
+		
+		'Enter Class 4 Data
+		MyBrowser.WebEdit("placeholder:=class 4", "name:=class\[\]", "html tag:=INPUT").Set Class4
+		
+		MyBrowser.WebList("name:=grade\[\]", "index:=3").Select Grade4
+		
+		MyBrowser.WebNumber("name:=hours\[\]", "index:=3").Set Hours4
+		
+		'Enter Class 5 Data
+		MyBrowser.WebEdit("placeholder:=class 5", "name:=class\[\]", "html tag:=INPUT").Set Class5
+		
+		MyBrowser.WebList("name:=grade\[\]", "index:=4").Select Grade5
+		
+		MyBrowser.WebNumber("name:=hours\[\]", "index:=4").Set Hours5
+	
+	
+	'2. Click on Calculate
+	MyBrowser.WebButton("name:= Calculate", "html id:=calc").Click
+	
+	wait 3
+	
+	
+	'3. Capture the GPA
+	Captured_GPA = MyBrowser.WebNumber("html id:=gpa", "name:=WebNumber", "html tag:=INPUT").GetROProperty("value")
+	
+	'Write Captured GPA to Excel
+	MySheet.Cells(i, "Q").Value = Captured_GPA
+	
+	
+	'4. Compare the Captured GPA with an Expected GPA 
+	If Captured_GPA = cstr(Expected_GPA) Then
+		MySheet.Cells(i, "R").Value = "GPA Verified"
+		Reporter.ReportEvent micPass, "GPA Verification", "GPA is Verified"
+	Else
+		MySheet.Cells(i, "R").Value = "GPA NOT Verified"
+		Reporter.ReportEvent micFail, "GPA Verification", "GPA is NOT Verified - Expected GPA: " & Expected_GPA & " -- Actual GPA: " & Captured_GPA
+	End If
+	
+	'5. Capture Total Credit/Hours
+	Captured_Total_Hours = MyBrowser.WebNumber("html id:=total", "name:=WebNumber").GetROProperty("value")
+	
+	'Write Captured Total Hours to Excel
+	MySheet.Cells(i, "T").Value = Captured_Total_Hours
+	
+	'6. Calculate the Expected Total Credit Hours (must be calculated using VBScript)
+	Expected_Total_Hours = Hours1 + Hours2 + Hours3 + Hours4 + Hours5
+	
+	'Write Expected Hours to Excel
+	MySheet.Cells(i, "S").Value = Expected_Total_Hours
+	
+	'7. Compare the Captured Credit Hours with Expected Credit Hours
+	If cInt(Captured_Total_Hours) = cInt(Expected_Total_Hours) Then
+		MySheet.Cells(i, "U").Value = "Passed"
+		Reporter.ReportEvent micPass, "Credit Hours Verification", "Credit Hours Verified"
+	Else
+		MySheet.Cells(i, "U").Value = "Failed"
+		Reporter.ReportEvent micFail, "Credit Hours Verification", "Credit Hours NOT Verified - Expected Hours: " & Expected_Total_Hours & " -- Captured Hours: " & Captured_Total_Hours
+	End If
+
+Next
+
+
+'Save my Results
+MyExcel.ActiveWorkbook.SaveAs "C:\Users\VAADMIN\Desktop\Dextop Items\2018\Summer 2018\UFT\Weekend\Day 11 - Conversion Functions, Data Types\Excel Test Data\GPA Calculator - Test Results.xlsx"
+
+'Close Excel
+MyExcel.Application.Quit
+
+
+'Release the Memory --> Clearing the cache memory (only do this for object references)
+Set MyExcel = Nothing
+Set MySheet = Nothing
+Set MyBrowser = Nothing

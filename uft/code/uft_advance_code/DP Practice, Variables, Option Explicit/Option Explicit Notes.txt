@@ -1,0 +1,35 @@
+'******************Option Explicit*******************************************************
+
+'What is Option Explicit?
+'=> Used at script level to force EXPLICIT DECLARATION of all variables in that script.
+
+'=> Must be the very first line in the script before any other statements
+
+'=> All variables must be explicitly declared using the DIM, PRIVATE, PUBLIC, OR ReDIM statements
+
+
+'=> VBScript creates a new variable by default if "Option Explicit" is not used for any misspelled variable name.
+
+'	=> Example:
+'		MyName = "Jay"
+'		Msgbox MyNaame
+'			=> The result: A message Box with a blank value 
+'				WHY???
+'					- Because "Option Explicit" wasn't used and so A variable named "MyNaame" was created and used in the Msgbox.
+'					- You Defined the value for the variable called "MyName", but didn't use it since you used "MyNaame" instead
+'					- Option Explicit will throw an error in this case if it is used
+'					- If we had used Option Explicit, an error would have appeared saying "Variable is undefined: 'MyNaame'."
+'					- It would also provide us with the line number so we can go directly to that line to fix the problem
+
+'			=>NOTE - Using Option Explicit will not result in syntax errors; it will result in Run Time Errors
+'					- Checking Syntax will not show you that you have misspelled a variable
+
+'Why is it important?
+
+'	=> Use Option Explicit to avoid incorrectly typing the name of an existing variable or to avoid confusion in code where the 
+'		scope of the variable is not clear
+
+'	=> Helps ensure that you are using your variables correctly and don't have any erroneous variables throughout your script
+
+
+'Each of your scripts should include Option Explicit from now on!!

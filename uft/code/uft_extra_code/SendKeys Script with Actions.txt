@@ -1,0 +1,39 @@
+'Set MyBrowser = Browser("micclass:=Browser", "CreationTime:=0", "title:=.*").Page("micclass:=Page", "CreationTime:=0", "title:=.*")
+'
+''MyBrowser.WebEdit("html id:=numberOfYears", "html tag:=INPUT").Set 35
+'
+'	Dim mySendKeys
+'	set mySendKeys = CreateObject("WScript.shell")
+'	
+'	MyBrowser.WebList("html id:=cstartmonth").Click
+'	
+'	SendKeysValue = "{DOWN}"
+'	
+'	For i = 1 To 4
+'		mySendKeys.SendKeys SendKeysValue
+'		wait 1
+'	Next
+'	
+'	mySendKeys.SendKeys "{TAB}"
+'	'mysendKeys.SendKeys "5"
+'	
+'	'Capture a Screen shot
+'	MyBrowser.CaptureBitmap "C:\Users\VAADMIN\Desktop\Dextop Items\2018\Summer 2018\UFT\Screenshot.png", True
+'
+'
+'
+'
+''MyBrowser.WebButton("html id:=calculate", "html tag:=BUTTON").Click
+''
+''wait 2
+''
+''MyBrowser.WebElement("innertext:=Show Yearly Balance Chart", "html tag:=SPAN").Click
+''
+
+
+RunAction "LoginAction", oneIteration
+
+wait 2
+
+
+RunAction "LogoutAction", oneIteration

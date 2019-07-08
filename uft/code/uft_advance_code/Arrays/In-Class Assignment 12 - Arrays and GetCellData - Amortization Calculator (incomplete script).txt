@@ -1,0 +1,83 @@
+Option Explicit
+
+Dim LoanAmount, LoanTerm, Rate
+Dim MyExcel, MySheet, RowCount, i, MyBrowser
+
+Set MyBrowser = Browser("micclass:=Browser").Page("micclass:=Page")
+
+'Connect to Excel
+Set MyExcel = CreateObject ("Excel.Application")
+
+'Open the workbook
+MyExcel.Workbooks.Open "C:\Users\VAADMIN\Desktop\Dextop Items\2018\Summer 2018\UFT\Weekend\Day 12 - Arrays\Excel Test Data\Amortization Calculator - Test Data.xlsx"
+
+'Create a reference for the Worksheet
+Set MySheet = MyExcel.ActiveWorkbook.Worksheets ("TestData")
+
+'Make Excel Visible
+MyExcel.Application.Visible = True
+
+'Count the number of rows being used because we need to determine the number of iterations
+RowCount = MySheet.UsedRange.Rows.Count
+
+For i = 2 To RowCount
+	
+	'Read the Data from Excel
+	LoanAmount = MySheet.Cells(i, "A").Value
+	LoanTerm = MySheet.Cells(i, "B").Value
+	Rate = MySheet.Cells(i, "C").Value
+	
+
+	
+	'0. Close IE
+	SystemUtil.CloseProcessByName "iexplore.exe"
+	
+	'1. Navigate to https://www.calculator.net/amortization-calculator.html
+	SystemUtil.Run "iexplore.exe", "https://www.calculator.net/amortization-calculator.html"
+	wait 5
+	
+	'2. Enter Loan Amount
+	MyBrowser.WebEdit("name:=cloanamount", "class:=inhalf indollar", "html tag:=INPUT").Set LoanAmount
+	
+	'3. Enter Loan Term
+	MyBrowser.WebEdit("name:=cloanterm", "class:=inhalf inuiyear", "html tag:=INPUT").Set LoanTerm
+	
+	'4. Enter Interest Rate
+	MyBrowser.WebEdit("name:=cinterestrate", "class:=inhalf inpct", "html tag:=INPUT").Set Rate
+	
+	'5. Click on Calculate
+	MyBrowser.Image("alt:=Calculate", "image type:=Image Button", "name:=Image").Click 
+	wait 5
+	
+	'6. Capture Total Interest Amount and store it in Excel				'.* means 'anything'
+	Captured_Total_Interest = MyBrowser.WebTable("name:=WebTable", "innertext:=Total of.*").GetCellData(2, 2)
+	MySheet.Cells(i, "D").Value = Captured_Total_Interest
+	
+	'7. Capture the Interest Column from the table into a Dynamic Array
+	'	- Each value must be stored into an array element
+		Dim Interest_Array(), WebTable_Rows 'Declared a dynamic array (no size has been set)
+		
+		'Capturing the number of rows in the webtable
+		WebTable_Rows = MyBrowser.WebTable("class:=cinfoTS", "name:=WebTable").GetROProperty("rows")
+		
+		Array_Size = cInt(WebTable_Rows) - 2 'determining the size of the array here
+		
+		
+		ReDim Preserve Interest_Array(Array_Size) 'Redeclaring the array and its size
+		For j = 0 To uBound(Interest_Array)
+			
+			'Captures the rate and stores it in a variable
+			Captured_Interest = MyBrowser.WebTable("class:=cinfoTS", "name:=WebTable").GetCellData(j+2, 3)
+			
+			'Writing to the array
+			Interest_Array(j) = Captured_Interest
+		Next
+		
+	'8. Calculate the Total Interest from the Array and write the total to Excel
+	'9. Compare the Calculated Total Interest with the Captured Total Interest
+	'10. Capture the total number of loan payments (number only) and store it in Excel
+	'11. Verify that the correct number of loan payments is displayed
+	'	- Loan Term x 12 months per year
+
+
+Next

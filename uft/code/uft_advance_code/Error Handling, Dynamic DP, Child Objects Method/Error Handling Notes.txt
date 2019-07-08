@@ -1,0 +1,115 @@
+'*****************************************ERROR HANDLING*************************************
+
+'There are 3 types of errors 
+'	1. Syntax Errors
+'	2. Logical Errors
+'	3. Run Time Errors
+
+'Syntax Errors:
+'	=> Typos (ex.: missing characters like "=, :, ., etc.")
+'	=> Incorrect code according to VBScript
+'	=> Occur at the time of compliation of code
+'	=> Script can't be executed until errors are fixed
+'	=> Ctrl+F7 = Shows Syntax errors
+'	=> View --> Errors  - Also shows Syntax errors
+
+'Logical Errors:
+'	=> Occur when script is syntactically correct, but doesn't do what you want
+'	=> Don't effect the script's execution, but they do produce incorrect results
+'		=> The script will run (and pass), but it won't do what you expected it to do
+'	=> Can occur for many reasons
+'		=> Wrong assumptions/misunderstandings about requirements
+'		=> Incorrect program logic (using the wrong loop, redefined variables, step execution order, etc.)
+'	=> Ways to avoid or fix Logical Errors:
+'		=> Perform peer reviews
+'			=> You may face code reviews on the job just like developers do 
+'		=> 	Verify the UFT results file to ensure that UFT has performed what it was supposed to do
+
+'Run Time Errors:
+'	=> Occur during the scripts' execution (During Run Time)
+'	=> The reason these types of errors occur is that the script is trying to perform some action but it is unable to do so
+'		=> Examples:
+'			1. File Not Found - But script is trying to read the file (ex.: can't find the function library)
+'			2. Object Not Found - But the script is trying to perform an action on that object
+'			3. Dividing a number by Zero (any number divided by 0 is undefined)
+'			4. Array index is out of bounds while accessing array elements (Subscript out of range error)
+'				=> Array has a size of 3, but script is trying to access the 4th location
+
+'Ways to handle Run Time Errors
+'	=> 1. Using Test Settings
+'	=> 2. Using 'On Error' Statement
+'	=> 3. Using Err Object
+
+'Using Test Settings to Handle Run Time Errors:
+'	=> File --> Settings --> "Run" Tab
+'	=> Select from the drop down menu what you want to do when an error occurs
+'		=> 1. Pop-up message box
+'		=> 2. Proceed to next action iteration
+'		=> 3. Stop Run
+'		=> 4. Proceed to next step
+
+'Using 'On Error' Statement to Handle Run Time Errors:
+'	=> This statement notifies the VBScript Engine (this is what runs tool in the background) that errors will be handled by the tester instead of letting the VBScript Engine to display an error message 
+'	=> On Error Resume Next: (turning on error handling)
+'		=> Tells VBScript Engine to go on to the NEXT LINE of the script when a run time error occurs
+'	=> On Error GoTo 0: (turning off error handling)
+'		=> Tells VBScript Engine to now present the error message box when a run-time error occurs
+
+'Using Err Object to Handle Run Time Errors:
+'	=> Err Object is an inbuilt object within VBScript that captures the Run Time Error Number and its description which testers can use to debug their script easily 
+'		=> Err.Number - Returns the Number property or Sets a numeric value specifying an error
+'			=> If Err.Number Value is 0 then no error has occured
+'		=> Err.Description - Returns the Description property of the error or Sets a brief description about an error
+'		=> Err.Clear - The Clear method resets the Err Object and clears all previous values associated with it 
+
+'***All Errors mentioned above are EXPECTED Errors
+'***To deal with UNEXPECTED Errors we can use RECOVERY SCENARIOS or Descriptive Programming
+
+'Recovery Scenarios:
+'=> Used to recover from unexpected errors and continue with the rest of the script
+
+'=> We use Recovery Scenario Manager - Resources --> Recovery Scenario Manager
+
+'=> Use the Recovery Scenario Manager to:
+'	=> 1. Define the TRIGGER EVENT that interrupts the test run
+'	=> 2. Specify the RECOVERY OPERATIONS required to continue with the test run
+'	=> 3. Choose a POST-RECOVERY Test Run Operation
+'	=> 4. Enter Descriptive Information about the Scenario
+
+'=> Possible TRIGGER EVENTS:
+'	=> Pop-Up Window
+'	=> Object State
+'	=> Test Run Error
+'	=> Application Crash
+
+'=> Possible RECOVERY OPERATIONS
+'	=> Keyboard or mouse operation
+'	=> Close application process
+'	=> Function Call
+'	=> Restart Microsoft Windows
+'		=> If you choose to Restart Windows --> It must be the last Recovery Scenario in the list of scenarios because once this Recovery Scenario executes, no other recovery scenarios will be performed after the computer restarts
+
+'=> Possible POST-RECOVERY TEST RUN Options:
+'	=> Repeat Current Step and Continue
+'	=> Proceed to next step
+'	=> Proceed to next action or component iteration
+'	=> Proceed to next test iteration
+'	=> Restart current test run
+'	=> Stop the test run
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

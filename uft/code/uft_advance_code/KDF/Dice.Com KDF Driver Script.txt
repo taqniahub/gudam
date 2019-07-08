@@ -1,0 +1,105 @@
+Option Explicit
+
+Dim TC_RowCount, TS_RowCount, TCID, TSID, TC_Iterator, TS_Iterator
+Dim Keyword, IP1, IP2, IP3, IP4
+
+'Associate Function Library
+LoadFunctionLibrary "C:\Users\VAADMIN\Desktop\Dextop Items\2018\Summer 2018\UFT\Weekend\Day 16 - KDF\Function Libraries\Dice.Com - KDF Function Library.qfl"
+
+'Add Sheets to the Run-Time Data Table in UFT
+DataTable.AddSheet "DT_TestCases" 'Adding a Sheet for the Test Cases called DT_TestCases
+DataTable.AddSheet "DT_TestSteps" 'Adding a Sheet for the Test Steps called DT_TestSteps
+
+'Import from Excel the Test Cases and Test Steps sheets
+DataTable.ImportSheet "C:\Users\VAADMIN\Desktop\Dextop Items\2018\Summer 2018\UFT\Weekend\Day 16 - KDF\Dice Keywords, TCs, TSs.xlsx", "TestCases", "DT_TestCases" 'Importing the TestCases sheet into DT_TestCases
+
+DataTable.ImportSheet "C:\Users\VAADMIN\Desktop\Dextop Items\2018\Summer 2018\UFT\Weekend\Day 16 - KDF\Dice Keywords, TCs, TSs.xlsx", "TestSteps", "DT_TestSteps" 'Importing the TestSteps sheet into DT_TestSteps
+
+'Read Test Cases and Test Steps Sheet
+'Count the # of Rows in the DT_TestCases & DT_TestSteps Sheets
+TC_RowCount = DataTable.GetSheet("DT_TestCases").GetRowCount 'Counting the rows in DT_TestCases
+TS_RowCount = DataTable.GetSheet("DT_TestSteps").GetRowCount 'Counting the rows in DT_TestSteps
+
+'Go to each row in the TC Sheet
+For TC_Iterator = 1 To TC_RowCount
+	 
+	 DataTable.GetSheet("DT_TestCases").SetCurrentRow (TC_Iterator) 'Sets the focus of UFT on the specific row
+	 
+	 'and see if the execute flag is 'Y'
+	 If DataTable.Value("Execute", "DT_TestCases") = "Y" Then
+	 	TCID = DataTable.Value("TCID", "DT_TestCases") 'Reading the TCID if Execute = Y
+	 	
+	 	'If 'Y' then go to each row in the TS Sheet 
+	 	For TS_Iterator = 1 To TS_RowCount
+	 		
+	 		DataTable.GetSheet("DT_TestSteps").SetCurrentRow (TS_Iterator) 'Sets the focus of UFT on the specific row
+	 		
+	 		TSID = DataTable.Value("TSID", "DT_TestSteps") 'Reading the TSID from DT_TestSteps
+	 		
+	 		'and see if the TCID & TSID match
+	 		If TCID = TSID Then
+	 		'If the TCID & TSID match, execute the CORRESPONDING Test Steps (or keywords)
+	 			
+	 			'Read the Keyword and the IPs from the DT_TestSteps
+	 			Keyword = DataTable.Value ("Keyword", "DT_TestSteps")
+	 			IP1 = DataTable.Value("IP1", "DT_TestSteps")
+	 			IP2 = DataTable.Value("IP2", "DT_TestSteps")
+	 			IP3 = DataTable.Value("IP3", "DT_TestSteps")
+	 			IP4 = DataTable.Value("IP4", "DT_TestSteps")
+	 			
+	 			'Execute the Corresponding Keywords (functions)
+	 			Select Case (Keyword)
+	 				Case "Browser_Open"
+	 					Browser_Open IP1, IP2
+	 				Case "fnWait"
+	 					fnWait IP1
+	 				Case "Edit_Set"
+	 					Edit_Set IP1, IP2, IP3, IP4
+	 				Case "Button_Click"
+	 					Button_Click IP1, IP2, IP3
+	 				Case "Browser_Close"
+	 					Browser_Close IP1
+	 				Case "Text_Verify"
+	 					If Text_Verify (IP1, IP2, IP3) Then
+	 						DataTable.Value("Result", "DT_TestSteps") = "Text Verified"
+	 					Else
+	 						DataTable.Value("Result", "DT_TestSteps") = "Text Not Verified"
+	 					End If
+	 				Case "Link_Click"
+	 					Link_Click IP1, IP2, IP3	 					
+	 				Case Else
+	 					Reporter.ReportEvent micFail, "KEYWORD NOT FOUND", "ENDING TEST DUE TO INVALID OR MISSING KEYWORD - " & Keyword
+	 					ExitTest 
+	 			End Select
+	 			
+	 		End If 'Ends the TCID = TSID Conditional Statement 		
+	 		
+	 	Next 'Continuing the TS_Iterator loop (Test Steps Sheet Loop)
+	 	
+	 	'Save the Test Results
+		DataTable.ExportSheet "C:\Users\VAADMIN\Desktop\Dextop Items\2018\Summer 2018\UFT\Weekend\Day 16 - KDF\Test Results\"&TCID&" - Results.xlsx", "DT_TestCases"
+	
+		DataTable.ExportSheet "C:\Users\VAADMIN\Desktop\Dextop Items\2018\Summer 2018\UFT\Weekend\Day 16 - KDF\Test Results\"&TCID&" - Results.xlsx", "DT_TestSteps"
+	
+	 	
+	 	
+	 End If 'Ends the Execute = Y Conditional Statement
+	
+	
+Next 'Continues the TC_Iterator loop (Test Cases Sheet Loop)
+
+
+
+
+'Nested Loops
+
+'Loop1 --> 3 iterations
+	
+	'Loop2 --> 10 iterations
+	
+	'NextLoop2
+
+'NextLoop1
+
+
+'Each keyword function will return a PASS or FAIL and driver script will return Test Result

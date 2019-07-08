@@ -1,0 +1,83 @@
+Option Explicit
+
+'There are 4 ways to associate Function Libraries with your script
+'1. File->Settings->Resources (File type must be .qfl)
+'2. ExecuteFile (file type can be .vbs or .txt)
+'3. LoadFunctionLibrary (File type must be .qfl)
+'4. AOM -> Automation Object Model (File type can be .qfl, .vbs, or .txt)
+
+'Associate Function Library:
+ExecuteFile "C:\Users\VAADMIN\Desktop\Dextop Items\2018\Summer 2018\UFT\Weekend\Day 14 - Functions, Framework Basics\Function Libraries\Edmunds Function Library.vbs"
+
+'Global Variables because they will be used in many functions
+Dim MyBrowser, MyExcel, MySheet, RowCount, i
+Dim MonthlyPayment, ZipCode, LoanTerm, Rate, Trade_In, AmtOwed, DownPayment, Captured_MaxPrice, Expected_MaxPrice
+Set MyBrowser = Browser("micclass:=Browser", "CreationTime:=0", "title:=.*").Page("micclass:=Page", "CreationTime:=0", "title:=.*")
+
+RowCount = fnConnectExcel ("C:\Users\VAADMIN\Desktop\Dextop Items\2018\Summer 2018\UFT\Weekend\Day 14 - Functions, Framework Basics\Excel Test Data\Edmunds Test Data.xlsx", "Test_Data")
+
+
+For i = 2 To RowCount
+	
+	'Read the Test Data from Excel
+	MonthlyPayment = MySheet.Cells(i, "A")
+	ZipCode = MySheet.Cells(i, "B")
+	LoanTerm = MySheet.Cells(i, "D")
+	Rate = MySheet.Cells(i, "C")
+	Trade_In = MySheet.Cells(i, "E")
+	AmtOwed = MySheet.Cells(i, "F")
+	DownPayment = MySheet.Cells(i, "G")
+	Expected_MaxPrice = MySheet.Cells(i, "H")
+	
+'Step 0: Close IE
+fnCloseBrowser "iexplore.exe"
+
+'Step 1: Launch IE and Navigate to URL
+fnLaunchBrowser "iexplore.exe", "www.edmunds.com/calculators"
+
+fnWait 5
+
+'Step 2: Enter Monthly Payment
+'fnEnterMonthlyPayment 450
+fnEnterText "calc_input3", "INPUT", "input-dollar", MonthlyPayment
+
+'Step 3: Click on Go
+'fnClickGo
+fnClickElement "Go", "SPAN", 2
+
+'Step 4: Enter ZipCode
+fnEnterText "ac_zip_code", "INPUT", "calc-zipcode", ZipCode
+
+'Step 5: Select the loan term
+fnSelectList "ac_loan_term", "SELECT", LoanTerm
+
+'Step 6: Enter the Rate
+fnEnterText "ac_market_finance_rate", "INPUT", "input-percentage", Rate
+
+'Step 7: Enter Trade In
+fnEnterText "ac_vehicle2_price", "INPUT", "input-dollar", Trade_In
+
+'Step 8: Enter Amt Owed
+fnEnterText "ac_vehicle2_value_owed", "INPUT", "input-dollar", AmtOwed
+
+'Step 9: Enter Down Payment
+fnEnterText "ac_cash_down_payment", "INPUT", "input-dollar", DownPayment
+
+'Step 10: Click on Calculate
+fnClickElement "Calculate", "SPAN", 0
+
+fnWait 5
+
+'Capture the MaxPrice
+Captured_MaxPrice = fnCaptureElement ("calc-results-total", "ac_max_tmv_result", "SPAN", "innertext")
+
+'Compare the Expected Max Price with Captured Max Price
+If cCur(Captured_MaxPrice) = cCur(Expected_MaxPrice) Then
+	MySheet.Cells(i, "K").Value = "Passed"
+	Reporter.ReportEvent micPass, "Max Price Verification", "Max Price Verified"
+Else
+	MySheet.Cells(i, "K").Value = "Failed"
+	Reporter.ReportEvent micFail, "Max Price Verification", "Max Price NOT Verified -- Expected MaxPrice is: " & cCur(Expected_MaxPrice) & " -- Captured Max Price is: " & ccur(Captured_MaxPrice)
+End If
+
+Next

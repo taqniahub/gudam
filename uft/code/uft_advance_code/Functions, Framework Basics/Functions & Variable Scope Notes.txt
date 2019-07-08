@@ -1,0 +1,84 @@
+'*************************Functions, Sub Procedures, and Variable Scope***************************
+
+'Functions - a set of actions that logically go together, which (when executed) can return a value.
+
+'Sub Procedure - a set of actions that logically go together which does not return a value 
+
+'The ONLY difference between Functions and Sub Procedures - Sub Procedures can not return a value
+
+
+'=>Variable Scope
+' 1. Global
+' 2. Local
+
+'Global Variable Scope:
+'	- That variable that is declared Globally can be used throughout the entire script
+'	- Declared outside of any functions
+' 	- Can be used in multiple functions
+
+
+'Local Variable Scope:
+'	- That variable that is declared within a function
+'	- Can only be used within that function in which it is declared
+
+'Variable Lifecycle
+'	- Global Variables:
+'		- Initialized outside of any functions
+'		- Only die when the script ends the execution
+
+'	- Local Variables:
+'		- Initialized within a specific function
+'		- Die when the function execution ends 
+'		- This does not release the memory allocated on the machine's Cache Memory
+
+Dim MyBrowser
+
+Set MyBrowser = Browser("title:=.*", "CreationTime:=0").Page("title:=.*", "CreationTime:=0")
+
+
+'fnEnterText
+
+
+Function fnEnterText (Prop_Name, Prop_HtmlID, Prop_Class, WE_Value)
+	'MyBrowser.WebEdit("html id:=ac_zip_code", "name:=ac_zip_code").Set 32565
+	'Dim oWebEdit
+	Set oWebEdit = Description.Create
+	oWebEdit("name").Value = Prop_Name
+	oWebEdit("html id").Value = Prop_HtmlID
+	oWebEdit("class").Value = Prop_Class	
+	MyBrowser.WebEdit(oWebEdit).Set	WE_Value
+	Set oWebEdit = Nothing
+End Function
+
+Function fnHello
+	'Dim x
+	x = "hello - this is local"
+	msgbox x
+End Function
+'
+'fnHello
+'
+'x = "hello - this is global"
+'msgbox x
+'
+
+
+fnEnterText "ac_zip_code", "ac_zip_code", "calc-zipcode", "Hello!"
+
+
+
+
+
+
+
+'***Difference between Description.Create & CreateObject***:
+'Description.Create:
+'   - Creates a reference to an object already in the Web Application
+'   - You describe the object using properties (html id, name, html tag, etc.)
+'   - You then use that object to perform some kind of action on it
+'   - Example: oWebEdit("html tag").Value = "A" ==> myBrowser.WebEdit(oWebEdit).Set 500
+'*********************************************************************
+'CreateObject:
+'   - Creates an instance of an application on the operating system, so that UFT/QTP can communicate with it
+'   - This can work with programs/functionalities that come with the OS (File system objects) or with applications such as Excel (Excel.Application)
+'   - Example: Set myxl = CreateObject ("Excel.Application")

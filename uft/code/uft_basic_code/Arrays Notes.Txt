@@ -1,0 +1,213 @@
+'***********************Arrays*****************************
+
+'What is an Array:
+'=> Variable --> Holds a SINGLE value at any given time (AKA scalar variable)
+
+'=> Array --> A type of variable that holds a series of values at any given time
+
+'Array Declaration:
+'=> Declared the same way you declare a normal variable except that an array declaration requires parenthesis '()'
+'	=> Example:
+'		Dim JaysArray(10)
+'			--> An Array called 'JaysArray' has been declared which contains 11 elements
+'			--> All Arrays in VBScript are 'zero-based' - the number of array elements is always the number in the parentheses + 1
+'			--> This type of array is called a 'fixed-size' array 
+
+'=> Three methods for declaring Arrays:
+'		=> Method 1: Using Dim
+'		   => Example Dim JaysArray()	'Without a specified size (Dynamic) 
+
+'		=> Method 2: Mentioning the Size
+'		   => Dim JaysArray(10)  Declared with specified size of 10 (Static)
+'				=> Even though the size says 10, this Array JaysArray can hold 11 values (index starts from 0)
+
+'		=> Method 3: Using the 'Array' Parameter
+'		   Dim JaysArray     <-- No parentheses used
+'		   JaysArray = Array("apple",5,"100", 101.95) <- We set the size and the elements within the array in this 1 line
+
+'Assigning Values to Arrays:
+'=> To assign values, you must use an index to identify the specific element to which the value must be assigned
+
+'=> Beginning at 0 and ending at 10, values can be assigned to JaysArray(10) (declared above):
+'	JaysArray(0) = "10 years"
+'	JaysArray(1) = "12 years"
+'	JaysArray(2) = "14 years"
+'	...
+'	JaysArray(10) = "30 years"
+
+'Retrieving Values from Arrays:
+'=> VariableName = JaysArray(2)
+'		msgbox VariableName --> message box will show the message - "14 years"
+
+'Array Methods:
+'=> LBound
+'=> UBound
+'=> Split
+'=> Join
+'=> IsArray
+'=> Erase
+
+
+'LBound: Lower Bound
+'	=> A VBScript Function that corresponds to the smallest subscript of the given array
+'		=> LBound of an Array is ZERO
+'		=> Syntax:
+'			LBound (ArrayName [,dimension])
+'				--> ArrayName -> Required Parameter - corresponds to the name of the array
+'				--> Dimension -> Optional Parameter - takes an integer value that corresponds to the dimension of the array. 
+'					--> If you enter '1', it will provide the Lower bound of the 1st dimension
+'					--> If you enter '2', it will provide the Lower bound of the 2nd dimension
+
+'UBound: Upper bound
+'	=> A VBScript Function that corresponds to the largest subscript of the given array
+'		=> UBound of an Array is the SIZE of the array
+'		=> Syntax:
+'			UBound (ArrayName [,dimension])
+'				--> ArrayName -> Required Parameter - corresponds to the name of the array
+'				--> Dimension -> Optional Parameter - takes an integer value that corresponds to the dimension of the array.
+'					--> If you enter '1', it will provide the Upper Bound of the 1st dimension
+'					--> If you enter '2', it will provide the Upper Bound of the 2nd dimension
+
+'Split
+'	=> A VBScript Function that returns an array that contains a specific number of values split based on a specified delimiter 
+'	=> Syntax:
+'		Split (Data [,delimiter[,count [,compare]]])
+'			--> Data -> A Required parameter. This is the String Expression that can contain strings with delimiters
+'			--> Delimiter -> an Optional Parameter. A sequence of 1 or more characters used to specify the boundary between separate,independent regions in plain text or other data streams. 
+'				--> Space is default 
+'				Examples: comma, space, semicolon
+'			--> Count -> an Optional Parameter. the number of substrings to be returned 
+'				--> If it's '-1' it returns all substrings
+'			--> Compare -> an Optional Parameter. This parameter specifies which comparison method to be used. 
+'				--> 0 is for binary comparison
+'				--> 1 is for text comparison
+
+
+'Join
+'	=> A VBScript Function which returns a String that contains a specified number of substrings in an array.
+'		***Exact opposite of the Split Function***
+'	=> Syntax:
+'		Join (List [,delimiter])
+'			--> List -> A Required Parameter. The Array that contains the substrings that are to be joined
+'			--> Delimiter -> An optional parameter. The Character, which used as a delimiter while returning the string. 
+'				*Default delimiter is space
+
+'IsArray
+'	=> A VBScript Function which returns a Boolean value that indicates whether or not the specified input variable is an array variable
+'	=> Syntax:
+'		IsArray(VariableName)
+
+'Erase
+'	=> A VBScript Function which is used to reset the values of fixed size arrays and free the memory of the dynamic arrays. It behaves depending on the type of array
+'	=> Syntax:
+'		Erase ArrayName
+'	=> Fixed Numeric Array -> Each element is reset to zero
+'	=> Fixed String Array -> Each Element in an array is reset to zero length "".
+'	=> Array of objects	-> Each element in an array is reset to a special value of 'nothing'
+
+
+
+
+Dim Array1() 'declaring an array named 'Array1' as a dynamic array; the size of the array has not been set yet
+
+
+
+ReDim Array1(5) 'There are 6 elements in the array named 'Array1'
+Array1(0) = "XYZ"
+Array1(1) = 41.25
+Array1(2) = 22
+Array1(3) = 50
+Array1(4) = 100
+Array1(5) = 200
+'
+msgbox Array1(0)
+msgbox Array1(1)
+msgbox Array1(2)
+msgbox Array1(3)
+msgbox Array1(4)
+msgbox Array1(5)
+
+ReDim Preserve Array1(3)
+Array1(3) = 1000
+msgbox Array1(3)
+
+msgbox Array1(0)
+msgbox Array1(1)
+msgbox Array1(2)
+msgbox Array1(3)
+msgbox Array1(4)
+'msgbox Array1(5)
+
+
+
+'
+'Dim Variable
+'msgbox TypeName (Variable)
+'
+'msgbox TypeName(x)
+'
+'msgbox IsArray (Variable)
+'
+'
+''ReDim Preserve a(7)
+''For i = 3 to 7
+''	a(i) = i
+''Next
+''
+''For i = 0 to ubound (a)
+''	msgbox a(i)
+''	
+''Next
+''
+'
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+'
+
+'
+'x = "hello beautiful world!"
+'
+'y = split (x, "L", -1, 1)
+'msgbox y(0)
+'msgbox y(1)
+'msgbox y(2)
+'
+'
+'z = Join (y,";")
+'msgbox z
+'
+'
+'
+'msgbox IsArray (z)
+'msgbox IsArray (y)
+'msgbox IsArray (x)
+'
+'
+'Erase y
+'
+'msgbox TypeName(y(0))
+'
+'msgbox x
+'
+'msgbox IsArray (y)
+'
+
+
+
+
+
+
+

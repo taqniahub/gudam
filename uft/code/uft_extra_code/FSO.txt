@@ -1,0 +1,111 @@
+'********************File System Object***********************
+
+'=> The File System Object (FSO) model provides an object based tool for working with folders and files
+
+'=> The FSO model gives you the ability to ALTER, MOVE, & DELETE Folders
+'=> The FSO model also gives you the ability to determine if a folder exists and where it is located
+'=> The FSO model allows you to get information about the folders, such as their names, creation date, and modification date 
+
+'=> Why FSO?
+'	-> File System Object Model makes processing files much easier
+'	-> When processing files, your primary goal is to store the data in an efficient, easy-to-use format 
+'	-> You need to be able to create files, insert and change data, and read the data
+'	-> You COULD store the data in a database, but doing so adds a significant amount of overhead to your application and system (the connection to the database uses a significant amount of system resources)
+'	-> You may not want that extra overhead or your requirements may not call for the extra functionality associated with a proper database
+'	-> In this case, storing data in a text file is the most efficient solution
+
+'=> The FSO Model has several different objects within it which can be used to perform various tasks
+'	-> FileSystemObject:
+'		-> Allows you to create, delete, gain information about, and generally manipulate drives, folders, and files
+'		-> Many of the methods associated with this object duplicate those in the other objects
+'	-> Drive:
+'		-> Allows you to gather information about a drive attached to the system, such as how much room is available and what its shared name is
+'		-> A "drive" under the FSO model isn't necessarily a hard disk: it can be a CD-ROM drive, a RAM disk, etc.
+'	-> Folder:
+'		-> Allows you to create, delete, or move folders, as well as query the system about their names, paths, and other information
+'	-> File:
+'		-> Allows you to create, delete, or move files, as well as query the system about their names, paths, and other information
+'	-> TextStream:
+'		-> Enables you to read and write text files
+
+'=> Programming in the FSO Model
+'	-> Involves 3 main tasks:
+'		1. Creating a FileSystemObject object by using the CREATEOBJECT method
+'		2. Using the appropriate method on the newly created object
+'		3. Accessing the object's properties 
+
+'	-> To create a FileSystemObject:
+'		Dim fso
+'		Set fso = CreateObject ("Scripting.FileSystemObject")
+
+'	-> FSO Methods:
+'		-> Create a new object 			--> CREATEFOLDER or CREATETEXTFILE
+'		-> Delete a file or folder		--> DELETEFILE or DELETEFOLDER; 
+'											FILE.DELETE or FOLDER.DELETE
+'		-> Copy an Object				--> COPYFILE or COPYFOLDER;
+'											FILE.COPY or FOLDER.COPY
+'		-> Accessing an existing object	--> GETDRIVE, GETFOLDER, or GETFILE
+'			-> ***NOTE***: FSO model can not create or delete drives 
+
+'=> What are some of the things we're going to be doing with FSO:
+'	-> Creating Text Files
+'	-> Opening Text Files
+'	-> Reading Content of Text Files
+'	-> Writing Content to Text Files
+'	-> Deleting Text Files
+
+'	=> How to Create a file
+'		Dim FSO, file_location
+'		file_location = "c:\UFT\TestScript"
+'		Set FSO = CreateObject ("Scripting.FileSystemObject")
+'		Set file = FSO.CreateTextFile(file_location, TRUE) 
+'			--> TRUE = File is to be overwritten if it already exists
+'			--> FALSE = File is not to be overwritten 
+
+'	=> How to Open a file
+'		Set File = FSO.OpenTextFile("filepath.txt", ForWriting, True)
+'			--> 2nd Argument can also be: ForReading or ForAppending
+'			--> 3rd Argument:
+'				--> TRUE = New file has to be created if the specified file doesn't exist 
+'				--> FALSE = New file does not need to be created (false by default)
+
+'	=> How to Read Content from a File
+'		Set file= fso.OpenTextFile(“C:file_location”, ForReading, True) 
+'			--> 2nd argument should always be “ForReading” in order to read contents from a file
+'		Do while file.AtEndofStream <> True
+'		data = file.ReadLine()
+'		msgbox data
+'		Loop
+
+'	=> How to Write Content to a File
+'		Set file= fso.OpenTextFile(“C:file_location”, ForWriting, True)
+'			--> 2nd argument should always be “ForWriting” in order to write contents to a file
+'		file.Write(“This is a place to get all your qtp”)
+'		file.Write(“questions and answers solved.”)
+'			--> Output will be:
+'				-> This is a place to get all your qtp questions and answers solved.
+'		while
+'		file.WriteLine(“This is a place to get all your qtp”)
+'		file.Write(“questions and answers solved.”)
+'			--> Output will be:
+'				-> This is a place to get all your qtp 
+'				   questions and answers solved.
+
+'	=> How to Delete Content
+'		file_location = “C:file_location”
+'		Set fso = CreateObject(“Scripting.FileSystemObject”)
+'		fso.DeleteFile(file_location)
+
+
+
+
+
+
+
+
+
+
+
+
+
+

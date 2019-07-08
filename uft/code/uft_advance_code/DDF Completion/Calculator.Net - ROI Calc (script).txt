@@ -1,0 +1,98 @@
+Option Explicit
+
+'Associate Function Library
+ExecuteFile "C:\Users\VAADMIN\Desktop\Dextop Items\2018\Summer 2018\UFT\Weekend\Day 15 - DDF\Function Libraries\Calculator.Net - Function Library.vbs"
+
+Dim MyExcel, MySheet, RowCount, i, PageName, URLCount, URLSheet, Calculator_Name, URL, j, Captured_ROI
+Dim Investment, Return, From_Month, From_Day, From_Year, To_Month, To_Day, To_Year, Expected_Annualized_ROI
+
+
+Set MyExcel = CreateObject("Excel.Application")
+
+MyExcel.Workbooks.Open "C:\Users\VAADMIN\Desktop\Dextop Items\2018\Summer 2018\UFT\Weekend\Day 15 - DDF\Excel Test Data\Calculator.Net Test Data.xlsx"
+
+Set MySheet = MyExcel.ActiveWorkbook.Worksheets ("ROI_Data")
+Calculator_Name = MySheet.Cells(2, "L")
+Set URLSheet = MyExcel.ActiveWorkbook.Worksheets("URLs")
+
+RowCount = MySheet.UsedRange.Rows.Count
+URLCount = URLSheet.UsedRange.Rows.Count
+
+
+	For j = 2 To URLCount
+		PageName = URLSheet.Cells(j, "A").Value 'Reading the name of the calculator from excel
+	
+	'uCase --> Makes everything UPPER CASE
+	'lCase --> Makes everyting lower case
+	
+		If lCase(PageName) = lCase(Calculator_Name) Then
+			URL = URLSheet.Cells(j, "B") 'read the corresponding URL
+			Set URLSheet = Nothing 'killing it here, because I'm done with it
+			Exit For 'Exit the loop
+		End If
+	Next
+
+For i = 2 To RowCount
+	
+	'Read the Test Data
+	Investment = MySheet.Cells(i, "A").Value
+	Return = MySheet.Cells(i, "B").Value
+	From_Month = MySheet.Cells(i, "C").Value
+	From_Day = MySheet.Cells(i, "D").Value
+	From_Year = MySheet.Cells(i, "E").Value
+	To_Month = MySheet.Cells(i, "F").Value
+	To_Day = MySheet.Cells(i, "G").Value
+	To_Year = MySheet.Cells(i, "H").Value
+	Expected_Annualized_ROI = MySheet.Cells(i, "I").Value
+	
+	'Step 0: Close IE
+	fnCloseBrowsers "iexplore.exe"
+	
+	'Step 1: Launch IE and Navigate to URL
+	fnLaunchApp "iexplore.exe", URL
+	
+	'Step 2: Enter Amount Invested
+	fnEnterText "beginbalance", "inlonger indollar", "INPUT", "beginbalance", Round(Investment, 2)
+	
+	'Step 3: Enter Amount Returned
+	fnEnterText "endbalance", "inlonger indollar", "INPUT", "endbalance", Round(Return, 2)
+	
+	'Step 4: Select the From Date (Month, Day, Year)
+		Call spEnterStartDates(From_Month, From_Day, From_Year)
+	
+	'Step 5: Select the To Date (Month, Day Year)
+		Call spEnterEndDates(To_Month, To_Day, To_Year)
+	
+	'Step 6: Click on Calculate
+		fnClickImageButton "Calculate", "Image Button", "INPUT", 0
+		
+		fnWait 10
+	
+	'Step 7: Capture the Annualized ROI
+	Captured_ROI = fnCaptureTable("Investment.*", "TABLE", "cinfoT", 3, 2)
+		'--> Write to Excel
+		MySheet.Cells(i, "J").Value = Captured_ROI
+	
+	'Step 8: Compare Expected Annualized ROI with Captured Annualized ROI
+	If fnCompare2Values(cStr(Expected_Annualized_ROI), cStr(Captured_ROI)) Then
+		MySheet.Cells(i, "K").Value = "Passed"
+		Reporter.ReportEvent micPass, "Annualized ROI Verification", "Annualized ROI is Verified"
+	Else
+		MySheet.Cells(i, "K").Value = "Failed"
+		Reporter.ReportEvent micFail, "Annualized ROI Verification", "Annualized ROI is NOT Verified -- Expected Value: " & Expected_Annualized_ROI & "  --  Captured Annualized ROI is: " & Captured_ROI
+	End If
+Next
+
+'Save and Quit excel
+MyExcel.ActiveWorkbook.SaveAs "C:\Users\VAADMIN\Desktop\Dextop Items\2018\Summer 2018\UFT\Weekend\Day 15 - DDF\Excel Test Data\Calculator.Net ROI Calculator Results.xlsx"
+
+MyExcel.Application.Quit
+
+Set MyExcel = Nothing
+Set MySheet = Nothing
+
+'Var1 = 34.567889 '--> Should be rounded to 34.57 (2 decimal places)
+'Var2 = 132.1203231 '--> Should be rounded to 132.12 (2 decimal places)
+'
+'msgbox "rounding Var1 to 2 decimal places -- " & Round(Var1, 2)
+'msgbox "rounding Var2 to 2 decimal places -- " & Round(Var2, 2)

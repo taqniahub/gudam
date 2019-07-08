@@ -1,0 +1,41 @@
+Option Explicit
+
+
+
+'1. Go to edmunds.com/calculators
+SystemUtil.Run "iexplore.exe", "www.edmunds.com/calculators"
+
+wait 5
+
+'2. Capture the name of all the WebButtons on the page
+Dim MyBrowser, oDesc
+Set MyBrowser = Browser("micclass:=Browser").Page("micclass:=Page")
+
+Set oDesc = Description.Create
+oDesc("micclass").Value = "WebButton"
+
+
+Dim obj
+Set obj = MyBrowser.ChildObjects(oDesc)
+
+
+msgbox obj.count
+
+'3. Store the names into a dynamic array
+Dim i, Button_Array(), Button_Name
+For i = 0 To obj.count - 1
+	Button_Name = obj(i).GetROProperty("name")
+	
+	ReDim Preserve Button_Array(i) 'redefining the size of the array to be of size 'i'
+	
+	Button_Array(i) = Button_Name 'store the captured value to the array element
+	
+	obj(i).highlight 'highlight all the buttons 1 at a time
+	
+Next
+
+'4. Read from the array and print the name with the index value
+Dim j
+For j = 0 To uBound(Button_Array)
+	Print "Button Name is: " & Button_Array(j) & " -- Index is: " & j
+Next

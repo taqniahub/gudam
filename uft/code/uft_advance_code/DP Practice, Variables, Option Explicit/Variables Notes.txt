@@ -1,0 +1,72 @@
+'************************VARIABLES******************************************
+'WHAT IS A VARIABLE?
+'=> It's a container that is used to hold a SINGLE value (numbers, letters, or numbers & letters)
+
+'=> A variable is a name that is assigned to a location in your computer's memory where the data used by UFT is stored
+
+'=> Example:
+'		- We create a variable named 'AGE' that UFT uses to store an Integer value of "25"
+'		- The Variable (named 'AGE') is simply a pointer to a location in the memory where the value "25" is stored
+
+'=> VBScript does not require that you DECLARE a variable before using it, but it is a good practice to do so
+
+'DECLARING A VARIABLE - 
+
+'=> DIM Statement: Declares variables and allocates storage space
+'=> DIM = Declare In Memory
+
+'	=> Variables declared using DIM at the Script Level are available to ALL procedures within the script (Scope - Global)
+
+'	=> Variables declared using DIM at the Procedure Level are available only within that procedure (Scope - Local)
+'		- ***We will talk more about Variable Scope when we talk about Functions and Sub Procedures***
+
+'	=> Example: 
+'		DIM AGE => THE VARIABLE HAS BEEN DECLARED (NO VALUE HAS BEEN ASSIGNED TO THE VARIABLE YET)
+
+
+'=> Other ways to declare variables: Private & Public Statements
+'=> PRIVATE Statement: Declares Private Variables and allocates storage space 
+
+'	=> Private Statement Variables are available only to the script in which they are declared
+
+'=> PUBLIC Statement: Delcares Public Variables and allocates storage space
+
+'	=> Public Statement Variables are available to all procedures in all scripts 
+
+'		**We will talk more about Public and Private Statements later in the course
+
+'=> SETTING A VALUE FOR A VARIABLE - 
+
+'=> You can put a value into a variable by using the "Assignment Operator" (=)
+
+'=> MyName = "Jay"
+'		- MyName is blank; it is the name of the variable
+'		- "Jay" is the string (the data) that is being stored as the value for MyName
+'			=> Now UFT knows what you're talking about when you use the variable name "MyName"
+'			=> msgbox MyName  => Will display a message box with the value Jay
+
+'		- What is the difference between these four:
+'			1. MyName
+'			2. myname
+'			3. MyNaame
+'			4. MYNAME
+
+
+'		- VBScript is NOT Case Sensitive!
+
+'Concatenation --> To Concatenate means to Combine
+'The purpose of Concatenation is to combine 2 different data points together
+'Concatenator in VBScript is '&'
+'& --> Ampersand
+
+
+'=> Variable Naming Restrictions 
+
+'	=> Must begin with an alphabetic character (must begin with a letter, can't begin with a number)
+'	=> Must not exceed 255 characters
+'	=> Must be unique in the scope in which it is declared (We'll talk more about Variable Scope when we go over Functions)
+
+	
+
+
+

@@ -1,0 +1,31 @@
+'****************Windows Shell Scripting - Send Keys Method************
+
+' => There are instances in which you may need to automate the use of keyboard buttons as part of your automation scripts. 
+' => In these cases, VBScript SendKeys method can be used. 
+' => To use the SendKeys method you need to first set the WshShell object:
+
+'	Dim mySendKeys
+'	set mySendKeys = CreateObject("WScript.shell")
+'	mySendKeys.SendKeys(“{TAB}”) 'Will press the 'Tab' button on your keyboard
+
+'Following is an example which will perform the closing of notepad using sendkeys method in UFT.
+'==============================
+'Set WshShell = CreateObject(“WScript.Shell”)
+'WshShell.SendKeys “%f” 'sending ALT + f
+'wait 3
+'WshShell.SendKeys “x” 'Sending 'x'
+'wait 3
+'Set WshShell = Nothing
+'==============================
+'OR
+'==============================
+'Set WshShell = CreateObject(“WScript.Shell”)
+'wait 2
+'WshShell.SendKeys “%{F4}”
+'wait 3
+'Set WshShell = Nothing
+
+
+
+
+

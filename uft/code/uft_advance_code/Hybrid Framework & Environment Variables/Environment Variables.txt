@@ -1,0 +1,50 @@
+'*********************Environment Variables**************************
+
+'BASICS OF ENVIRONMENT VARIABLES
+'=> Environment Variables are dynamic "objects" on a comptuer that can store a value which can be referenced by many software programs in Microsoft Windows
+'=> There are many environment variables that can be referenced by programs 
+
+'=> UFT Environment Variables can be accessed by all actions, function libraries, and recovery scenarios
+
+'=> Types of Environment Variables
+'	1. Built-In Environment Variables
+'	2. User Defined Internal Environment Variables
+'	3. User Defined External Environment Variables
+
+'=> Built-In Environment Variables:
+'	=> Internal Variables that are provided by UFT
+'	=> Can provide valuable information such as file path of the test, name of the action/iteration, OS Version
+' 	=> Can be accessed by: File --> Test Settings --> Environment Tab
+
+'=> User Defined Environment Variables:
+'	=> User Defined INTERNAL:
+'		=> Defined within the Test
+'		=> These variables are saved within the test and are accessible only within the test in which they were defined
+'		=> To define INTERNAL Environment Variables (descriptive programming): Environment.Value("URL") = "www.edmunds.com/calculators"
+'		=> To call INTERNAL Environment Variables (descriptive programming): msgbox Environment.Value("URL")
+'		=> To define using UFT Test Settings: File --> Test Settings --> Environment --> Set Variable Type = User-Defined --> 
+'			Click on "+" button --> Add name and value
+'	=> User Defined EXTERNAL:
+'		=> These are variables that we predefine in the active external environment variables file
+'		=> Can be created using using a list of variable-value pairs in an external file in XML format
+'		=> Can be loaded in 2 ways:
+'			1. Through Test Settings
+'			2. Dynamically during Run-Time
+'		=> Loading External Environment Variable Files Through Test Settings:
+'			=> File --> Test Settings --> Environment --> Then...
+'				1. Check "Load Variables and Values from External File" box
+'				2. Click the browse button and select the XML file
+'				3. Environment Variables are loaded from the XML file selected and appear in the variables list
+
+'=> Environment Variables Methods:
+'	=> ExternalFileName Property: Returns the name of the loaded external environment variable file specified 
+'		in the Environment Tab of the Test Run Settings
+'		=> Syntax: 
+'				FileName = Environment.ExternalFileName
+'				Msgbox FileName
+'	=> LoadFromFile Method: Loads the specified Environment Variable file (in XML format) dynamically during Run-Time
+'		=> You don't need to manually add the environment variables through the Test Settings when using this method
+'	=> Value Property: Retrieves the value of environment variables
+'		=> Can set the value of user-defined internal environment variables using this property
+
+

@@ -1,0 +1,23 @@
+In-Class Assignment 12 - Arrays and GetCellData - Amortization Calculator
+
+1. Navigate to https://www.calculator.net/amortization-calculator.html
+2. Enter Loan Amount
+3. Enter Loan Term
+4. Enter Interest Rate
+5. Click on Calculate
+6. Capture Total Interest Amount and store it in Excel
+7. Capture the Interest Column from the table into a Dynamic Array
+	- Each value must be stored into an array element
+8. Calculate the Total Interest from the Array and write the total to Excel
+9. Compare the Calculated Total Interest with the Captured Total Interest
+10. Capture the total number of loan payments (number only) and store it in Excel
+11. Verify that the correct number of loan payments is displayed
+	- Loan Term x 12 months per year
+
+**Note**
+- All Test Data must be coming from Excel
+- Include the following logic in your script:
+	- If Loan Term is Less than or Equal to 5, Then click on 'Annual Schedule' after clicking on 'Calculate' (one iteration must have loan term less than 5)
+- Customize your test results using the Reporter.ReportEvent method
+
+

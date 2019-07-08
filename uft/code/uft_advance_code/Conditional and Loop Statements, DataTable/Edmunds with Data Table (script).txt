@@ -1,0 +1,115 @@
+Option Explicit 'Forces you to declare all variables
+'Prevents VBScript from allocating space for undeclared (undefined) variables
+
+
+'Declaring Variables
+Dim MonthlyPayment, ZipCode, LoanTerm, Rate, Trade_In, AmtOwed, DownPayment
+Dim Expected_MaxPrice, Actual_MaxPrice, i, RowCount
+
+'Import the Data from Excel into the DataTable
+'Step 1: Add Sheet
+DataTable.AddSheet("Edmunds_TestData")
+
+'Step 2: ImportSheet
+DataTable.ImportSheet "C:\Users\VAADMIN\Desktop\Dextop Items\2018\Summer 2018\UFT\Weekend\Day 9 - Practice - Conditional and Loop Statements\Edmunds Test Data - DataTable.xlsx", "Test_Data", "Edmunds_TestData"
+
+'Counting the number of rows of data being used in the data table
+RowCount = DataTable.GetSheet("Edmunds_TestData").GetRowCount
+
+For i = 1 To RowCount
+	
+	'Set the Focus of UFT on the specified row number
+	DataTable.GetSheet("Edmunds_TestData").SetCurrentRow(i)
+	
+		
+	'Assigning Values to Variables - Reading from the DataTable
+	MonthlyPayment = DataTable.Value("MonthlyPayment", "Edmunds_TestData")
+	ZipCode = DataTable.Value("ZipCode", "Edmunds_TestData")
+	LoanTerm = DataTable.Value("LoanTerm", "Edmunds_TestData")
+	Rate = DataTable.Value("Rate", "Edmunds_TestData")
+	Trade_In = DataTable.Value("Trade_In", "Edmunds_TestData")
+	AmtOwed = DataTable.Value("AmountOwed", "Edmunds_TestData")
+	DownPayment = DataTable.Value("DownPayment", "Edmunds_TestData")
+	Expected_MaxPrice = DataTable.Value("Expected_MaxPrice", "Edmunds_TestData")
+	
+	
+	
+	'Step 0: Close IE
+	SystemUtil.CloseProcessByName "iexplore.exe"
+	
+	'Step 1: Launch IE and navigate to URL
+	SystemUtil.Run "iexplore.exe", "www.edmunds.com/calculators"
+	
+	wait 5
+	
+	'VP#1: Verify that the 'Auto Calculators' header exists on the page
+	'Logic: If the header exists then msgbox "Pass - auto calc header exists", otherwise, msgbox "Failed - auto calc header doesn't exist"
+	If Browser("micclass:=Browser", "CreationTime:=0", "title:=.*").Page("micclass:=Page").WebElement("innertext:=Auto Calculators ", "html tag:=H2").Exist Then
+		DataTable.Value("VP1_Status", "Edmunds_TestData") = "Pass - Header Exists" 'Writing to DataTable
+	Else
+		DataTable.Value("VP1_Status", "Edmunds_TestData") = "Failed - Header doesn't exist"	
+	End If
+	
+	
+	'Step 2: Enter Monthly Payment
+	Browser("micclass:=Browser", "CreationTime:=0", "title:=.*").Page("micclass:=Page").WebEdit("html id:=calc_input3", "html tag:=INPUT", "class:=input-dollar").Set MonthlyPayment
+	
+	'Step 3: Click on Go
+	Browser("micclass:=Browser").Page("micclass:=Page").WebElement("innertext:=Go", "html tag:=SPAN", "index:=2").Click
+	
+	
+	'VP#2: Verify that the Monthly Payment Value has been captured accurately on the 2nd page
+	'Logic: If the Monthly Payment Webedit exists with 'MonthlyPayment' value inside, then msgbox "Pass - MonthlyPayment value is correct". Otherwise, msgbox "Failed - MonthlyPayment value is incorrect"
+	If Browser("micclass:=Browser", "CreationTime:=0", "title:=.*").Page("micclass:=Page").WebEdit("html id:=ac_monthly_payment", "html tag:=INPUT", "value:="&MonthlyPayment).Exist(5) Then
+		DataTable.Value("VP2_Status", "Edmunds_TestData") = "Pass - MonthlyPayment value is correct"
+	Else
+		DataTable.Value("VP2_Status", "Edmunds_TestData") = "Failed - MonthlyPayment value is incorrect"
+	End If
+	
+	'***"value:="&MonthlyPayment --> Will be read as follows: "value:=650"
+	
+	
+	'Step 4: Enter ZipCode
+	Browser("micclass:=Browser", "CreationTime:=0", "title:=.*").Page("micclass:=Page").WebEdit("html id:=ac_zip_code", "html tag:=INPUT", "class:=calc-zipcode").Set ZipCode
+	
+	'Step 5: Click on Update ZipCode Button
+	Browser("micclass:=Browser", "CreationTime:=0", "title:=.*").Page("micclass:=Page").WebElement("innertext:=Update Zip Code", "html tag:=SPAN").Click 
+	
+	'Step 6: Select the Loan Term
+	Browser("micclass:=Browser", "CreationTime:=0", "title:=.*").Page("micclass:=Page").WebList("name:=ac_loan_term", "html tag:=SELECT").Select LoanTerm
+	
+	'Step 7: Enter Finance Rate
+	Browser("micclass:=Browser", "CreationTime:=0", "title:=.*").Page("micclass:=Page").WebEdit("html id:=ac_market_finance_rate", "html tag:=INPUT", "class:=input-percentage").Set Rate
+	
+	'Step 8: Enter Trade In
+	Browser("micclass:=Browser", "CreationTime:=0", "title:=.*").Page("micclass:=Page").WebEdit("html id:=ac_vehicle2_price", "html tag:=INPUT", "class:=input-dollar").Set Trade_In
+	
+	'Step 9: Enter Amount Owed
+	Browser("micclass:=Browser", "CreationTime:=0", "title:=.*").Page("micclass:=Page").WebEdit("html id:=ac_vehicle2_value_owed", "html tag:=INPUT", "class:=input-dollar").Set AmtOwed
+	
+	'Step 10: Enter Down Payment
+	Browser("micclass:=Browser", "CreationTime:=0", "title:=.*").Page("micclass:=Page").WebEdit("html id:=ac_cash_down_payment", "html tag:=INPUT", "class:=input-dollar").Set DownPayment
+	
+	'Step 11: Click on Calculate
+	Browser("micclass:=Browser", "CreationTime:=0", "title:=.*").Page("micclass:=Page").WebElement("innertext:=Calculate", "html tag:=SPAN").Click
+	
+	wait 5
+	
+	'GetROProperty --> Captures a specified property value from an object in the AUT that has been identified
+	'--> Get RunTime Object Property Value
+	
+	'Step 12: Capture the Max Price
+	Actual_MaxPrice = Browser("micclass:=Browser", "CreationTime:=0", "title:=.*").Page("micclass:=Page").WebElement("class:=calc-results-total", "html id:=ac_max_tmv_result", "html tag:=SPAN").GetROProperty("innertext")
+	
+	'Step 13: Verify the Max Price
+	If Actual_MaxPrice = Expected_MaxPrice Then
+		DataTable.Value("Test_Status", "Edmunds_TestData") = "Passed"
+	Else
+		DataTable.Value("Test_Status", "Edmunds_TestData") = "Failed"
+	End If
+
+Next
+
+
+'Save the Results
+DataTable.ExportSheet "C:\Users\VAADMIN\Desktop\Dextop Items\2018\Summer 2018\UFT\Weekend\Day 9 - Practice - Conditional and Loop Statements\Edmunds_DataTable_Results.xlsx", "Edmunds_TestData"

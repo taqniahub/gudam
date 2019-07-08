@@ -1,0 +1,7 @@
+In-Class Assignment 13 - Child Objects Method
+
+
+1. Go to edmunds.com/calculators
+2. Capture the name of all the WebButtons on the page
+3. Store the names into a dynamic array
+4. Read from the array and print the name with the index value

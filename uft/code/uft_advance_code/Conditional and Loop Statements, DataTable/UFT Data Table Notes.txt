@@ -1,0 +1,168 @@
+'**************UFT's IN-BUILT DATA TABLE**********************
+
+'=> Similar to Microsoft Excel 
+
+'=> Helps testers create data driven tests that can be used to run a script multiple times
+
+'=> 2 types of Data Tables in UFT
+'	1. LOCAL DATA TABLE
+'	2. GLOBAL DATA TABLE
+
+'=> To execute a test case for some specified number of iterations, you can set the iterations of global data table in the Test Settings Dialog (File -> Settings -> Run)
+
+'=> Data Table Object Methods:
+'	1. AddSheet - Adds the specified sheet to the run-time data table
+'		Syntax: DataTable.AddSheet(SheetName)
+'	2. DeleteSheet - Deletes the specified sheet from the run-tim data table
+'		Syntax: DataTable.DeleteSheet SheetID
+'	3. Export - Exports the data table to a new file in the specified location
+'		Syntax: DataTable.Export(FileName)
+'	4. ExportSheet - Exports a specific sheet of the data table in run-time
+'		Syntax: DataTable.ExportSheet(FileName,SheetName)
+'	5. GetCurrentRow - Returns the active row of the run-time data table of Global Sheet
+'		Syntax: DataTable.GetCurrentRow
+'	6. GetParameterCount - Returns the number of columns in the run-time data table of Global Sheet
+'		Syntax: DataTable.GetParameterCount
+'	7. GetRowCount - Returns the number of rows in the run-time data table of Global Sheet
+'		Syntax: DataTable.GetRowCount
+'	8. GetSheet - Returns the specified sheet from the run-time data table
+'		Syntax: DataTable.GetSheet (SheetID)
+'	9. GetSheetCount - Returns the total number of sheets in the run-time data table
+'		Syntax: DataTable.GetSheetCount
+'	10. Import - Imports a specific external Excel file to the run-time data table
+'		Syntax: DataTable.Import (FileName)
+'	11. ImportSheet - Imports the specified sheet of the specific excel file to the destination sheet
+'		Syntax: DataTable.ImportSheet (FileName, SheetSource, SheetDestination)
+'	12. SetCurrentRow - Sets the focus of the current row to the specified row number
+'		Syntax: DataTable.SetCurrentRow(RowNumber)
+'	13. SetNextRow - Sets the focus of the next row in the run-time data table
+'		Syntax: DataTable.SetNextRow
+'	14. SetPreviousRow - Sets the focus of the previous row in the run-time data table
+'		Syntax: DataTable.SetPrevRow
+
+'=> Data Table Object Properties:
+'	1. GlobalSheet - Returns the first sheet of the run-time data table	
+'		Syntax: DataTable.GlobalSheet
+'	2. LocalSheet - Returns the Active local sheet of the run-time data table
+'		Syntax: DataTable.LocalSheet
+'	3. RawValue - Retrieves the raw value of the cell
+'		Syntax: DataTable.RawValue ParameterID, [SheetID]
+'	4. Value - Retreives the value of the cell in the specified parameter
+'		Syntax: DataTable.Value (ParameterID, [SheetID])
+
+'=> EXAMPLE:
+	'CONSIDER THE GLOBAL DATA TABLE BELOW
+
+'	ROW		PRINCIPAL   ||	RATE   ||	TIME
+'	1			232		||	3.26   ||		5
+'	2			2556	||	7%	   ||		4
+'	3			1322	||	6.50%  ||		6
+'	4			32.21	||	3.32%  ||		4.4
+
+	'Accessing Datatable to get Row Count and Column Count
+'		rowcount = DataTable.GetSheet("Global").GetRowCount
+'		msgbox rowcount      ' Displays 4
+'	  
+'		colcount = DataTable.GetSheet("Global").GetParameterCount
+'		msgbox colcount		 ' Displays 3
+'
+	'Setting the focus to Row 2
+'		DataTable.SetCurrentRow(2) 
+'		val_rate = DataTable.Value("Rate","Global")
+'		print val_rate  ==> Displays 7%
+'	  
+'		val_principal = DataTable.Value("Principal","Global")
+'		print val_principal	==> Displays 2556
+'	  
+'		val_Time = DataTable.Value("Time","Global")
+'		print val_Time	==> Displays 5
+
+
+'=> DTParameter Object Properties
+'	1. Name - Returns the name of the parameter in the run-time data table
+'		Syntax: DTParameter.Name
+'	2. RawValue - Returns the Raw Value of the cell in the current row of the run-time data table
+'		Syntax: DTParameter.RawValue
+'	3. Value - Retrieves or sets the value of the cell in the Active row of the parameter in the run-time data table
+'		Syntax: DTParameter.Value
+'	4. ValueByRow - Retreives the value of the cell in the specified row of the parameter in the run-time data table
+'		Syntax: DTParameter.ValueByRow(RowNumber)
+
+
+'=> EXAMPLE:
+'	CONSIDER THE GLOBAL DATA TABLE BELOW
+
+'	ROW		PRINCIPAL   ||	RATE   ||	TIME
+'	1			232		||	3.26   ||		5
+'	2			2556	||	7%	   ||		4
+'	3			1322	||	6.50%  ||		6
+'	4			32.21	||	3.32%  ||		4.4
+
+'	 Val = DataTable.GetSheet("Global").GetParameter("Principal").ValueByRow(2) 
+'	 print Val	' Val Displays 2556
+'
+'	 DataTable.SetCurrentRow(1) 
+'	 Val1 = DataTable.GetSheet("Global").GetParameter("Principal").Value
+'	 print Val1	' Val1 displays 232
+
+
+'=>DTSheet Object Methods:
+'	1. AddParameter - Adds the specified column to the sheet in the run-time data table
+'		Syntax: DTSheet.AddParameter(ParameterName, Value)
+'	2. DeleteParameter - Deletes the specified parameter from the run-time data table
+'		Syntax: DTSheet.DeleteParameter(ParameterID)
+'	3. GetCurrentRow - Returns the row number of the active row in the run-time Data Table
+'		Syntax: DTSheet.GetCurrentRow
+'	4. GetParameter - Returns the specified parameter from the run-time Data Table
+'		Syntax: DTSheet.GetParameter(ParameterID)
+'	5. GetParameterCount - Returns the total number of Columns in the run-time Data Table
+'		Syntax: DTSheet.GetParameterCount
+'	6. GetRowCount - Returns the total number of rows in the run-time Data Table
+'		Syntax: DTSheet.GetRowCount
+'	7. SetCurrentRow - Sets the Focus on the specified Row of the Data Table
+'		Syntax: DTSheet.SetCurrentRow(RowNumber)
+'	8. SetNextRow - Shifts the Focus to the next Row of the Data Table
+'		Syntax: DTSheet.SetNextRow
+'	9. SetPrevRow - Shifts the Focus to the Previous Row of the Data Table
+'		Syntax: DTSheet.SetPrevRow
+
+'=> EXAMPLE:
+'	CONSIDER THE GLOBAL DATA TABLE BELOW
+
+'	ROW		PRINCIPAL   ||	RATE   ||	TIME
+'	1			232		||	3.26   ||		5
+'	2			2556	||	7%	   ||		4
+'	3			1322	||	6.50%  ||		6
+'	4			32.21	||	3.32%  ||		4.4
+
+'Accessing Datatable to get Row Count and Column Count
+'	 rowcount = DataTable.GetSheet("Global").GetRowCount
+'	 msgbox rowcount     ==> Displays 4
+' 
+'	 colcount = DataTable.GetSheet("Global").GetParameterCount
+'	 msgbox colcount		==> Displays 3
+'
+'	 DataTable.SetCurrentRow(2) 
+'	 val_rate = DataTable.Value("Rate","Global")
+'	 print val_rate   ==> Displays 7%
+'  
+'	 val_ppl = DataTable.Value("Principal","Global")
+'	 print val_ppl	 ==> Displays 2556
+'  
+'	 val_Time = DataTable.Value("Time","Global")
+'	 print val_Time	 ==> Displays 5
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,83 @@
+'********************Actions***********************
+
+'=> Actions help testers to divide scripts into groups of UFT statements called Actions
+
+'=> Actions are similar to functions in VBScript, but there are some differences
+
+'=> Actions VS Functions:
+'	=> Actions:
+'		-> In-built feature of UFT
+'		-> Actions parameters are passed 'byvalue' only
+'		-> Actions have the file extension '.mts'
+'		-> Actions may or may not be reusable 
+'	=> Functions:
+'		-> VBScript Functions are supported by both UFT and VBScript
+'		-> Function parameters are passed either byvalue or byref
+'		-> Functions are saved as '.vbs' or '.qfl'
+'		-> Functions are ALWAYS reusable
+
+Function fnAddValues (5, 15) '<-- Passed byvalue
+	Total = Num1 + Num2
+	fnAddValues = Total
+
+End Function
+
+
+'=> Properties of Actions can be accessed by Right-Clicking on the Script Editor Window and selecting "Properties"
+'=> Action Properties:
+'	-> Action Name
+'	-> Location
+'	-> Reusable Flag
+'	-> Input Parameters
+'	-> Output Parameters
+
+'=> Types of Actions
+'	1. Non-Reusable Actions 
+'	2. Reusable Actions
+'	3. External Reusable Actions
+
+'=> Non-Reusable Actions
+'	-> An action that can be called only in that specific test in which it has been designed 
+'	-> Can be called only once
+
+'=> Reusable Actions
+'	-> An action that can be called multiple times by any test in which it resides and can also be used by any other tests
+
+'=> External Reusable Actions
+'	-> A Reusable Action that is stored in another test 
+'	-> Read-only in the calling test
+'	-> Can be used locally with the editable copy of the Data Table information for the external action
+
+'=> Working with Actions
+'	-> Actions can be inserted in 3 ways 
+'		1. Insert Call to New Action 
+'			-> Inserts a new action from the existing action
+'		2. Insert Call to Copy of Action 
+'			-> Inserts a copy of an existing action
+'		3. Insert Call to Existing Action
+'			-> Inserts a call to existing reusable action
+
+'=> Insert Call to New Action
+'	-> Steps to insert a new action at any point of the script by performing the following steps:
+'		1. Right-Click on the Scripting area and select "Call to new action" from the Action menu
+'		2. In the "Insert Call to New Action" Window, give the test name, description, and also specify if it's a reusuable action or not. Most Importantly select the location the action to be inserted	
+'		3. You Can check the changes graphically in the test Name Tab
+
+'=> Inserting Call to Copy of Action
+'	-> Steps to insert a copy of an existing action at any point of the script by performing the following steps:
+'		1. Right-click on the Scripting area and select "Call to Copy of Action" from the Action menu
+'		2. In the "Insert Call to Copy of Action" Window, Select the "Test Name", "Action Name", and location of the action to be inserted
+'		3. Script is auto-generated to show that the copy of an action is inserted
+'		4. You Can check the changes graphically in the test Name Tab
+
+'=> Inserting Call to Existing Action
+'	-> Steps to insert an existing action at any point of the script by performing the following steps:
+'		1. Right-click on the Scripting Area and select "Call to Existing Action" from the Action Menu
+'		2. In the "Select Action" Window, give the test name, Action Name, Description, and also specify the location of the action to be inserted
+'		3. Once inserted, the script is generated exactly in the location where the action was inserted
+'		4. You Can check the changes graphically in the test Name Tab
+
+
+
+
+

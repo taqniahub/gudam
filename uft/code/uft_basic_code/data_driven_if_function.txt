@@ -1,0 +1,18 @@
+Dim arrTemp, i
+Dim dic
+Dim Condition, IfIsTrue, IfIsElseIf, IFIsFalse
+ 
+Set dic = CreateObject("Scripting.Dictionary")
+ 
+Condition = "arrTemp(i)>70" 
+IfIsTrue = "PrintLog(Now()&"" Wear a T-Shirt!"")"
+Set dic = CreateObject("Scripting.Dictionary")
+dic.Add "arrTemp(i)>60", "PrintLog(arrTemp(i)&"" Wear a hat!"")"
+dic.Add "arrTemp(i)>50", "PrintLog(""Testing [If]"", arrTemp(i)&"" Wear a long-sleeved shirt!"")"
+Set IfIsElseIf = dic
+IfIsFalse = "Wscript.Echo(Now()&"" Wear a coat!"")"
+ 
+arrTemp = Array(50, 55, 60, 65, 70, 80)
+For i = LBound(arrTemp) To UBound(arrTemp)
+	PrintLog("Testing [If]", "Temperature is " & arrTemp(i) & ": " & [If](Condition, IfIsTrue, IfIsElseIf, IfIsFalse))
+Next

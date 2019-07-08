@@ -1,0 +1,77 @@
+Option Explicit
+
+
+Dim PayType, Pay, Pay_Frequency, Marital_Status, Witholding_Allowances, Additional_Witholding, State, State_Allowances, State_Witholding,	Expected_Paycheck_Value, Captured_Paycheck_Value, Captured_Tax_Rate
+
+Dim MyExcel, MySheet, RowCount, i
+
+'Connect to Excel
+'Step 1: Create the Connection between UFT and Excel
+Set MyExcel = CreateObject ("Excel.Application")
+
+'Step 2: Open the Workbook
+MyExcel.Workbooks.Open "C:\Users\VAADMIN\Desktop\Dextop Items\2018\Summer 2018\UFT\Weekend\Day 10 - Data Parameterization with Excel\Excel Test Data\Paycheck Calculator - Test Data.xlsx"
+
+'Step 3: Create the reference for the Worksheet
+Set MySheet = MyExcel.ActiveWorkbook.Worksheets ("Test_Data")
+
+
+'OPTIONAL STEP: Make Excel Visible
+MyExcel.Application.Visible = True
+
+RowCount = MySheet.UsedRange.Rows.Count 'Determine the number of rows to determine the number of iterations
+
+For i = 2 To RowCount
+	
+	'Read the Values from Excel
+	PayType = MySheet.Cells(i, "A").Value
+	Pay = MySheet.Cells(i, "B").Value
+	Pay_Frequency = MySheet.Cells(i, "C").Value
+	Marital_Status = MySheet.Cells(i, "D").Value
+	Witholding_Allowances = MySheet.Cells(i, "E").Value
+	Additional_Witholding = MySheet.Cells(i, "F").Value
+	State = MySheet.Cells(i, "G").Value
+	State_Allowances = MySheet.Cells(i, "H").Value
+	State_Witholding = MySheet.Cells(i, "I").Value
+	Expected_Paycheck_Value = MySheet.Cells(i, "J").Value
+	
+
+	'1. Navigate to http://www.suburbancomputer.com/tips_calculator.php
+	SystemUtil.Run "iexplore.exe", "http://www.suburbancomputer.com/tips_calculator.php"
+	
+	wait 5
+	
+	'2. Select Pay Type as Salary
+	Browser("micclass:=Browser").Page("micclass:=Page").WebList("name:=type", "html tag:=SELECT", "select type:=ComboBox Select").Select PayType
+	
+	'3. Enter Pay
+	Browser("micclass:=Browser").Page("micclass:=Page").WebEdit("name:=salary", "hmtl tag:=INPUT").Set Pay
+	
+	'4. If the Pay is more than 100, then check the 'Annual' check box
+	If Pay > 100 Then
+		Browser("micclass:=Browser").Page("micclass:=Page").WebCheckBox("name:=annualize", "html tag:=INPUT").Set "ON"
+	Else
+		Browser("micclass:=Browser").Page("micclass:=Page").WebCheckBox("name:=annualize", "html tag:=INPUT").Set "OFF"
+	End If
+	
+	'5. Select Pay Frequency
+	Browser("micclass:=Browser").Page("micclass:=Page").WebList("name:=ppy", "html tag:=SELECT", "select type:=ComboBox Select").Select Pay_Frequency
+	
+	'6. Select Marital Status
+	Browser("micclass:=Browser").Page("micclass:=Page").WebList("name:=fit_marital_status", "html tag:=SELECT", "select type:=ComboBox Select").Select Marital_Status
+		
+	'7. Select Witholding Allowances
+	Browser("micclass:=Browser").Page("micclass:=Page").WebList("name:=fit_dependent", "html tag:=SELECT", "select type:=ComboBox Select").Select Witholding_Allowances	
+	
+	'8. Enter Additional Witholding
+	'9. Select State
+	'10. Select Allowances
+	'12. Enter Additional Witholding
+	'13. Click 'Calculate Paycheck'
+	'14. Capture 'This Check (Take Home)' Value
+	'15. Compare with Expected Check Value
+	'16. Click on 'Effective Rate' link at the top
+	'17. Capture the Total Federal Taxes Rate
+
+
+Next

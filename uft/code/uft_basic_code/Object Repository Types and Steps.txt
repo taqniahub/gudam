@@ -1,0 +1,96 @@
+2 Types of Object Repositories
+
+1. Local Object Repository
+	- Specific to each Action within a test in UFT
+	- Testers can easily edit the Object Repository (edit the logical names, properties, etc)
+	- File Extension -> .mtr
+
+
+2. Shared Object Repository (SOR)
+	- Can be associated with multiple tests/Actions at the same time in UFT
+	- Testers cannot easily edit the Object Repository
+	- File Extension -> .tsr
+
+
+Steps to Create a Shared Object Repository
+1. Build a Local Object Repository
+2. In the Object Repository Click on File -> Export Local Objects
+3. Create a New Folder and call it 'Shared Object Repositories'
+4. Within the newly created 'Shared Object Repositories' folder, Save the OR file by giving it a name and click on Create
+5. In the Windows File Explorer, Navigate to the 'Shared Object Repositories' Folder and verify that the .tsr Shared Object Repository file has been created.
+
+In order to Use a SOR with a test, that SOR must 1st be associated with the test. 
+
+Steps to Associate a Shared Object Repository
+1. Create a Shared Object Repository
+2. In UFT, Resources -> Associate Repositories
+3. Click on the Green '+' button
+4. Locate the .tsr file and click 'Open'
+5. Under the 'Available Actions' window, click on 'Action1'
+6. Click on the ' > ' button and bring 'Action1' under the 'Associated Actions' window
+7. Click 'OK'
+8. Open the Object Repository and verify that the SOR has been associated successfully
+
+
+
+Steps to Merge 2 Shared Object Repositories (you can only merge 2 SORs together. Can't merge an SOR with a Local OR)
+1. Create SOR #1
+2. Create SOR #2
+3. In UFT, Click on Resources -> Object Repository Manager
+4. In the OR Manager, Click on Tools -> Object Repository Merge Tool
+5. In the New Merge Window, Click on the '...' Button next to 'Primary File' field
+6. Select SOR #1
+7. In the New Merge Window, Click on the '...' Button next to 'Secondary File' field
+8. Select SOR #2
+9. Click 'OK'
+10. In the 'Merge Statistics' window, verify that there are no Conflicts. If there are conflicts resolve them. 
+11. In the Merge Tool, Click on File -> SaveAs
+12. Save the newly created SOR with a meaningful name
+13.Navigate to the location where the newly created master SOR is located and verify that it has been created
+14. Delete SOR #1 & SOR #2
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,166 @@
+'Option Explicit
+'
+'Dim JaysArray(10) 'Declaring an array of size 10 which will have 11 elements 
+'
+''Write values to the array, we must use the array subscripts (index values)
+'JaysArray(0) = "10 years" 'This will write '10 years' in the 1st element of JaysArray
+'JaysArray(1) = "12 years" 'This will write '12 years' in the 2nd element of JaysArray
+'JaysArray(2) = "14 years" 'This will write '14 years' in the 3rd element of JaysArray
+'JaysArray(3) = "16 years"
+'JaysArray(4) = "18 years"
+'JaysArray(5) = "20 years"
+'JaysArray(6) = "22 years"
+'JaysArray(7) = "24 years"
+'JaysArray(8) = "26 years"
+'JaysArray(9) = "28 years"
+'JaysArray(10) = "30 years"
+'
+''Read values from the array, we must use the array subscripts (index values)
+'Print JaysArray(0)
+'Print JaysArray(1)
+'Print JaysArray(2)
+'Print JaysArray(3)
+'Print JaysArray(4)
+'Print JaysArray(5)
+'Print JaysArray(6)
+'Print JaysArray(7)
+'Print JaysArray(8)
+'Print JaysArray(9)
+'Print JaysArray(10)
+'
+'
+'msgbox LBound(JaysArray) & " is the lbound" 'Returns the smallest subscript of JaysArray (which will be zero every time)
+'
+'msgbox UBound(JaysArray) & " is the UBound" 'Returns the largest subscript of JaysArray (which will be the size of the array)
+'
+'
+''SPLIT FUNCTION
+'Dim String1, MyArray
+'
+'String1 = "My name is Jay"
+'
+'MyArray = Split(String1, " ")
+'
+'Print MyArray(0) 'Will print out 'My'
+'Print MyArray(1) 'Will print out 'name'
+'Print MyArray(2) 'Will print out 'is'
+'Print MyArray(3) 'Will print out 'Jay'
+'
+'Print MyArray(0) & MyArray(1) & MyArray(2) & MyArray(3) 'we lost the space...we lost the delimiter
+'
+'
+''Split Function Example 2: with multiple arrays
+'Dim Var1, MyArray1, MyArray2, MyArray3
+'
+'Var1 = "$42,459.12" 'I want to see only the nubmers (remove the '$', the ',', and the '.')
+'
+'MyArray1 = Split(Var1, "$") 'Splitting using $ as the delimiter (it will be removed)
+'
+''msgbox MyArray1(0) & " This is element 0" 'Will show as empty because there is nothing on the left side of the $ sign
+''msgbox MyArray1(1) & " This is element 1" 'Will show as 42,459.12 because there is no other occurance of the $ sign
+'
+'
+''Now we have the value as 42,459.12 sitting inside MyArray1(1)
+'MyArray2 = Split(MyArray1(1), ",") 'Splitting using ',' as the delimiter (it will be removed)
+'
+''msgbox MyArray2(0) & " This is element 0" 'Will show 42
+''msgbox MyArray2(1) & " This is element 1" 'Will show 459.12
+'
+''Now we have the value as 42 in MyArray2(0) and 459.12 in MyArray2(1)
+'
+'MyArray3 = Split(MyArray2(1), ".")
+'
+''msgbox MyArray3(0) & " This is element 0" 'will show 459
+''msgbox MyArray3(1) & " This is element 1" 'will show 12
+'
+'msgbox MyArray2(0) & MyArray3(0) & MyArray3(1)
+'
+'
+''JOIN FUNCTION
+'Dim GroceryList(3) 'Array of size 3
+'Dim GroceryString
+'
+'GroceryList(0) = "Eggs"
+'GroceryList(1) = "Bread"
+'GroceryList(2) = "Milk"
+'GroceryList(3) = "Chicken"
+'
+''I want to see 1 string that looks like this: 'Eggs, Bread, Milk, Chicken'
+'
+'GroceryString = Join(GroceryList)
+'
+''msgbox GroceryString
+'
+''msgbox IsArray(GroceryString) 'Will show False because it's not an array
+''msgbox IsArray(GroceryList) 'Will show True because it is an array
+'
+'
+'Erase GroceryList
+'
+
+
+
+'Working with Dynamic Arrays
+
+'Dim Array1() 'Declaring a dynamic array (size is not specified YET)
+'
+''...Some code will execute....
+'
+''Now we know what the size of the array should be
+'
+'ReDim Array1(5) 'ReDecalaring the array with a set size of 5 (6 elements)
+'Array1(0) = "XYZ"
+'Array1(1) = 41.25
+'Array1(2) = 22
+'Array1(3) = 50
+'Array1(4) = 100
+'Array1(5) = 200
+'
+''msgbox Array1(0)
+''msgbox Array1(1)
+''msgbox Array1(2)
+''msgbox Array1(3)
+''msgbox Array1(4)
+''msgbox Array1(5)
+'
+''Now let's say I want to add Array1(6) to the list
+'
+'ReDim Preserve Array1(6) 'so now I redeclare the array to be of size 6 while preserving what was in the array originally
+'
+'Array1(6) = 340
+'
+'msgbox Array1(0) & " this is element 0"
+'msgbox Array1(1) & " this is element 1"
+'msgbox Array1(2) & " this is element 2"
+'msgbox Array1(3) & " this is element 3"
+'msgbox Array1(4) & " this is element 4"
+'msgbox Array1(5) & " this is element 5"
+'msgbox Array1(6) & " this is element 6"
+
+
+
+'Dim JaysArray() 'Declaring a dynamic array
+
+'Some code will execute, now we know the size of the array
+
+'ReDim JaysArray(10)
+'
+'For i = 0 To uBound(JaysArray)
+'	
+'	JaysArray(i) = "This is Element " & i & ", Value " & i+1
+'	
+'Next
+'
+'For j = 0 To uBound(JaysArray)
+'	Print JaysArray(j)
+'Next
+'
+
+'CAPTURING VALUES FROM A DATA TABLE USING GETCELLDATAT METHOD
+Set MyBrowser = Browser("micclass:=Browser").Page("micclass:=Page")
+
+Interest = MyBrowser.WebTable("class:=cinfoTS", "html tag:=TABLE", "name:=WebTable").GetCellData(2,3)
+msgbox Interest
+
+
+

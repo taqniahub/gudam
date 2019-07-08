@@ -1,0 +1,19 @@
+In-Class Assignment - 8 - Loops and Conditional Statements - Simple Savings Calculator
+
+
+Create a script that will perform the steps below at least 5 times. Each time, the set of data must be different
+
+Navigate to: https://www.bankrate.com/calculators/savings/simple-savings-calculator.aspx
+
+1. Enter Initial Amount
+2. Enter Monthly Deposit
+3. Select Compound Term
+4. Enter Compound Rate
+5. Enter Number of Years
+6. Click on Calcualte
+7. Capture the Final Savings Balance
+8. Click on 'Show Yearly Balance Chart'
+9. Capture the text listed under 'Your Results'
+
+**Include at least 2 Verification Points
+**Present the the values of each variable in the Output Pane combined with a short description (Print and &)
