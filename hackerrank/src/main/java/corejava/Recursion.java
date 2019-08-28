@@ -6,7 +6,9 @@ import java.io.IOException;
 import java.util.Scanner;
 
 public class Recursion {
+	
 	public static final Scanner scanner = new Scanner(System.in);
+		
 	public static void main(String[]args)throws IOException {
 		BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("C:\\workspace\\Java\\corejava\\output\\output.txt"));
 		int n = scanner.nextInt();

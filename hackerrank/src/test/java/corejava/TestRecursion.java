@@ -34,7 +34,7 @@ public class TestRecursion {
 	@Parameterized.Parameters
 	public static Collection<Object[]> recursionNumbers() {
 		return Arrays.asList(new Object[][]{
-			{3,5},
+			{3,6},
 			{4,24},
 			{5,120},
 			{2,2}			
