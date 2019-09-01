@@ -35,7 +35,7 @@ public class Test {
 			//System.out.println(inStack.pop());
 		//}
 		
-		int number = 123456;
+		/*int number = 123456;
 		int reverseNum =0;
 		while(number !=0) {
 		reverseNum = reverseNum * 10;
@@ -45,6 +45,9 @@ public class Test {
 		System.out.print(reverseNum);
 		int x = 123456/10;
 		
-		System.out.println("\n x is " + x);
+		System.out.println("\n x is " + x);*/
+		
+		
+		
 	}
 }
