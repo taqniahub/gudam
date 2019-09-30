@@ -1,0 +1,37 @@
+By.xpath:(//span[@id='CardDisplayName'])[1]
+
+By.xpath://span[text()='Please wait while we freeze your card. This may take a few moments']|//span[contains(text(),'Freezing card')]
+
+By.xpath: //span[text()='Your credit card has been frozen.'] | //span[text()='This card has been frozen.']|//span[@class='js-CcSuccessFrozenBanner']
+
+
+By.xpath: //div[@id='MyCardsList']/div[1]/span[1]|//span[contains(@class, 'frozen creditcard-icon')]|//*[@id='CardInfo_b374d2db-7729-4e48-a78c-a49361715f4a']/span[1]
+
+
+By.xpath: //button[@aria-label='Close message']|//*[@id='AdditionalCardsSection']/div[6]/button
+
+By.xpath: //span[@id='CardFrozenIcon']|//span[contains(@class, 'snowflake-small')]
+
+
+By.xpath: //button[contains( . , 'Continue')]
+
+
+By.xpath: //button[text()[contains(., 'Cancel')]]
+
+WebDriver.getWindowHandles()
+WebDriver.switchTo
+
+By.xpath: //h4[contains(text(), 'Last Statement Bal')]/following-sibling::span[1]
+
+
+By.xpath: //div[@id='PageHeader']/following-sibling::div[1]/ol/li[3]/h4
+
+validate currency format: "^\$(?!\.00)[0-9]\d{0,2}(,\d{3})*(\.\d\d)?.*$"
+
+Validate due date text format:  "\d{1,2}\/\d{1,2}\/\d{4}"
+
+interest rate format:  "\d{1,2}\.\d{2}%"
+Month format:  "\d{1,2} Months"
+
+
+By.xpath: //*[@id="ToAccountName"][contains(text(), 'Loan')][not( contains( @class, 'js-from-select-account' ) )]
